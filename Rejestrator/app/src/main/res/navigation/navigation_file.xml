@@ -8,8 +8,19 @@
     <fragment
         android:id="@+id/loginEmployeeFragment"
         android:name="com.example.rejestrator.view.fragment.LoginEmployee"
-        android:label="main_menu"
         tools:layout="@layout/fragment_login_employee" >
+        <action
+            android:id="@+id/action_loginEmployee_to_loginAdmin"
+            app:destination="@id/loginAdminFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginAdminFragment"
+        android:name="com.example.rejestrator.view.fragment.LoginAdministrator"
+        tools:layout="@layout/fragment_login_administrator" >
+        <action
+            android:id="@+id/action_loginAdmin_to_loginEmployee"
+            app:destination="@id/loginEmployeeFragment" />
     </fragment>
 
 </navigation>

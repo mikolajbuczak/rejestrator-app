@@ -6,4 +6,5 @@
     <string name="Password">HASŁO</string>
     <string name="LoginButton">ZALOGUJ</string>
     <string name="ChangeToAdminLoginButton">Logowanie administratora</string>
+    <string name="ChangeToEmployeeLoginButton">Logowanie pracownika</string>
 </resources>

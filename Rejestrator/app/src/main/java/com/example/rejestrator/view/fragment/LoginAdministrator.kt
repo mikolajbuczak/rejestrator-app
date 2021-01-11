@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import com.example.rejestrator.R
+import kotlinx.android.synthetic.main.fragment_login_administrator.*
 import kotlinx.android.synthetic.main.fragment_login_employee.*
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class LoginEmployee : Fragment() {
+class LoginAdministrator : Fragment() {
+    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
@@ -24,24 +26,26 @@ class LoginEmployee : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_login_employee, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_login_administrator, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Administrator.setOnClickListener { x -> x.findNavController().navigate(R.id.action_loginEmployee_to_loginAdmin) }
+        ChangeToEmployeeLoginButton.setOnClickListener { x -> x.findNavController().navigate(R.id.action_loginAdmin_to_loginEmployee) }
     }
 
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            LoginEmployee().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
+            LoginAdministrator().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
                 }
+            }
     }
 }
