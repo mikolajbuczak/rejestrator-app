@@ -22,6 +22,9 @@
         android:name="com.example.rejestrator.view.fragment.LoginAdministrator"
         tools:layout="@layout/fragment_login_administrator" >
         <action
+            android:id="@+id/action_loginAdmin_to_dashboardAdmin"
+            app:destination="@id/dashboardAdminFragment" />
+        <action
             android:id="@+id/action_loginAdmin_to_loginEmployee"
             app:destination="@id/loginEmployeeFragment" />
     </fragment>
@@ -32,6 +35,15 @@
         tools:layout="@layout/fragment_dashboard_employee" >
         <action
             android:id="@+id/action_dashboardEmployee_to_loginEmployee"
+            app:destination="@id/loginEmployeeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dashboardAdminFragment"
+        android:name="com.example.rejestrator.view.fragment.DashboardAdministrator"
+        tools:layout="@layout/fragment_dashboard_administrator" >
+        <action
+            android:id="@+id/action_dashboardAdmin_to_loginEmployee"
             app:destination="@id/loginEmployeeFragment" />
     </fragment>
 
