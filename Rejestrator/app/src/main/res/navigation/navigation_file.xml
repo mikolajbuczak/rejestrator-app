@@ -10,6 +10,9 @@
         android:name="com.example.rejestrator.view.fragment.LoginEmployee"
         tools:layout="@layout/fragment_login_employee" >
         <action
+            android:id="@+id/action_loginEmployee_to_dashboardEmployee"
+            app:destination="@id/dashboardEmployeeFragment" />
+        <action
             android:id="@+id/action_loginEmployee_to_loginAdmin"
             app:destination="@id/loginAdminFragment" />
     </fragment>
@@ -20,6 +23,15 @@
         tools:layout="@layout/fragment_login_administrator" >
         <action
             android:id="@+id/action_loginAdmin_to_loginEmployee"
+            app:destination="@id/loginEmployeeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dashboardEmployeeFragment"
+        android:name="com.example.rejestrator.view.fragment.DashboardEmployee"
+        tools:layout="@layout/fragment_dashboard_employee" >
+        <action
+            android:id="@+id/action_dashboardEmployee_to_loginEmployee"
             app:destination="@id/loginEmployeeFragment" />
     </fragment>
 

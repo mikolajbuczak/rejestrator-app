@@ -7,4 +7,5 @@
     <string name="LoginButton">ZALOGUJ</string>
     <string name="ChangeToAdminLoginButton">Logowanie administratora</string>
     <string name="ChangeToEmployeeLoginButton">Logowanie pracownika</string>
+    <string name="LogoutButton">Wyloguj</string>
 </resources>
