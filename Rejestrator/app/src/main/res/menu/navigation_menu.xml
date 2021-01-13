@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/taskList"
+        android:title="Dostępne"
+        android:icon="@drawable/ic_list"
+        />
+
+    <item
+        android:id="@+id/taskInProgressList"
+        android:title="W trakcie"
+        android:icon="@drawable/ic_time"
+        />
+
+    <item
+        android:id="@+id/tasksDoneList"
+        android:title="Zakończone"
+        android:icon="@drawable/ic_done"
+        />
+
+</menu>

@@ -3,48 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_file"
-    app:startDestination="@id/loginEmployeeFragment">
+    app:startDestination="@id/loginEmployee">
 
     <fragment
-        android:id="@+id/loginEmployeeFragment"
-        android:name="com.example.rejestrator.view.fragment.LoginEmployee"
+        android:id="@+id/loginEmployee"
+        android:name="com.example.rejestrator.view.view.LoginEmployee"
         tools:layout="@layout/fragment_login_employee" >
         <action
-            android:id="@+id/action_loginEmployee_to_dashboardEmployee"
-            app:destination="@id/dashboardEmployeeFragment" />
-        <action
             android:id="@+id/action_loginEmployee_to_loginAdmin"
-            app:destination="@id/loginAdminFragment" />
+            app:destination="@id/loginAdmin" />
+        <action
+            android:id="@+id/action_loginEmployee_to_dashboardTaskListEmployee"
+            app:destination="@id/dashboardTaskListEmployee" />
     </fragment>
 
     <fragment
-        android:id="@+id/loginAdminFragment"
-        android:name="com.example.rejestrator.view.fragment.LoginAdministrator"
+        android:id="@+id/loginAdmin"
+        android:name="com.example.rejestrator.view.view.LoginAdministrator"
         tools:layout="@layout/fragment_login_administrator" >
         <action
             android:id="@+id/action_loginAdmin_to_dashboardAdmin"
-            app:destination="@id/dashboardAdminFragment" />
+            app:destination="@id/dashboardAdmin" />
         <action
             android:id="@+id/action_loginAdmin_to_loginEmployee"
-            app:destination="@id/loginEmployeeFragment" />
+            app:destination="@id/loginEmployee" />
     </fragment>
 
     <fragment
-        android:id="@+id/dashboardEmployeeFragment"
-        android:name="com.example.rejestrator.view.fragment.DashboardEmployee"
-        tools:layout="@layout/fragment_dashboard_employee" >
-        <action
-            android:id="@+id/action_dashboardEmployee_to_loginEmployee"
-            app:destination="@id/loginEmployeeFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/dashboardAdminFragment"
-        android:name="com.example.rejestrator.view.fragment.DashboardAdministrator"
+        android:id="@+id/dashboardAdmin"
+        android:name="com.example.rejestrator.view.view.Admin.DashboardAdministrator"
         tools:layout="@layout/fragment_dashboard_administrator" >
         <action
             android:id="@+id/action_dashboardAdmin_to_loginEmployee"
-            app:destination="@id/loginEmployeeFragment" />
+            app:destination="@id/loginEmployee" />
     </fragment>
+    <fragment
+        android:id="@+id/dashboardTaskListEmployee"
+        android:name="com.example.rejestrator.view.view.Employee.DashboardTaskListEmployee"
+        android:label="fragment_dashboard_task_list_employee"
+        tools:layout="@layout/fragment_dashboard_task_list_employee" />
 
 </navigation>

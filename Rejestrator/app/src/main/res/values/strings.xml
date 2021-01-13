@@ -8,4 +8,15 @@
     <string name="ChangeToAdminLoginButton">Logowanie administratora</string>
     <string name="ChangeToEmployeeLoginButton">Logowanie pracownika</string>
     <string name="LogoutButton">Wyloguj</string>
+    <color name="background">#191919</color>
+    <color name="aboveBack">#242424</color>
+    <color name="text">#dcdcdc</color>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dostepne">Dostępne</string>
+    <string name="w_trakcie">W trakcie</string>
+    <string name="zakonczone">Zakończone</string>
+    <string name="dostepne2">Dostępne:</string>
+    <string name="w_trakcie2">W trakcie:</string>
+    <string name="zakonczone2">Zakończone:</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.rejestrator.view.fragment
+package com.example.rejestrator.view.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,7 +17,7 @@ class LoginEmployee : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        LoginButtonEmployee.setOnClickListener { x -> x.findNavController().navigate(R.id.action_loginEmployee_to_dashboardEmployee) }
+        LoginButtonEmployee.setOnClickListener { x -> x.findNavController().navigate(R.id.action_loginEmployee_to_dashboardTaskListEmployee) }
         ChangeToAdminLoginButton.setOnClickListener { x -> x.findNavController().navigate(R.id.action_loginEmployee_to_loginAdmin) }
     }
 

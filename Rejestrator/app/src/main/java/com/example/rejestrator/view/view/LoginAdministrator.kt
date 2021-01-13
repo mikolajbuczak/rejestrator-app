@@ -1,4 +1,4 @@
-package com.example.rejestrator.view.fragment
+package com.example.rejestrator.view.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import com.example.rejestrator.R
 import kotlinx.android.synthetic.main.fragment_login_administrator.*
-import kotlinx.android.synthetic.main.fragment_login_employee.*
 
 class LoginAdministrator : Fragment() {
     override fun onCreateView(
