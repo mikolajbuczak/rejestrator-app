@@ -22,25 +22,120 @@
         android:name="com.example.rejestrator.view.view.LoginAdministrator"
         tools:layout="@layout/fragment_login_administrator" >
         <action
-            android:id="@+id/action_loginAdmin_to_dashboardAdmin"
-            app:destination="@id/dashboardAdmin" />
-        <action
             android:id="@+id/action_loginAdmin_to_loginEmployee"
             app:destination="@id/loginEmployee" />
+        <action
+            android:id="@+id/action_loginAdmin_to_dashboardLogsListAdmin"
+            app:destination="@id/dashboardLogsListAdmin" />
     </fragment>
 
-    <fragment
-        android:id="@+id/dashboardAdmin"
-        android:name="com.example.rejestrator.view.view.Admin.DashboardAdministrator"
-        tools:layout="@layout/fragment_dashboard_administrator" >
-        <action
-            android:id="@+id/action_dashboardAdmin_to_loginEmployee"
-            app:destination="@id/loginEmployee" />
-    </fragment>
     <fragment
         android:id="@+id/dashboardTaskListEmployee"
         android:name="com.example.rejestrator.view.view.Employee.DashboardTaskListEmployee"
         android:label="fragment_dashboard_task_list_employee"
-        tools:layout="@layout/fragment_dashboard_task_list_employee" />
+        tools:layout="@layout/fragment_task_list_employee" >
+        <action
+            android:id="@+id/action_dashboardTaskListEmployee_to_dashboardTaskInProgressListEmployee"
+            app:destination="@id/dashboardTaskInProgressListEmployee" />
+        <action
+            android:id="@+id/action_dashboardTaskListEmployee_to_dashboardTaskDoneListEmployee"
+            app:destination="@id/dashboardTaskDoneListEmployee" />
+        <action
+            android:id="@+id/action_dashboardTaskListEmployee_self"
+            app:destination="@id/dashboardTaskListEmployee" />
+        <action
+            android:id="@+id/action_dashboardTaskListEmployee_to_loginEmployee"
+            app:destination="@id/loginEmployee" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardTaskInProgressListEmployee"
+        android:name="com.example.rejestrator.view.view.Employee.DashboardTaskInProgressListEmployee"
+        android:label="DashboardTaskInProgressListEmployee" >
+        <action
+            android:id="@+id/action_dashboardTaskInProgressListEmployee_to_dashboardTaskListEmployee"
+            app:destination="@id/dashboardTaskListEmployee" />
+        <action
+            android:id="@+id/action_dashboardTaskInProgressListEmployee_to_dashboardTaskDoneListEmployee"
+            app:destination="@id/dashboardTaskDoneListEmployee" />
+        <action
+            android:id="@+id/action_dashboardTaskInProgressListEmployee_self"
+            app:destination="@id/dashboardTaskInProgressListEmployee" />
+        <action
+            android:id="@+id/action_dashboardTaskInProgressListEmployee_to_loginEmployee"
+            app:destination="@id/loginEmployee" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardTaskDoneListEmployee"
+        android:name="com.example.rejestrator.view.view.Employee.DashboardTaskDoneListEmployee"
+        android:label="fragment_dashboard_task_done_list_employee"
+        tools:layout="@layout/fragment_task_done_list_employee" >
+        <action
+            android:id="@+id/action_dashboardTaskDoneListEmployee_self"
+            app:destination="@id/dashboardTaskDoneListEmployee" />
+        <action
+            android:id="@+id/action_dashboardTaskDoneListEmployee_to_dashboardTaskListEmployee"
+            app:destination="@id/dashboardTaskListEmployee" />
+        <action
+            android:id="@+id/action_dashboardTaskDoneListEmployee_to_dashboardTaskInProgressListEmployee"
+            app:destination="@id/dashboardTaskInProgressListEmployee" />
+        <action
+            android:id="@+id/action_dashboardTaskDoneListEmployee_to_loginEmployee"
+            app:destination="@id/loginEmployee" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardLogsListAdmin"
+        android:name="com.example.rejestrator.view.view.Admin.DashboardLogsListAdmin"
+        android:label="fragment_logs_list_admin"
+        tools:layout="@layout/fragment_logs_list_admin" >
+        <action
+            android:id="@+id/action_dashboardLogsListAdmin_to_loginEmployee"
+            app:destination="@id/loginEmployee" />
+        <action
+            android:id="@+id/action_dashboardLogsListAdmin_to_dashboardEmployeeListAdmin"
+            app:destination="@id/dashboardEmployeeListAdmin" />
+        <action
+            android:id="@+id/action_dashboardLogsListAdmin_self"
+            app:destination="@id/dashboardLogsListAdmin" />
+        <action
+            android:id="@+id/action_dashboardLogsListAdmin_to_dashboardRaportAdmin"
+            app:destination="@id/dashboardRaportAdmin" />
+        <action
+            android:id="@+id/action_dashboardLogsListAdmin_to_loginAdmin"
+            app:destination="@id/loginAdmin" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardEmployeeListAdmin"
+        android:name="com.example.rejestrator.view.view.Admin.DashboardEmployeeListAdmin"
+        android:label="DashboardEmployeeListAdmin" >
+        <action
+            android:id="@+id/action_dashboardEmployeeListAdmin_self"
+            app:destination="@id/dashboardEmployeeListAdmin" />
+        <action
+            android:id="@+id/action_dashboardEmployeeListAdmin_to_dashboardRaportAdmin"
+            app:destination="@id/dashboardRaportAdmin" />
+        <action
+            android:id="@+id/action_dashboardEmployeeListAdmin_to_loginAdmin"
+            app:destination="@id/loginAdmin" />
+        <action
+            android:id="@+id/action_dashboardEmployeeListAdmin_to_dashboardLogsListAdmin"
+            app:destination="@id/dashboardLogsListAdmin" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardRaportAdmin"
+        android:name="com.example.rejestrator.view.view.Admin.DashboardRaportAdmin"
+        android:label="DashboardRaportAdmin" >
+        <action
+            android:id="@+id/action_dashboardRaportAdmin_self"
+            app:destination="@id/dashboardRaportAdmin" />
+        <action
+            android:id="@+id/action_dashboardRaportAdmin_to_dashboardLogsListAdmin"
+            app:destination="@id/dashboardLogsListAdmin" />
+        <action
+            android:id="@+id/action_dashboardRaportAdmin_to_dashboardEmployeeListAdmin"
+            app:destination="@id/dashboardEmployeeListAdmin" />
+        <action
+            android:id="@+id/action_dashboardRaportAdmin_to_loginAdmin"
+            app:destination="@id/loginAdmin" />
+    </fragment>
 
 </navigation>

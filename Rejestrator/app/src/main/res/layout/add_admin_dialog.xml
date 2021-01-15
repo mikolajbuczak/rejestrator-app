@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@android:color/white">
+
+    <EditText
+        android:id="@+id/addAdminId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/ID"
+        android:textColor="@color/aboveBack"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="4" />
+
+    <EditText
+        android:id="@+id/addAdminUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nazwa_uzytkownika"
+        android:textColor="@color/aboveBack"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:layout_below="@+id/addAdminId"/>
+
+    <EditText
+        android:id="@+id/addAdminPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/Password"
+        android:textColor="@color/aboveBack"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:layout_below="@+id/addAdminUsername"/>
+
+    <EditText
+        android:id="@+id/addAdminName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/imi"
+        android:textColor="@color/aboveBack"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:layout_below="@+id/addAdminPassword"/>
+
+    <EditText
+        android:id="@+id/addAdminSurname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nazwisko"
+        android:textColor="@color/aboveBack"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:layout_below="@+id/addAdminName"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addOkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addAdminSurname"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/round_bg"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:text="@string/dodaj" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addCancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addAdminSurname"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/round_bg"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:text="@string/anuluj" />
+
+
+</RelativeLayout>

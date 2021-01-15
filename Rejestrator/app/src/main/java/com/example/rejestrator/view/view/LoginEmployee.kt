@@ -10,6 +10,7 @@ import com.example.rejestrator.R
 import kotlinx.android.synthetic.main.fragment_login_employee.*
 
 class LoginEmployee : Fragment() {
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_login_employee, container, false)
@@ -19,6 +20,8 @@ class LoginEmployee : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         LoginButtonEmployee.setOnClickListener { x -> x.findNavController().navigate(R.id.action_loginEmployee_to_dashboardTaskListEmployee) }
         ChangeToAdminLoginButton.setOnClickListener { x -> x.findNavController().navigate(R.id.action_loginEmployee_to_loginAdmin) }
+
+        //add logic to login
     }
 
     companion object {

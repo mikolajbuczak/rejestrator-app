@@ -1,0 +1,326 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_dashboard_task_in_progress_list_employee"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".view.view.Admin.DashboardEmployeeListAdmin">
+
+    <Spinner
+        android:id="@+id/employeeSpinner"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_white_rounded"
+        android:text="@string/pracownicy2"
+        android:textSize="18sp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/datesList_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/textLogs2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/logowania2"
+        android:textSize="16sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/datesList_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/employeeSpinner" />
+
+    <TextView
+        android:id="@+id/textTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/przydzielone_zadania"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/datesList_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/employeeSpinner" />
+
+    <TextView
+        android:id="@+id/textTaskInProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/zadania_w_toku"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/datesList_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/employeeSpinner" />
+
+    <TextView
+        android:id="@+id/textTaskDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/zakonczone_zadania"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/datesList_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/employeeSpinner" />
+
+    <ImageButton
+        android:id="@+id/editEmployeeButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_edit"
+        android:tint="@color/aboveBack"
+        app:layout_constraintBottom_toTopOf="@+id/datesList_recycler_view"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintStart_toEndOf="@+id/employeeSpinner"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39" />
+
+    <ImageButton
+        android:id="@+id/deleteEmployeeButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_delete"
+        android:tint="@color/aboveBack"
+        app:layout_constraintBottom_toTopOf="@+id/datesList_recycler_view"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.22"
+        app:layout_constraintStart_toEndOf="@+id/employeeSpinner"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/datesList_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="visible"
+        android:layout_marginTop="135dp"
+        android:layout_marginBottom="50dp"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/logsList"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/taskList_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="invisible"
+        android:layout_marginTop="135dp"
+        android:layout_marginBottom="50dp"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/logsList"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inProgressTaskList_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="invisible"
+        android:layout_marginTop="135dp"
+        android:layout_marginBottom="50dp"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/logsList"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/doneTasksList_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="invisible"
+        android:layout_marginTop="135dp"
+        android:layout_marginBottom="50dp"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/logsList"
+        />
+
+    <ImageButton
+        android:id="@+id/changeRecyclerLeft"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_arrow_left"
+        android:tint="@color/aboveBack"
+        android:background="@color/white"
+        app:borderWidth="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.40"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datesList_recycler_view" />
+
+    <ImageButton
+        android:id="@+id/changeRecyclerRight"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_arrow_right"
+        android:tint="@color/aboveBack"
+        android:background="@color/white"
+        android:layout_marginTop="4dp"
+        app:borderWidth="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.60"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datesList_recycler_view" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@drawable/ic_add"
+        android:backgroundTint="@color/aboveBack"
+        app:tint="@android:color/white"
+        app:borderWidth="0dp"
+        android:focusable="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/DoneList"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addEmployee2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/aboveBack"
+        app:tint="@android:color/white"
+        app:borderWidth="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="invisible"
+        android:src="@drawable/ic_employee_add"
+        app:layout_constraintBottom_toTopOf="@+id/add2"
+        app:layout_constraintEnd_toEndOf="@+id/add2" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addTask2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/aboveBack"
+        app:tint="@android:color/white"
+        app:borderWidth="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="invisible"
+        android:src="@drawable/ic_task_add"
+        app:layout_constraintBottom_toTopOf="@+id/addEmployee2"
+        app:layout_constraintEnd_toEndOf="@+id/addEmployee2" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addAdmin2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/aboveBack"
+        app:tint="@android:color/white"
+        app:borderWidth="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="invisible"
+        android:src="@drawable/ic_admin_add"
+        app:layout_constraintBottom_toTopOf="@+id/addTask2"
+        app:layout_constraintEnd_toEndOf="@+id/addTask2" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logsList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/aboveBack"
+        android:drawableTop="@drawable/ic_logs"
+        android:drawableTint="@color/white"
+        android:padding="10dp"
+        android:text="@string/logowania"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:cornerRadius="0dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/employeeList"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/employeeList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/aboveBack"
+        android:drawableTop="@drawable/ic_user"
+        android:drawableTint="@color/white"
+        android:padding="10dp"
+        android:text="@string/pracownicy"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:cornerRadius="0dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/DoneList"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/logsList"
+        app:layout_constraintTop_toTopOf="@+id/logsList"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/DoneList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/aboveBack"
+        android:drawableTop="@drawable/ic_list"
+        android:drawableTint="@color/white"
+        android:padding="10dp"
+        app:cornerRadius="0dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/raport"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/employeeList"
+        app:layout_constraintTop_toTopOf="@+id/employeeList"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

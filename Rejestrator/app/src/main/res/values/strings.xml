@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Rejestrator</string>
-    <string name="ID">ID</string>
-    <string name="PIN">PIN</string>
-    <string name="Login">LOGIN</string>
-    <string name="Password">HASŁO</string>
-    <string name="LoginButton">ZALOGUJ</string>
+    <string name="ID">Id</string>
+    <string name="PIN">Pin</string>
+    <string name="Login">Login</string>
+    <string name="Password">Hasło</string>
+    <string name="LoginButton">Zaloguj</string>
     <string name="ChangeToAdminLoginButton">Logowanie administratora</string>
     <string name="ChangeToEmployeeLoginButton">Logowanie pracownika</string>
     <string name="LogoutButton">Wyloguj</string>
@@ -19,4 +19,29 @@
     <string name="dostepne2">Dostępne:</string>
     <string name="w_trakcie2">W trakcie:</string>
     <string name="zakonczone2">Zakończone:</string>
+    <string name="logowania">Logowania</string>
+    <string name="pracownicy">Pracownicy</string>
+    <string name="raport">Raport</string>
+    <string name="pracownicy2">Pracownicy:</string>
+    <string name="logowania2">Logowania:</string>
+    <string name="przydzielone_zadania">Przydzielone zadania:</string>
+    <string name="zadania_w_toku">Zadania w toku:</string>
+    <string name="zakonczone_zadania">Zakończone zadania:</string>
+    <string name="raport2">Raport:</string>
+    <string name="edytuj">Edytuj</string>
+    <string name="anuluj">Anuluj</string>
+    <string name="imi">Imię</string>
+    <string name="nazwisko">Nazwisko</string>
+    <string name="ok">Ok</string>
+    <string name="dodaj">Dodaj</string>
+    <string name="nazwa_uzytkownika">Nazwa użytkownika</string>
+    <string name="zadanie">Zadanie</string>
+    <string name="rejestrator_ewidencja_pracy">Rejestrator: ewidencja pracy</string>
+
+    <string-array name="shifts_array">
+        <item>Dzienny</item>
+        <item>Nocny</item>
+
+    </string-array>
+
 </resources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/editEmployeeId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/ID"
+        android:textColor="@color/aboveBack"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="4" />
+
+    <EditText
+        android:id="@+id/editEmployeePin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/PIN"
+        android:textColor="@color/aboveBack"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="4"
+        android:layout_below="@+id/editEmployeeId"/>
+
+    <EditText
+        android:id="@+id/editEmployeeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/imi"
+        android:textColor="@color/aboveBack"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:layout_below="@+id/editEmployeePin"/>
+
+    <EditText
+        android:id="@+id/editEmployeeSurname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nazwisko"
+        android:textColor="@color/aboveBack"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:layout_below="@+id/editEmployeeName"/>
+
+    <Spinner
+        android:id="@+id/editEmployeeShift"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:importantForAutofill="no"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@+id/editEmployeeSurname"/>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/editOkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editEmployeeShift"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="@string/edytuj"
+        android:background="@drawable/round_bg"
+        android:textColor="@android:color/white" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/editCancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editEmployeeShift"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="center"
+        android:text="@string/anuluj"
+        android:background="@drawable/round_bg"
+        android:textColor="@android:color/white"/>
+
+
+</RelativeLayout>

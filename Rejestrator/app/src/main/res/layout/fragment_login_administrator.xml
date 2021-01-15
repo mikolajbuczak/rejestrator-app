@@ -1,65 +1,133 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_login_administrator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context=".view.view.LoginAdministrator">
+    tools:context=".view.view.LoginEmployee">
 
-    <EditText
-        android:id="@+id/LoginTextInput"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:hint="@string/Login"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <View
+        android:id="@+id/topView"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:background="@color/aboveBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="@drawable/wave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topView" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="90dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        app:srcCompat="@drawable/ic_timetable" />
+
+    <TextView
+        android:id="@+id/topText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/rejestrator_ewidencja_pracy"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/topView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/PasswordTextInput"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:hint="@string/Password"
-        android:importantForAutofill="no"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/LoginTextInput"
-        app:layout_constraintStart_toStartOf="@+id/LoginTextInput"
-        app:layout_constraintTop_toBottomOf="@+id/LoginTextInput"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/LoginButtonAdmin"
-        android:layout_width="130dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/black"
-        android:text="@string/LoginButton"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/PasswordTextInput"
-        app:layout_constraintStart_toStartOf="@+id/PasswordTextInput"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordTextInput"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/ChangeToEmployeeLoginButton"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="15dp"
-        android:backgroundTint="@color/black"
-        android:text="@string/ChangeToEmployeeLoginButton"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/inputUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/aboveBack"
+        android:background="@drawable/round_border"
+        android:drawableStart="@drawable/ic_id"
+        android:drawablePadding="16dp"
+        android:ems="10"
+        android:hint="@string/Login"
+        android:inputType="text"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoginButtonAdmin"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/view5"
+        />
+
+    <EditText
+        android:id="@+id/inputPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/aboveBack"
+        android:background="@drawable/round_border"
+        android:drawableStart="@drawable/ic_lock"
+        android:drawablePadding="16dp"
+        android:ems="10"
+        android:hint="@string/Password"
+        android:inputType="textPassword"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputUsername" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/LoginButtonAdmin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/round_bg"
+        android:text="@string/LoginButton"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ChangeToEmployeeLoginButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/round_bg"
+        android:text="@string/ChangeToEmployeeLoginButton"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginButtonAdmin" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_left"
+        app:tint="@color/aboveBack"
+        app:layout_constraintBottom_toBottomOf="@+id/ChangeToEmployeeLoginButton"
+        app:layout_constraintEnd_toStartOf="@+id/ChangeToEmployeeLoginButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ChangeToEmployeeLoginButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
