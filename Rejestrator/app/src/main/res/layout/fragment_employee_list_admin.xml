@@ -166,7 +166,7 @@
 
     <ImageButton
         android:id="@+id/changeRecyclerLeft"
-        android:layout_width="50dp"
+        android:layout_width="55dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
         android:src="@drawable/ic_arrow_left"
@@ -174,13 +174,13 @@
         android:background="@color/white"
         app:borderWidth="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.40"
+        app:layout_constraintHorizontal_bias="0.38"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/datesList_recycler_view" />
 
     <ImageButton
         android:id="@+id/changeRecyclerRight"
-        android:layout_width="50dp"
+        android:layout_width="55dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_arrow_right"
         android:tint="@color/aboveBack"
@@ -188,7 +188,7 @@
         android:layout_marginTop="4dp"
         app:borderWidth="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.60"
+        app:layout_constraintHorizontal_bias="0.62"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/datesList_recycler_view" />
 

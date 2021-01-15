@@ -71,7 +71,7 @@ class DashboardEmployeeListAdmin : Fragment() {
                 val name = mDialogView.editEmployeeName.text.toString()
                 val surname = mDialogView.editEmployeeSurname.text.toString()
                 val shift = mDialogView.editEmployeeShift.selectedItem.toString()
-                if(!id.isNullOrEmpty() || !pin.isNullOrEmpty() || !name.isNullOrEmpty() || !surname.isNullOrEmpty() || !shift.isNullOrEmpty()) {
+                if(!id.isNullOrEmpty() && !pin.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty() && !shift.isNullOrEmpty()) {
                     if(id.length != 4 || pin.length != 4)
                         Toast.makeText(requireContext(), "Id i pin muszą składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
                     else if(id.length != 4 )

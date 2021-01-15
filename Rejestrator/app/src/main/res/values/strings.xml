@@ -37,6 +37,8 @@
     <string name="nazwa_uzytkownika">Nazwa użytkownika</string>
     <string name="zadanie">Zadanie</string>
     <string name="rejestrator_ewidencja_pracy">Rejestrator: ewidencja pracy</string>
+    <string name="rejestrator_ewidencja_czasu_pracy">Rejestrator: ewidencja czasu pracy</string>
+    <string name="zalogowanie_odnotuje_obecno">Zalogowanie odnotuje obecność</string>
 
     <string-array name="shifts_array">
         <item>Dzienny</item>

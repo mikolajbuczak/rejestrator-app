@@ -22,6 +22,7 @@ class LoginEmployee : Fragment() {
         ChangeToAdminLoginButton.setOnClickListener { x -> x.findNavController().navigate(R.id.action_loginEmployee_to_loginAdmin) }
 
         //add logic to login
+        //set info to visible if pin and id not empty
     }
 
     companion object {
