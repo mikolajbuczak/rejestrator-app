@@ -55,7 +55,6 @@ class DashboardTaskListEmployee : Fragment() {
             layoutManager = linearManager
             taskViewModel.getTasksForEmployee(State.currentEmployeeId)
         }
-        //populate recycler view, view model etc.
     }
 
     companion object {

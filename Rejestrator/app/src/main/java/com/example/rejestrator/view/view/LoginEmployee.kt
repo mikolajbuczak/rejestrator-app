@@ -1,6 +1,7 @@
 package com.example.rejestrator.view.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,26 +58,23 @@ class LoginEmployee : Fragment() {
 
                 loginCall.enqueue(object : Callback<EmployeeLoginData>{
                     override fun onFailure(call: Call<EmployeeLoginData>, t: Throwable) {
-                        Toast.makeText(requireContext(), "Błąd! Nie połączono z bazą.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Błąd! Nie połączono z bazą danych.", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onResponse(call: Call<EmployeeLoginData>, response: Response<EmployeeLoginData>) {
-                        if(response.body() != null){
+                        if(response.code() == 200)
+                        {
                             employeeLoginData = response.body()!!
+                            State.currentEmployeeId = employeeLoginData.employeeID
+                            State.currentEmployeeShift = employeeLoginData.shift
+                            x.findNavController().navigate(R.id.action_loginEmployee_to_dashboardTaskListEmployee)
+                        }
+                        else if(response.code() == 404){
+                            inputID.setText("")
+                            inputPin.setText("")
 
-                            if(employeeLoginData.success == "true")
-                            {
-                                State.currentEmployeeId = id
-                                x.findNavController().navigate(R.id.action_loginEmployee_to_dashboardTaskListEmployee)
-                            }
-                            else{
-                                inputID.setText("")
-                                inputPin.setText("")
-
-                                infoAboutLogin1.visibility = View.VISIBLE
-                                infoAboutLogin.visibility = View.GONE
-                            }
-
+                            infoAboutLogin1.visibility = View.VISIBLE
+                            infoAboutLogin.visibility = View.GONE
                         }
                     }
 

@@ -1,5 +1,6 @@
 package com.example.rejestrator.view.adapters.Employee
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,12 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rejestrator.R
+import com.example.rejestrator.view.State
 import com.example.rejestrator.view.model.entities.Task
 import com.example.rejestrator.view.viewmodel.Employee.EmployeeTaskListViewModel
 import kotlinx.android.synthetic.main.one_row_available_list.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EmployeeTaskListAdapter(var taskList: LiveData<List<Task>>, var taskViewModel: EmployeeTaskListViewModel) : RecyclerView.Adapter<EmployeeTaskListAdapter.Holder>() {
 
@@ -34,8 +38,18 @@ class EmployeeTaskListAdapter(var taskList: LiveData<List<Task>>, var taskViewMo
 
         holder.textView1.text=taskList.value?.get(position)?.task
 
-        holder.view.row_startTaskButton.setOnClickListener {
-            //logic to start Task
+        holder.view.row_startTaskButton.setOnClickListener { x->
+            if (currentItem != null) {
+                Log.d("lol", "lol")
+                taskViewModel.startTask(currentItem.id)
+
+                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                val currentDate = sdf.format(Date())
+
+                taskViewModel.addTaskInProgress(currentItem.employeeID, currentItem.task, currentDate)
+
+                x.findNavController().navigate(R.id.action_dashboardTaskListEmployee_self)
+            }
         }
     }
 }

@@ -21,4 +21,18 @@ class EmployeeTaskListViewModel(application: Application) : AndroidViewModel(app
             _allTasks.value = ApiRepository.getTasksForEmployee(id)
         }
     }
+
+    fun startTask(id : Int)
+    {
+        viewModelScope.launch {
+            ApiRepository.startTask(id)
+        }
+    }
+
+    fun addTaskInProgress(id : String, task : String, date : String)
+    {
+        viewModelScope.launch {
+            ApiRepository.addTaskInProgress(id, task, date)
+        }
+    }
 }

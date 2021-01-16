@@ -9,14 +9,14 @@ class EmployeeLoginData {
     lateinit var employeeID : String
 
     @Expose
-    @SerializedName("employeePin")
-    lateinit var employeePin : String
+    @SerializedName("name")
+    lateinit var name : String
 
     @Expose
-    @SerializedName("success")
-    lateinit var success : String
+    @SerializedName("surname")
+    lateinit var surname : String
 
     @Expose
-    @SerializedName("message")
-    lateinit var message : String
+    @SerializedName("shift")
+    lateinit var shift : String
 }

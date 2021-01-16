@@ -6,5 +6,6 @@ class State {
 
     companion object{
         var currentEmployeeId: String = ""
+        var currentEmployeeShift: String = ""
     }
 }
