@@ -126,6 +126,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
         android:layout_width="220dp"
         android:layout_height="45dp"
         android:radius="2dp"

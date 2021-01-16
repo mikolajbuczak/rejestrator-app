@@ -1,7 +1,6 @@
 package com.example.rejestrator.view.adapters.Employee
 
 import android.app.AlertDialog
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,23 +12,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rejestrator.R
 import com.example.rejestrator.view.State
 import com.example.rejestrator.view.model.entities.EmployeeLoginData
-import com.example.rejestrator.view.model.entities.Task
 import com.example.rejestrator.view.model.entities.TaskInProgress
 import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Employee.EmployeeTaskInProgressListViewModel
-import com.example.rejestrator.view.viewmodel.Employee.EmployeeTaskListViewModel
-import kotlinx.android.synthetic.main.confirm_with_password_dialog.view.*
 import kotlinx.android.synthetic.main.confirm_with_password_dialog.view.confirmCancelButton
 import kotlinx.android.synthetic.main.confirm_with_password_dialog.view.confirmOkButton
 import kotlinx.android.synthetic.main.confirm_with_pin_dialog.view.*
-import kotlinx.android.synthetic.main.fragment_login_employee.*
-import kotlinx.android.synthetic.main.one_row_available_list.view.*
 import kotlinx.android.synthetic.main.one_row_in_progress_list.view.*
+import org.joda.time.DateTimeComparator
+import org.joda.time.format.DateTimeFormat
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class EmployeeTaskInProgressListAdapter(var taskList: LiveData<List<TaskInProgress>>, var taskViewModel: EmployeeTaskInProgressListViewModel) : RecyclerView.Adapter<EmployeeTaskInProgressListAdapter.Holder>() {
 

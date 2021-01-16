@@ -10,12 +10,22 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rejestrator.R
+import com.example.rejestrator.view.State
+import com.example.rejestrator.view.adapters.Admin.AdminLogsListAdapter
+import com.example.rejestrator.view.adapters.Employee.EmployeeTaskListAdapter
+import com.example.rejestrator.view.model.entities.LoginData
 import com.example.rejestrator.view.view.Employee.DashboardTaskDoneListEmployee
 import com.example.rejestrator.view.view.Employee.DashboardTaskListEmployee
+import com.example.rejestrator.view.viewmodel.Admin.AdminLogsListViewModel
+import com.example.rejestrator.view.viewmodel.Employee.EmployeeTaskListViewModel
 import kotlinx.android.synthetic.main.add_admin_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.addCancelButton
@@ -27,6 +37,8 @@ import kotlinx.android.synthetic.main.edit_employee_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_login_administrator.*
 import kotlinx.android.synthetic.main.fragment_logs_list_admin.*
 import kotlinx.android.synthetic.main.fragment_logs_list_admin.addTask
+import kotlinx.android.synthetic.main.fragment_logs_list_admin.logout
+import kotlinx.android.synthetic.main.fragment_task_list_employee.*
 
 class DashboardLogsListAdmin : Fragment() {
 
@@ -36,10 +48,25 @@ class DashboardLogsListAdmin : Fragment() {
     private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.to_bottom_anim) }
     private var clicked = false
 
+    lateinit var logsViewModel: AdminLogsListViewModel
+    lateinit var linearManager: LinearLayoutManager
+    lateinit var adapterTask: AdminLogsListAdapter
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        logsViewModel = ViewModelProvider(requireActivity()).get(AdminLogsListViewModel::class.java)
+        linearManager = LinearLayoutManager(requireContext())
+
+        logsViewModel.allLogs.observe(viewLifecycleOwner, Observer {
+            adapterTask.notifyDataSetChanged()
+        })
+
+        adapterTask = AdminLogsListAdapter(logsViewModel.allLogs, logsViewModel)
+
+        logsViewModel.getAllLogs()
+
         return inflater.inflate(R.layout.fragment_logs_list_admin, container, false)
     }
 
@@ -52,7 +79,11 @@ class DashboardLogsListAdmin : Fragment() {
 
         logout.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardLogsListAdmin_to_loginAdmin) }
 
-        //populate recycler view, and connect to searchView
+        logsList_recycler_view.apply {
+            adapter = adapterTask
+            layoutManager = linearManager
+            logsViewModel.getAllLogs()
+        }
 
         add.setOnClickListener {
             onAddButtonClicked()

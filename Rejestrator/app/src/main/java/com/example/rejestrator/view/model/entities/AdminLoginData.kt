@@ -5,18 +5,14 @@ import com.google.gson.annotations.SerializedName
 
 class AdminLoginData {
     @Expose
-    @SerializedName("adminUsername")
-    lateinit var adminUsername : String
+    @SerializedName("administratorID")
+    lateinit var administratorID : String
 
     @Expose
-    @SerializedName("adminPassword")
-    lateinit var adminPassword : String
+    @SerializedName("name")
+    lateinit var name : String
 
     @Expose
-    @SerializedName("success")
-    lateinit var success : String
-
-    @Expose
-    @SerializedName("message")
-    lateinit var message : String
+    @SerializedName("surname")
+    lateinit var surname : String
 }

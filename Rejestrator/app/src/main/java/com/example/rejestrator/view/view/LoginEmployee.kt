@@ -1,7 +1,6 @@
 package com.example.rejestrator.view.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,8 @@ import kotlinx.android.synthetic.main.fragment_login_employee.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LoginEmployee : Fragment() {
 
@@ -67,6 +68,11 @@ class LoginEmployee : Fragment() {
                             employeeLoginData = response.body()!!
                             State.currentEmployeeId = employeeLoginData.employeeID
                             State.currentEmployeeShift = employeeLoginData.shift
+
+                            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                            val currentDate = sdf.format(Date())
+
+                            loginEmployeeViewModel.insertLog(State.currentEmployeeId, currentDate)
                             x.findNavController().navigate(R.id.action_loginEmployee_to_dashboardTaskListEmployee)
                         }
                         else if(response.code() == 404){
@@ -81,7 +87,6 @@ class LoginEmployee : Fragment() {
                 })
             }
         }
-        //add logic to logic
     }
 
     companion object {

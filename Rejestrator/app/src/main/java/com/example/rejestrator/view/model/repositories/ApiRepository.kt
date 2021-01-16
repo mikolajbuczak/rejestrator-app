@@ -1,10 +1,8 @@
 package com.example.rejestrator.view.model.repositories
 
+import android.util.Log
 import com.example.rejestrator.view.model.api.ApiService
-import com.example.rejestrator.view.model.entities.EmployeeLoginData
-import com.example.rejestrator.view.model.entities.Task
-import com.example.rejestrator.view.model.entities.TaskDone
-import com.example.rejestrator.view.model.entities.TaskInProgress
+import com.example.rejestrator.view.model.entities.*
 import okhttp3.ResponseBody
 import retrofit2.*
 
@@ -14,6 +12,14 @@ class ApiRepository {
 
         fun canEmployeeLogin(id : String, pin : String): Call<EmployeeLoginData> {
             return ApiService.api.canEmployeeLogin(id, pin)
+        }
+
+        fun canAdminLogin(username : String, password : String): Call<AdminLoginData> {
+            return ApiService.api.canAdminLogin(username, password)
+        }
+
+        suspend fun getAllLogs(): List<LoginData> {
+            return ApiService.api.getAllLogs().awaitResponse().body()?: listOf()
         }
 
         suspend fun getTasksForEmployee(id : String): List<Task> {
@@ -36,12 +42,20 @@ class ApiRepository {
             return ApiService.api.endTask(id).awaitResponse().body()
         }
 
+        suspend fun insertLog(id : String, date : String): ResponseBody? {
+            return ApiService.api.insertLog(id, date).awaitResponse().body()
+        }
+
         suspend fun addTaskInProgress(id : String, task : String, date : String): ResponseBody? {
             return ApiService.api.addTaskInProgress(id, task, date).awaitResponse().body()
         }
 
         suspend fun addTaskDone(id : String, task : String, startdate : String, enddate : String, time : String): ResponseBody? {
             return ApiService.api.addTaskDone(id, task, startdate, enddate, time).awaitResponse().body()
+        }
+
+        fun checkIfLoggedOnThisDay(id : String, date : String): Call<LoggedToday> {
+            return ApiService.api.checkIfLoggedOnThisDay(id, date)
         }
 
     }
