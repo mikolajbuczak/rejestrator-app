@@ -6,6 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".view.view.LoginEmployee">
 
+    <TextView
+        android:id="@+id/infoAboutLogin1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        android:drawableLeft="@drawable/ic_info"
+        android:drawablePadding="5dp"
+        android:drawableTint="#FF0000"
+        android:text="Niepoprawne dane!"
+        android:visibility="invisible"
+        android:textSize="12sp"
+        android:textColor="#FF0000"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginButtonEmployee" />
+
     <View
         android:id="@+id/topView"
         android:layout_width="0dp"
