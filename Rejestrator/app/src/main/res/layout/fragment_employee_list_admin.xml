@@ -154,15 +154,14 @@
         android:id="@+id/doneTasksList_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:visibility="invisible"
         android:layout_marginTop="135dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="64dp"
         android:focusable="true"
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/logsList"
-        />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="20dp" />
 
     <ImageButton
         android:id="@+id/changeRecyclerLeft"
@@ -202,7 +201,7 @@
         app:tint="@android:color/white"
         app:borderWidth="0dp"
         android:focusable="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="7dp"
         android:layout_marginRight="10dp"
         app:layout_constraintBottom_toTopOf="@+id/DoneList"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.one_row_available_list.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AdminLogsListAdapter(var logsList: LiveData<List<LoginData>>, var logsViewModel: AdminLogsListViewModel) : RecyclerView.Adapter<AdminLogsListAdapter.Holder>() {
+class AdminLogsListAdapter(var logsList: LiveData<ArrayList<LoginData>>, var logsViewModel: AdminLogsListViewModel) : RecyclerView.Adapter<AdminLogsListAdapter.Holder>() {
 
     class Holder(val view: View): RecyclerView.ViewHolder(view) {
         val textView1= view.findViewById<TextView>(R.id.row_idEmployee)
@@ -27,7 +27,7 @@ class AdminLogsListAdapter(var logsList: LiveData<List<LoginData>>, var logsView
     }
 
     override  fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder{
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.one_row_admin_logs_list,parent, false) as View
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.one_row_note_admin_logs_list,parent, false) as View
 
         return Holder(view)
     }

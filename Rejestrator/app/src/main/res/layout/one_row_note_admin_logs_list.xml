@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/row_nameEmployee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Imie"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/aboveBack"
+            android:textSize="17.5sp" />
+
+        <TextView
+            android:id="@+id/row_surnameEmployee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nazwisko"
+            android:layout_marginStart="7dp"
+            android:layout_toEndOf="@id/row_nameEmployee"
+            android:textColor="@color/aboveBack"
+            android:textSize="17.5sp" />
+
+        <TextView
+            android:id="@+id/row_dateEmployee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data"
+            android:layout_marginStart="10dp"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/aboveBack"
+            android:textSize="17.5sp" />
+
+        <TextView
+            android:id="@+id/row_idEmployee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID"
+            android:textSize="15sp"
+            android:layout_below="@+id/row_nameEmployee" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

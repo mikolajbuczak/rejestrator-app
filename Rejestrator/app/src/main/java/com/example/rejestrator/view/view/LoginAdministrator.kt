@@ -80,10 +80,7 @@ class LoginAdministrator : Fragment() {
                     ) {
                         if (response.code() == 200) {
                             adminLoginData = response.body()!!
-                            inputUsername.setText("")
-                            inputPassword.setText("")
-                            x.findNavController()
-                                .navigate(R.id.action_loginAdmin_to_dashboardLogsListAdmin)
+                            x.findNavController().navigate(R.id.action_loginAdmin_to_dashboardLogsListAdmin)
                         } else if (response.code() == 404) {
                             inputUsername.setText("")
                             inputPassword.setText("")

@@ -1,7 +1,6 @@
 package com.example.rejestrator.view.view.Admin
 
 import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,35 +9,36 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rejestrator.R
-import com.example.rejestrator.view.State
 import com.example.rejestrator.view.adapters.Admin.AdminLogsListAdapter
-import com.example.rejestrator.view.adapters.Employee.EmployeeTaskListAdapter
 import com.example.rejestrator.view.model.entities.LoginData
-import com.example.rejestrator.view.view.Employee.DashboardTaskDoneListEmployee
-import com.example.rejestrator.view.view.Employee.DashboardTaskListEmployee
+import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Admin.AdminLogsListViewModel
-import com.example.rejestrator.view.viewmodel.Employee.EmployeeTaskListViewModel
 import kotlinx.android.synthetic.main.add_admin_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.addCancelButton
 import kotlinx.android.synthetic.main.add_employee_dialog.view.addOkButton
-import kotlinx.android.synthetic.main.add_task_dialog.*
 import kotlinx.android.synthetic.main.add_task_dialog.view.*
 import kotlinx.android.synthetic.main.confirm_with_password_dialog.view.*
-import kotlinx.android.synthetic.main.edit_employee_dialog.view.*
-import kotlinx.android.synthetic.main.fragment_login_administrator.*
 import kotlinx.android.synthetic.main.fragment_logs_list_admin.*
 import kotlinx.android.synthetic.main.fragment_logs_list_admin.addTask
 import kotlinx.android.synthetic.main.fragment_logs_list_admin.logout
 import kotlinx.android.synthetic.main.fragment_task_list_employee.*
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
 
 class DashboardLogsListAdmin : Fragment() {
 
@@ -59,11 +59,9 @@ class DashboardLogsListAdmin : Fragment() {
         logsViewModel = ViewModelProvider(requireActivity()).get(AdminLogsListViewModel::class.java)
         linearManager = LinearLayoutManager(requireContext())
 
-        logsViewModel.allLogs.observe(viewLifecycleOwner, Observer {
+        logsViewModel.filteredAllLogs.observe(viewLifecycleOwner, Observer {
             adapterTask.notifyDataSetChanged()
         })
-
-        adapterTask = AdminLogsListAdapter(logsViewModel.allLogs, logsViewModel)
 
         logsViewModel.getAllLogs()
 
@@ -79,11 +77,18 @@ class DashboardLogsListAdmin : Fragment() {
 
         logout.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardLogsListAdmin_to_loginAdmin) }
 
+        adapterTask = AdminLogsListAdapter(logsViewModel.filteredAllLogs, logsViewModel)
+
+        logsList_recycler_view.addItemDecoration(DividerItemDecoration(logsList_recycler_view.context, DividerItemDecoration.VERTICAL))
+
         logsList_recycler_view.apply {
             adapter = adapterTask
             layoutManager = linearManager
             logsViewModel.getAllLogs()
         }
+
+        var searchItem = search_view as SearchView
+        searching((searchItem))
 
         add.setOnClickListener {
             onAddButtonClicked()
@@ -116,7 +121,30 @@ class DashboardLogsListAdmin : Fragment() {
                         Toast.makeText(requireContext(), "Id musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
                     else if(pin.length != 4 )
                         Toast.makeText(requireContext(), "Pin musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
-                    //To do: add employee in database, check if id used etc.
+                    else{
+                        Log.d("lol", "do elsa weszło")
+                        var canAddEmployee = ApiRepository.canAddEmployee(id)
+
+                        canAddEmployee.enqueue(object : Callback<ResponseBody> {
+                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                Log.d("lol", "blad")
+                                Toast.makeText(requireContext(), "Błąd! Nie połączono z bazą danych.", Toast.LENGTH_SHORT).show()
+                            }
+
+                            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                                if (response.code() == 200) {
+                                    Log.d("lol", "200")
+                                    logsViewModel.insertEmployee(id, pin, name, surname, shift)
+                                    Toast.makeText(requireContext(), "Dodano pracownika.", Toast.LENGTH_SHORT).show()
+                                    mAlertDialog.dismiss()
+                                } else if (response.code() == 404) {
+                                    Log.d("lol", "400")
+                                    Toast.makeText(requireContext(), "To id jest już przypisane.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                        })
+                    }
 
                 }
                 else
@@ -222,6 +250,39 @@ class DashboardLogsListAdmin : Fragment() {
         }
     }
 
+    private fun searching(search: SearchView) {
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                Log.d("weszło", "Lol")
+                Log.d("weszło", newText)
+                if(newText!!.isNotEmpty()){
+                    Log.d("weszło2", "Lol")
+                    logsViewModel.filteredAllLogs.value?.clear()
+                    val search = newText.toLowerCase(Locale.getDefault())
+                    logsViewModel.allLogs.value?.forEach({
+                        Log.d("weszło3", "Lol")
+                        if  (it.employeeID.toLowerCase(Locale.getDefault()).contains(search) || it.name.toLowerCase(Locale.getDefault()).contains(search) || it.surname.toLowerCase(Locale.getDefault()).contains(search) || it.date.toLowerCase(Locale.getDefault()).contains(search))
+                            logsViewModel.filteredAllLogs.value?.add(it)
+                    })
+                    Log.d("weszło4", "Lol")
+                    logsList_recycler_view.adapter!!.notifyDataSetChanged()
+                }
+                else{
+                    logsViewModel.filteredAllLogs.value?.clear()
+                    logsViewModel.allLogs.value?.forEach {
+                        logsViewModel.filteredAllLogs.value?.add(it)
+                    }
+                    logsList_recycler_view.adapter!!.notifyDataSetChanged()
+                }
+                return true
+            }
+        })
+    }
+
     private fun onAddButtonClicked() {
         setVisibility(clicked)
         setAnimation(clicked)
@@ -268,4 +329,5 @@ class DashboardLogsListAdmin : Fragment() {
             addAdmin.isClickable = false
         }
     }
+
 }

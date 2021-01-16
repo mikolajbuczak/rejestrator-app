@@ -12,6 +12,14 @@ interface RejestratorApi {
     fun canEmployeeLogin(@Field("employeeId") employeeId :String, @Field("pin") pin :String) : Call<EmployeeLoginData>
 
     @FormUrlEncoded
+    @POST("employees")
+    fun insertEmployee(@Field("employeeID") employeeId :String, @Field("pin") pin :String, @Field("name") name :String, @Field("surname") surname :String, @Field("shift") shift :String) : Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("canAddEmployee")
+    fun canAddEmployee(@Field("employeeID") employeeId :String) : Call<ResponseBody>
+
+    @FormUrlEncoded
     @POST("loginAdmin")
     fun canAdminLogin(@Field("username") employeeId :String, @Field("password") pin :String) : Call<AdminLoginData>
 
@@ -19,7 +27,7 @@ interface RejestratorApi {
     fun getTasksForEmployee(@Path("employeeId") employeeId :String): Call<List<Task>>
 
     @GET("logsData")
-    fun getAllLogs(): Call<List<LoginData>>
+    fun getAllLogs(): Call<ArrayList<LoginData>>
 
     @GET("tasksInProgress/{employeeId}")
     fun getTasksInProgressForEmployee(@Path("employeeId") employeeId :String): Call<List<TaskInProgress>>

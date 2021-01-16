@@ -18,8 +18,8 @@ class ApiRepository {
             return ApiService.api.canAdminLogin(username, password)
         }
 
-        suspend fun getAllLogs(): List<LoginData> {
-            return ApiService.api.getAllLogs().awaitResponse().body()?: listOf()
+        suspend fun getAllLogs(): ArrayList<LoginData> {
+            return ApiService.api.getAllLogs().awaitResponse().body()?: arrayListOf()
         }
 
         suspend fun getTasksForEmployee(id : String): List<Task> {
@@ -36,6 +36,14 @@ class ApiRepository {
 
         suspend fun startTask(id : Int): ResponseBody? {
             return ApiService.api.startTask(id).awaitResponse().body()
+        }
+
+        suspend fun insertEmployee(id : String, pin : String, name : String, surname : String, shift : String): ResponseBody? {
+            return ApiService.api.insertEmployee(id, pin, name, surname, shift).awaitResponse().body()
+        }
+
+        fun canAddEmployee(id : String): Call<ResponseBody> {
+            return ApiService.api.canAddEmployee(id)
         }
 
         suspend fun endTask(id : Int): ResponseBody? {
