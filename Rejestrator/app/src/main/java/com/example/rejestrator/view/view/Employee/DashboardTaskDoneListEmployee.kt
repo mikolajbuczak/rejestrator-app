@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rejestrator.R
 import com.example.rejestrator.view.State
@@ -15,6 +16,7 @@ import com.example.rejestrator.view.adapters.Employee.EmployeeTaskDoneListAdapte
 import com.example.rejestrator.view.adapters.Employee.EmployeeTaskInProgressListAdapter
 import com.example.rejestrator.view.viewmodel.Employee.EmployeeTaskDoneListViewModel
 import com.example.rejestrator.view.viewmodel.Employee.EmployeeTaskInProgressListViewModel
+import kotlinx.android.synthetic.main.fragment_logs_list_admin.*
 import kotlinx.android.synthetic.main.fragment_task_done_list_employee.*
 import kotlinx.android.synthetic.main.fragment_task_in_progress_list_employee.*
 import kotlinx.android.synthetic.main.fragment_task_list_employee.*
@@ -55,6 +57,7 @@ class DashboardTaskDoneListEmployee : Fragment() {
 
         logout.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardTaskDoneListEmployee_to_loginEmployee) }
 
+        doneList_recycler_view.addItemDecoration(DividerItemDecoration(doneList_recycler_view.context, DividerItemDecoration.VERTICAL))
         doneList_recycler_view.apply {
             adapter = adapterTask
             layoutManager = linearManager

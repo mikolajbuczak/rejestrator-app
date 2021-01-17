@@ -22,8 +22,8 @@ class ApiRepository {
             return ApiService.api.getAllLogs().awaitResponse().body()?: arrayListOf()
         }
 
-        suspend fun getTasksForEmployee(id : String): List<Task> {
-            return ApiService.api.getTasksForEmployee(id).awaitResponse().body()?: listOf()
+        suspend fun getTasksForEmployee(id : String): ArrayList<Task> {
+            return ApiService.api.getTasksForEmployee(id).awaitResponse().body()?: arrayListOf()
         }
 
         suspend fun getTasksInProgressForEmployee(id : String): List<TaskInProgress> {
@@ -34,20 +34,40 @@ class ApiRepository {
             return ApiService.api.getTasksDoneForEmployee(id, enddate).awaitResponse().body()?: listOf()
         }
 
-        suspend fun startTask(id : Int): ResponseBody? {
-            return ApiService.api.startTask(id).awaitResponse().body()
+        fun getAllEmployees(): Call<ArrayList<EmployeeListData>> {
+            return ApiService.api.getAllEmployees()
+        }
+
+        fun startTask(id : Int): Call<ResponseBody> {
+            return ApiService.api.startTask(id)
+        }
+
+        fun addTask(id : String, task : String): Call<ResponseBody> {
+            return ApiService.api.addTask(id, task)
+        }
+
+        fun canAddTask(id : String, task : String): Call<ResponseBody> {
+            return ApiService.api.canAddTask(id, task)
         }
 
         suspend fun insertEmployee(id : String, pin : String, name : String, surname : String, shift : String): ResponseBody? {
             return ApiService.api.insertEmployee(id, pin, name, surname, shift).awaitResponse().body()
         }
 
+        suspend fun insertAdmin(id : String, username: String, password: String, name : String, surname : String): ResponseBody? {
+            return ApiService.api.insertAdmin(id, username, password, name, surname).awaitResponse().body()
+        }
+
         fun canAddEmployee(id : String): Call<ResponseBody> {
             return ApiService.api.canAddEmployee(id)
         }
 
-        suspend fun endTask(id : Int): ResponseBody? {
-            return ApiService.api.endTask(id).awaitResponse().body()
+        fun canAddAdmin(id : String, username: String): Call<ResponseBody> {
+            return ApiService.api.canAddAdmin(id, username)
+        }
+
+         fun endTask(id : Int): Call<ResponseBody> {
+            return ApiService.api.endTask(id)
         }
 
         suspend fun insertLog(id : String, date : String): ResponseBody? {

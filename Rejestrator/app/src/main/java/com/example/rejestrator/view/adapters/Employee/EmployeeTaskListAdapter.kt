@@ -5,18 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rejestrator.R
 import com.example.rejestrator.view.State
+import com.example.rejestrator.view.model.entities.EmployeeLoginData
 import com.example.rejestrator.view.model.entities.Task
+import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Employee.EmployeeTaskListViewModel
 import kotlinx.android.synthetic.main.one_row_available_list.view.*
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EmployeeTaskListAdapter(var taskList: LiveData<List<Task>>, var taskViewModel: EmployeeTaskListViewModel) : RecyclerView.Adapter<EmployeeTaskListAdapter.Holder>() {
+class EmployeeTaskListAdapter(var taskList: LiveData<ArrayList<Task>>, var taskViewModel: EmployeeTaskListViewModel) : RecyclerView.Adapter<EmployeeTaskListAdapter.Holder>() {
 
     class Holder(val view: View): RecyclerView.ViewHolder(view) {
         val textView1= view.findViewById<TextView>(R.id.row_availableTask)
@@ -40,15 +47,33 @@ class EmployeeTaskListAdapter(var taskList: LiveData<List<Task>>, var taskViewMo
 
         holder.view.row_startTaskButton.setOnClickListener { x->
             if (currentItem != null) {
-                Log.d("lol", "lol")
-                taskViewModel.startTask(currentItem.id)
+                var startTaskCall = ApiRepository.startTask(currentItem.id)
 
-                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
-                val currentDate = sdf.format(Date())
+                startTaskCall.enqueue(object : Callback<ResponseBody> {
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(
+                            x.context,
+                            "Błąd! Nie połączono z bazą danych.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
 
-                taskViewModel.addTaskInProgress(currentItem.employeeID, currentItem.task, currentDate)
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.code() == 200) {
+                            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                            val currentDate = sdf.format(Date())
 
-                x.findNavController().navigate(R.id.action_dashboardTaskListEmployee_self)
+                            taskViewModel.allTasks.value?.remove(currentItem)
+
+                            taskViewModel.addTaskInProgress(currentItem.employeeID, currentItem.task, currentDate)
+
+                            x.findNavController().navigate(R.id.action_dashboardTaskListEmployee_self)
+
+                        } else if (response.code() == 404) {
+                            Toast.makeText(x.context, "Nie rozpoczęto zadania.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
             }
         }
     }

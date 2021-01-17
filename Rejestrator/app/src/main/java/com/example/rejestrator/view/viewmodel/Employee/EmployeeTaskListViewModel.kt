@@ -11,8 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EmployeeTaskListViewModel(application: Application) : AndroidViewModel(application) {
-    private val _allTasks: MutableLiveData<List<Task>> = MutableLiveData()
-    val allTasks: LiveData<List<Task>>
+    private val _allTasks: MutableLiveData<ArrayList<Task>> = MutableLiveData()
+    val allTasks: LiveData<ArrayList<Task>>
         get()=_allTasks
 
     fun getTasksForEmployee(id : String)

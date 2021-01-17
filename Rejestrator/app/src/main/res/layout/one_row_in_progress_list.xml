@@ -22,7 +22,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:backgroundTint="@color/white"
-        android:src="@drawable/ic_start"
+        android:src="@drawable/ic_stop"
         android:tint="@color/aboveBack" />
 
 </LinearLayout>

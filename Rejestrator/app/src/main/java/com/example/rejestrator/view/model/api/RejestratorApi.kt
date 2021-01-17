@@ -16,15 +16,34 @@ interface RejestratorApi {
     fun insertEmployee(@Field("employeeID") employeeId :String, @Field("pin") pin :String, @Field("name") name :String, @Field("surname") surname :String, @Field("shift") shift :String) : Call<ResponseBody>
 
     @FormUrlEncoded
+    @POST("administrators")
+    fun insertAdmin(@Field("administratorID") administratorID :String, @Field("username") username :String, @Field("password") password :String, @Field("name") name :String, @Field("surname") surname :String) : Call<ResponseBody>
+
+    @FormUrlEncoded
     @POST("canAddEmployee")
     fun canAddEmployee(@Field("employeeID") employeeId :String) : Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("canAddAdmin")
+    fun canAddAdmin(@Field("adminID") adminID :String, @Field("username") username :String) : Call<ResponseBody>
 
     @FormUrlEncoded
     @POST("loginAdmin")
     fun canAdminLogin(@Field("username") employeeId :String, @Field("password") pin :String) : Call<AdminLoginData>
 
+    @FormUrlEncoded
+    @POST("canAddTask")
+    fun canAddTask(@Field("employeeID") employeeID :String, @Field("task") task :String) : Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("tasksAvailable")
+    fun addTask(@Field("employeeID") employeeID :String, @Field("task") task :String) : Call<ResponseBody>
+
     @GET("tasksAvailable/{employeeId}")
-    fun getTasksForEmployee(@Path("employeeId") employeeId :String): Call<List<Task>>
+    fun getTasksForEmployee(@Path("employeeId") employeeId :String): Call<ArrayList<Task>>
+
+    @GET("employees")
+    fun getAllEmployees(): Call<ArrayList<EmployeeListData>>
 
     @GET("logsData")
     fun getAllLogs(): Call<ArrayList<LoginData>>

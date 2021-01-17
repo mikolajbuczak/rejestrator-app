@@ -10,18 +10,18 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rejestrator.R
+import com.example.rejestrator.view.State
 import com.example.rejestrator.view.adapters.Admin.AdminLogsListAdapter
-import com.example.rejestrator.view.model.entities.LoginData
+import com.example.rejestrator.view.model.entities.AdminLoginData
+import com.example.rejestrator.view.model.entities.EmployeeListData
 import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Admin.AdminLogsListViewModel
 import kotlinx.android.synthetic.main.add_admin_dialog.view.*
@@ -31,14 +31,12 @@ import kotlinx.android.synthetic.main.add_employee_dialog.view.addOkButton
 import kotlinx.android.synthetic.main.add_task_dialog.view.*
 import kotlinx.android.synthetic.main.confirm_with_password_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_logs_list_admin.*
-import kotlinx.android.synthetic.main.fragment_logs_list_admin.addTask
-import kotlinx.android.synthetic.main.fragment_logs_list_admin.logout
-import kotlinx.android.synthetic.main.fragment_task_list_employee.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+
 
 class DashboardLogsListAdmin : Fragment() {
 
@@ -122,23 +120,19 @@ class DashboardLogsListAdmin : Fragment() {
                     else if(pin.length != 4 )
                         Toast.makeText(requireContext(), "Pin musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
                     else{
-                        Log.d("lol", "do elsa weszło")
                         var canAddEmployee = ApiRepository.canAddEmployee(id)
 
                         canAddEmployee.enqueue(object : Callback<ResponseBody> {
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                Log.d("lol", "blad")
                                 Toast.makeText(requireContext(), "Błąd! Nie połączono z bazą danych.", Toast.LENGTH_SHORT).show()
                             }
 
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                 if (response.code() == 200) {
-                                    Log.d("lol", "200")
                                     logsViewModel.insertEmployee(id, pin, name, surname, shift)
                                     Toast.makeText(requireContext(), "Dodano pracownika.", Toast.LENGTH_SHORT).show()
                                     mAlertDialog.dismiss()
                                 } else if (response.code() == 404) {
-                                    Log.d("lol", "400")
                                     Toast.makeText(requireContext(), "To id jest już przypisane.", Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -157,7 +151,8 @@ class DashboardLogsListAdmin : Fragment() {
         }
 
         addAdmin.setOnClickListener {
-            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_admin_dialog, null)
+            val mDialogView =
+                LayoutInflater.from(requireContext()).inflate(R.layout.add_admin_dialog, null)
             val mBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
                 .setView(mDialogView)
             val mAlertDialog = mBuilder.show()
@@ -169,77 +164,267 @@ class DashboardLogsListAdmin : Fragment() {
                 val name = mDialogView.addAdminName.text.toString()
                 val surname = mDialogView.addAdminSurname.text.toString()
 
-                if(!id.isNullOrEmpty() && !username.isNullOrEmpty() && !password.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty()) {
-                    if(id.length != 4 )
-                        Toast.makeText(requireContext(), "Id musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
-                    else if(true){
-                        //check if id used etc. change true to condition
-
-                        val mDialogView2 = LayoutInflater.from(requireContext()).inflate(R.layout.confirm_with_password_dialog, null)
-                        val mBuilder2 = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
-                            .setView(mDialogView2)
+                if (!id.isNullOrEmpty() && !username.isNullOrEmpty() && !password.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty()) {
+                    if (id.length != 4)
+                        Toast.makeText(
+                            requireContext(),
+                            "Id musi składać się z 4 cyfr.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    else {
+                        val mDialogView2 = LayoutInflater.from(requireContext())
+                            .inflate(R.layout.confirm_with_password_dialog, null)
+                        val mBuilder2 =
+                            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
+                                .setView(mDialogView2)
                         val mAlertDialog2 = mBuilder2.show()
 
-                        mDialogView2.confirmOkButton.setOnClickListener{
+                        mDialogView2.confirmOkButton.setOnClickListener {
                             val passwordConfirm = mDialogView2.confirmPassword.text.toString()
 
-                            if(!passwordConfirm.isNullOrEmpty()){
-                                if(true){
-                                    //check if password correct then add admin here
-                                }
-                                else
-                                    Toast.makeText(requireContext(), "Niepoprawne hasło.", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                                Toast.makeText(requireContext(), "Nie wpisano hasła.", Toast.LENGTH_SHORT).show();
+                            if (!passwordConfirm.isNullOrEmpty()) {
+                                var loginCall = ApiRepository.canAdminLogin(
+                                    State.currentAdminUsername,
+                                    passwordConfirm
+                                )
+
+                                loginCall.enqueue(object : Callback<AdminLoginData> {
+                                    override fun onFailure(
+                                        call: Call<AdminLoginData>,
+                                        t: Throwable
+                                    ) {
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Błąd! Nie połączono z bazą danych.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+
+                                    override fun onResponse(
+                                        call: Call<AdminLoginData>,
+                                        response: Response<AdminLoginData>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            var canAddAdmin =
+                                                ApiRepository.canAddAdmin(id, username)
+
+                                            canAddAdmin.enqueue(object : Callback<ResponseBody> {
+                                                override fun onFailure(
+                                                    call: Call<ResponseBody>,
+                                                    t: Throwable
+                                                ) {
+                                                    Toast.makeText(
+                                                        requireContext(),
+                                                        "Błąd! Nie połączono z bazą danych.",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+
+                                                override fun onResponse(
+                                                    call: Call<ResponseBody>,
+                                                    response: Response<ResponseBody>
+                                                ) {
+                                                    if (response.code() == 404) {
+                                                        mAlertDialog2.dismiss()
+                                                        Toast.makeText(
+                                                            requireContext(),
+                                                            "Id oraz nazwa użytkownika zostały już przypisane.",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    } else if (response.code() == 402) {
+                                                        mAlertDialog2.dismiss()
+                                                        Toast.makeText(
+                                                            requireContext(),
+                                                            "Id zostało już przypisane.",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    } else if (response.code() == 401) {
+                                                        mAlertDialog2.dismiss()
+                                                        Toast.makeText(
+                                                            requireContext(),
+                                                            "Nazwa użytkownika została już przypisana.",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    } else if (response.code() == 200) {
+                                                        logsViewModel.insertAdmin(
+                                                            id,
+                                                            username,
+                                                            password,
+                                                            name,
+                                                            surname
+                                                        )
+                                                        mAlertDialog2.dismiss()
+                                                        mAlertDialog.dismiss()
+                                                        Toast.makeText(
+                                                            requireContext(),
+                                                            "Dodano administratora.",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+
+                                                }
+
+                                            })
+                                        } else if (response.code() == 404) {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Niepoprawne hasło.",
+                                                Toast.LENGTH_SHORT
+                                            ).show();
+                                        }
+                                    }
+
+                                })
+                            } else
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Nie wpisano hasła.",
+                                    Toast.LENGTH_SHORT
+                                ).show();
                         }
 
-                        mDialogView2.confirmCancelButton.setOnClickListener{
+                        mDialogView2.confirmCancelButton.setOnClickListener {
                             mAlertDialog2.dismiss()
                         }
 
+
+                    }
+                } else
+                    Toast.makeText(requireContext(), "Pozostawiono puste pola.", Toast.LENGTH_SHORT)
+                        .show();
+
+            }
+            mDialogView.addCancelButton.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
+        }
+
+
+            addTask.setOnClickListener {
+                val mDialogView =
+                    LayoutInflater.from(requireContext()).inflate(R.layout.add_task_dialog, null)
+                val mBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
+                    .setView(mDialogView)
+                val mAlertDialog = mBuilder.show()
+
+                var employeeList: ArrayList<EmployeeListData> = arrayListOf()
+
+                var getAllEmployees = ApiRepository.getAllEmployees()
+
+                getAllEmployees.enqueue(object : Callback<ArrayList<EmployeeListData>> {
+                    override fun onFailure(call: Call<ArrayList<EmployeeListData>>, t: Throwable) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Błąd! Nie połączono z bazą danych.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
+                    override fun onResponse(
+                        call: Call<ArrayList<EmployeeListData>>,
+                        response: Response<ArrayList<EmployeeListData>>
+                    ) {
+                        employeeList = response.body()!!
+                        var employeeList2: ArrayList<String> = arrayListOf()
+
+                        employeeList.forEach() {
+                            employeeList2.add(it.toString())
+                        }
+
+                        val adapter: ArrayAdapter<String> =
+                            ArrayAdapter(requireContext(), R.layout.spinner_item, employeeList2)
+
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+                        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+                        mDialogView.addTaskSelectedEmployee.adapter = adapter
+
+                    }
+
+                })
+
+                mDialogView.addOkButton.setOnClickListener {
+                    val selectedEmployee =
+                        mDialogView.addTaskSelectedEmployee.selectedItem.toString()
+                    val task = mDialogView.addTask.text.toString()
+                    if (!selectedEmployee.isNullOrEmpty() && !task.isNullOrEmpty()) {
+                        var canAddTask =
+                            ApiRepository.canAddTask(selectedEmployee.split(" ").first(), task)
+
+                        canAddTask.enqueue(object : Callback<ResponseBody> {
+                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Błąd! Nie połączono z bazą danych.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            override fun onResponse(
+                                call: Call<ResponseBody>,
+                                response: Response<ResponseBody>
+                            ) {
+                                if (response.code() == 200) {
+                                    var addTask = ApiRepository.addTask(
+                                        selectedEmployee.split(" ").first(),
+                                        task
+                                    )
+
+                                    addTask.enqueue(object : Callback<ResponseBody> {
+                                        override fun onFailure(
+                                            call: Call<ResponseBody>,
+                                            t: Throwable
+                                        ) {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Błąd! Nie połączono z bazą danych.",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                        override fun onResponse(
+                                            call: Call<ResponseBody>,
+                                            response: Response<ResponseBody>
+                                        ) {
+                                            if (response.code() == 200) {
+                                                Toast.makeText(
+                                                    requireContext(),
+                                                    "Dodano zadanie",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                mAlertDialog.dismiss()
+                                            } else if (response.code() == 404) {
+                                                Toast.makeText(
+                                                    requireContext(),
+                                                    "Nie dodano zadania",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                mAlertDialog.dismiss()
+                                            }
+                                        }
+
+                                    })
+                                } else if (response.code() == 404) {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "To zadanie zostało już przydzielone temu pracownikowi.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+
+                        })
+                    } else
+                        Toast.makeText(
+                            requireContext(),
+                            "Pozostawiono puste pola.",
+                            Toast.LENGTH_SHORT
+                        ).show();
                 }
-                else
-                    Toast.makeText(requireContext(), "Pozostawiono puste pola.", Toast.LENGTH_SHORT).show();
-            }
-
-            mDialogView.addCancelButton.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
-        }
-
-        addTask.setOnClickListener {
-            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_task_dialog, null)
-            val mBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
-                .setView(mDialogView)
-            val mAlertDialog = mBuilder.show()
-
-            /* SETUP OF SPINNER TO ADD TASK, FILL WITH EMPLOYEES FROM DATABASE
-            val adapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.shifts_array, R.layout.spinner_item
-            )
-
-            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-            mDialogView.addTaskSelectedEmployee.adapter = adapter*/
-
-            mDialogView.addOkButton.setOnClickListener {
-                val selectedEmployee = mDialogView.addTaskSelectedEmployee.selectedItem.toString()
-                val task = mDialogView.addTask.text.toString()
-                if(!selectedEmployee.isNullOrEmpty() && !task.isNullOrEmpty()) {
-                    //To do: add task to database, check if already added to useretc.
-
+                mDialogView.addCancelButton.setOnClickListener {
+                    mAlertDialog.dismiss()
                 }
-                else
-                    Toast.makeText(requireContext(), "Pozostawiono puste pola.", Toast.LENGTH_SHORT).show();
             }
-
-            mDialogView.addCancelButton.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
-        }
 
     }
 

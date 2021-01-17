@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.confirm_with_password_dialog.view.confirmC
 import kotlinx.android.synthetic.main.confirm_with_password_dialog.view.confirmOkButton
 import kotlinx.android.synthetic.main.confirm_with_pin_dialog.view.*
 import kotlinx.android.synthetic.main.one_row_in_progress_list.view.*
+import okhttp3.ResponseBody
 import org.joda.time.DateTimeComparator
 import org.joda.time.format.DateTimeFormat
 import retrofit2.Call
@@ -60,32 +61,48 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<List<TaskInProgre
                 var employeeLoginData : EmployeeLoginData
 
                 mDialogView.confirmOkButton.setOnClickListener{
-                    val passwordConfirm = mDialogView.confirmPin.text.toString()
+                    val pinConfirm = mDialogView.confirmPin.text.toString()
 
-                    if(!passwordConfirm.isNullOrEmpty()){
-                        var loginCall = ApiRepository.canEmployeeLogin(State.currentEmployeeId, passwordConfirm)
+                    if(!pinConfirm.isNullOrEmpty()){
+                        var loginCall = ApiRepository.canEmployeeLogin(State.currentEmployeeId, pinConfirm)
 
                         loginCall.enqueue(object : Callback<EmployeeLoginData> {
                             override fun onFailure(call: Call<EmployeeLoginData>, t: Throwable) {
-                                Toast.makeText(
-                                    x.context,
-                                    "Błąd! Nie połączono z bazą danych.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(x.context, "Błąd! Nie połączono z bazą danych.", Toast.LENGTH_SHORT).show()
                             }
 
                             override fun onResponse(call: Call<EmployeeLoginData>, response: Response<EmployeeLoginData>) {
                                 if (response.code() == 200) {
                                     mAlertDialog.dismiss()
-                                    taskViewModel.endTask(currentItem.id)
 
-                                    val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
-                                    val currentDate = sdf.format(Date())
+                                    var endTaskCall = ApiRepository.endTask(currentItem.id)
 
-                                    taskViewModel.addTaskDone(currentItem.employeeID, currentItem.task, currentItem.date, currentDate, "0")
+                                    endTaskCall.enqueue(object : Callback<ResponseBody> {
+                                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                            Toast.makeText(
+                                                x.context,
+                                                "Błąd! Nie połączono z bazą danych.",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
 
-                                    x.findNavController().navigate(R.id.action_dashboardTaskInProgressListEmployee_self)
+                                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                                            if (response.code() == 200) {
+                                                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                                                val currentDate = sdf.format(Date())
 
+                                                //time if shift
+                                                taskViewModel.addTaskDone(currentItem.employeeID, currentItem.task, currentItem.date, currentDate, "0")
+
+                                                taskViewModel.getTasksInProgressForEmployee(State.currentEmployeeId)
+
+                                                x.findNavController().navigate(R.id.action_dashboardTaskInProgressListEmployee_self)
+
+                                            } else if (response.code() == 404) {
+                                                Toast.makeText(x.context, "Nie zakończono zadania.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    })
                                 } else if (response.code() == 404) {
                                     Toast.makeText(x.context, "Niepoprawny pin.", Toast.LENGTH_SHORT).show();
                                 }
