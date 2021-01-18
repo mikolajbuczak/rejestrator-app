@@ -1,36 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
+    android:orientation="horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/row_taskInProgressEmployeeList">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/row_taskEmployee"
+        android:id="@+id/row_taskInProgressEmployee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text=""
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:text="sfdsfsdf"
         android:textColor="@color/aboveBack"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        android:textSize="16.5sp" />
 
     <TextView
-        android:id="@+id/row_startDateEmployee"
+        android:id="@+id/row_dateEmployee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text=""
-        android:textColor="@color/aboveBack"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/row_taskEmployee"
-        tools:ignore="MissingConstraints" />
+        android:gravity="center_vertical"
+        android:text="data"
+        android:layout_below="@id/row_taskInProgressEmployee"
+        android:textSize="14.5sp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

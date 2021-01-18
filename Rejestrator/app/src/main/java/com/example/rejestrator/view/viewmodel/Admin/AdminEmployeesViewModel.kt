@@ -14,24 +14,25 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AdminLogsListViewModel(application: Application): AndroidViewModel(application)  {
-    private val _allLogs: MutableLiveData<ArrayList<LoginData>> = MutableLiveData()
-    val allLogs: LiveData<ArrayList<LoginData>>
-        get()=_allLogs
+class AdminEmployeesViewModel(application: Application): AndroidViewModel(application){
+    private val _employeeList: MutableLiveData<ArrayList<EmployeeListData>> = MutableLiveData()
+    val employeeList: LiveData<ArrayList<EmployeeListData>>
+        get()=_employeeList
 
-    private val _filteredAllLogs: MutableLiveData<ArrayList<LoginData>> = MutableLiveData()
-    val filteredAllLogs: LiveData<ArrayList<LoginData>>
-        get()=_filteredAllLogs
+    private val _filteredEmployeeList: MutableLiveData<ArrayList<EmployeeListData>> = MutableLiveData()
+    val filteredEmployeeList: LiveData<ArrayList<EmployeeListData>>
+        get()=_filteredEmployeeList
 
     var employeeList1: ArrayList<EmployeeListData> = arrayListOf()
 
     var employeeList2: java.util.ArrayList<String> = arrayListOf()
 
-    fun getAllLogs()
+
+    fun getAllEmployees()
     {
         viewModelScope.launch {
-            _allLogs.value = ApiRepository.getAllLogs()
-            _filteredAllLogs.value = ApiRepository.getAllLogs()
+            _employeeList.value = ApiRepository.getAllEmployeesList()
+            _filteredEmployeeList.value = ApiRepository.getAllEmployeesList()
         }
     }
 
@@ -67,4 +68,6 @@ class AdminLogsListViewModel(application: Application): AndroidViewModel(applica
             ApiRepository.insertAdmin(id, username, password, name, surname)
         }
     }
+
+
 }

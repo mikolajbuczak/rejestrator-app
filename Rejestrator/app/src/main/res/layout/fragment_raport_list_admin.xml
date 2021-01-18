@@ -7,113 +7,95 @@
     android:background="@color/white"
     tools:context=".view.view.Admin.DashboardRaportAdmin">
 
-    <Spinner
-        android:id="@+id/employeeSpinnerfromRaport"
-        android:layout_width="230dp"
-        android:layout_height="50dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/refreshAll"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.37">
+
+        <TextView
+            android:id="@+id/employeeLabelNameChart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/aboveBack"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/employeeLabelSurnameChart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/employeeLabelSurnameChart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/employeeLabelNameChart"
+            android:text=""
+            android:textColor="@color/aboveBack"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/refreshAll"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/bg_white_rounded"
-        android:text="@string/pracownicy2"
-        android:textColor="@color/text"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/doneList_recycler_view"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/aboveBack"
+        android:drawableLeft="@drawable/ic_reset"
+        android:drawablePadding="2dp"
+        android:drawableTint="@color/white"
+        android:text="Ogólne"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintTop_toBottomOf="@+id/inputPin" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/calendarAll"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/aboveBack"
+        android:drawableLeft="@drawable/ic_today"
+        android:drawablePadding="2dp"
+        android:drawableTint="@color/white"
+        android:text="Dzisiejsze"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/chart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputPin" />
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/doneList_recycler_view"
+        android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="135dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="35dp"
         android:focusable="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/logsList"
         />
-
-    <ImageButton
-        android:id="@+id/logout"
-        android:layout_width="55dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:src="@drawable/ic_exit"
-        android:tint="@color/aboveBack"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="4.5dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:padding="10dp"
-        app:cornerRadius="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:src="@drawable/ic_add"
-        android:backgroundTint="@color/aboveBack"
-        app:tint="@android:color/white"
-        app:borderWidth="0dp"
-        android:focusable="true"
-        android:layout_marginBottom="7dp"
-        android:layout_marginRight="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/DoneList"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addEmployee3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/aboveBack"
-        app:tint="@android:color/white"
-        app:borderWidth="0dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="invisible"
-        android:src="@drawable/ic_employee_add"
-        app:layout_constraintBottom_toTopOf="@+id/add3"
-        app:layout_constraintEnd_toEndOf="@+id/add3" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addTask3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/aboveBack"
-        app:tint="@android:color/white"
-        app:borderWidth="0dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="invisible"
-        android:src="@drawable/ic_task_add"
-        app:layout_constraintBottom_toTopOf="@+id/addEmployee3"
-        app:layout_constraintEnd_toEndOf="@+id/addEmployee3" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addAdmin3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/aboveBack"
-        app:tint="@android:color/white"
-        app:borderWidth="0dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="invisible"
-        android:src="@drawable/ic_admin_add"
-        app:layout_constraintBottom_toTopOf="@+id/addTask3"
-        app:layout_constraintEnd_toEndOf="@+id/addTask3" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/logsList"
@@ -157,33 +139,9 @@
         android:insetBottom="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/DoneList"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/logsList"
         app:layout_constraintTop_toTopOf="@+id/logsList"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/DoneList"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/aboveBack"
-        android:drawableTop="@drawable/ic_list"
-        android:drawableTint="@color/white"
-        android:padding="10dp"
-        app:cornerRadius="0dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:text="@string/raport"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/employeeList"
-        app:layout_constraintTop_toTopOf="@+id/employeeList"
         app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

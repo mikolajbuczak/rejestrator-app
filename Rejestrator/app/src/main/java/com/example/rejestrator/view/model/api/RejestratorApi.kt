@@ -9,7 +9,7 @@ interface RejestratorApi {
 
     @FormUrlEncoded
     @POST("loginEmployee")
-    fun canEmployeeLogin(@Field("employeeId") employeeId :String, @Field("pin") pin :String) : Call<EmployeeLoginData>
+    fun canEmployeeLogin(@Field("employeeID") employeeId :String, @Field("pin") pin :String) : Call<EmployeeLoginData>
 
     @FormUrlEncoded
     @POST("employees")
@@ -39,26 +39,57 @@ interface RejestratorApi {
     @POST("tasksAvailable")
     fun addTask(@Field("employeeID") employeeID :String, @Field("task") task :String) : Call<ResponseBody>
 
+    @FormUrlEncoded
+    @PUT("employees/{employeeID}")
+    fun updateEmployee(@Path("employeeID") employeeIDToEdit : String, @Field("employeeID") employeeID :String, @Field("pin") pin :String, @Field("name") name :String, @Field("surname") surname :String, @Field("shift") shift :String): Call<ResponseBody>
+
     @GET("tasksAvailable/{employeeId}")
     fun getTasksForEmployee(@Path("employeeId") employeeId :String): Call<ArrayList<Task>>
 
     @GET("employees")
     fun getAllEmployees(): Call<ArrayList<EmployeeListData>>
 
+    @GET("employees")
+    fun getAllEmployeesList(): Call<ArrayList<EmployeeListData>>
+
     @GET("logsData")
     fun getAllLogs(): Call<ArrayList<LoginData>>
 
     @GET("tasksInProgress/{employeeId}")
-    fun getTasksInProgressForEmployee(@Path("employeeId") employeeId :String): Call<List<TaskInProgress>>
+    fun getTasksInProgressForEmployee(@Path("employeeId") employeeId :String): Call<ArrayList<TaskInProgress>>
 
     @GET("tasksDone/{employeeId}/{enddate}")
-    fun getTasksDoneForEmployee(@Path("employeeId") employeeId :String, @Path("enddate") enddate :String): Call<List<TaskDone>>
+    fun getTasksDoneForEmployee(@Path("employeeId") employeeId :String, @Path("enddate") enddate :String): Call<ArrayList<TaskDone>>
+
+    @GET("logs/{employeeId}")
+    fun getAllLogsForEmployee(@Path("employeeId") employeeId :String): Call<List<LoginData>>
+
+    @GET("tasksDone/{employeeId}")
+    fun getAllTasksDoneForEmployee(@Path("employeeId") employeeId :String): Call<List<TaskDone>>
+
+    @GET("tasksInProgress/{employeeId}")
+    fun getAllTasksInProgressForEmployee(@Path("employeeId") employeeId :String): Call<List<TaskInProgress>>
+
+    @GET("tasksAvailable/{employeeId}")
+    fun getAllTasksForEmployee(@Path("employeeId") employeeId :String): Call<ArrayList<Task>>
+
+    @GET("allLogsToday/{employeeId}/{date}")
+    fun getAllLogsForEmployeeRaportToday(@Path("employeeId") employeeId :String, @Path("date") date :String): Call<ArrayList<LoginData>>
 
     @GET("tasksDone/{employeeId}/{date}")
+    fun getAllTasksDoneForEmployeeRaportToday(@Path("employeeId") employeeId :String, @Path("date") date :String): Call<ArrayList<TaskDone>>
+
+    @GET("logs/{employeeId}/{date}")
     fun checkIfLoggedOnThisDay (@Path("employeeId") employeeId :String, @Path("date") date :String): Call<LoggedToday>
 
     @DELETE("startTask/{taskId}")
     fun startTask(@Path("taskId") taskId :Int) : Call<ResponseBody>
+
+    @DELETE("startTask/{taskId}")
+    fun deleteTask(@Path("taskId") taskId :Int) : Call<ResponseBody>
+
+    @DELETE("employees/{employeeID}")
+    fun deleteEmployee(@Path("employeeID") employeeID :String) : Call<ResponseBody>
 
     @FormUrlEncoded
     @POST("tasksInProgress")

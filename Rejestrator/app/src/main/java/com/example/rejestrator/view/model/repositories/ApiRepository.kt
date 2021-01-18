@@ -14,6 +14,10 @@ class ApiRepository {
             return ApiService.api.canEmployeeLogin(id, pin)
         }
 
+        fun updateEmployee(idToEdit : String, id : String, pin : String, name : String, surname : String, shift : String) : Call<ResponseBody>{
+            return ApiService.api.updateEmployee(idToEdit, id, pin, name, surname, shift)
+        }
+
         fun canAdminLogin(username : String, password : String): Call<AdminLoginData> {
             return ApiService.api.canAdminLogin(username, password)
         }
@@ -26,24 +30,60 @@ class ApiRepository {
             return ApiService.api.getTasksForEmployee(id).awaitResponse().body()?: arrayListOf()
         }
 
-        suspend fun getTasksInProgressForEmployee(id : String): List<TaskInProgress> {
-            return ApiService.api.getTasksInProgressForEmployee(id).awaitResponse().body()?: listOf()
+        suspend fun getTasksInProgressForEmployee(id : String): ArrayList<TaskInProgress> {
+            return ApiService.api.getTasksInProgressForEmployee(id).awaitResponse().body()?: arrayListOf()
         }
 
-        suspend fun getTasksDoneForEmployee(id : String, enddate: String): List<TaskDone> {
-            return ApiService.api.getTasksDoneForEmployee(id, enddate).awaitResponse().body()?: listOf()
+        suspend fun getTasksDoneForEmployee(id : String, enddate: String): ArrayList<TaskDone> {
+            return ApiService.api.getTasksDoneForEmployee(id, enddate).awaitResponse().body()?: arrayListOf()
+        }
+
+        suspend fun getAllLogsForEmployee(id : String): List<LoginData> {
+            return ApiService.api.getAllLogsForEmployee(id).awaitResponse().body()?: listOf()
+        }
+
+        suspend fun getAllTasksDoneForEmployee(id : String): List<TaskDone> {
+            return ApiService.api.getAllTasksDoneForEmployee(id).awaitResponse().body()?: listOf()
+        }
+
+        suspend fun getAllTasksInProgressForEmployee(id : String): List<TaskInProgress> {
+            return ApiService.api.getAllTasksInProgressForEmployee(id).awaitResponse().body()?: listOf()
+        }
+
+        suspend fun getAllTasksForEmployee(id : String): ArrayList<Task> {
+            return ApiService.api.getAllTasksForEmployee(id).awaitResponse().body()?: arrayListOf()
+        }
+
+        suspend fun getAllLogsForEmployeeRaportToday(id : String, date : String): ArrayList<LoginData> {
+            return ApiService.api.getAllLogsForEmployeeRaportToday(id, date).awaitResponse().body()?: arrayListOf()
+        }
+
+        suspend fun getAllTasksDoneForEmployeeRaportToday(id : String, date : String): ArrayList<TaskDone> {
+            return ApiService.api.getAllTasksDoneForEmployeeRaportToday(id, date).awaitResponse().body()?: arrayListOf()
         }
 
         fun getAllEmployees(): Call<ArrayList<EmployeeListData>> {
             return ApiService.api.getAllEmployees()
         }
 
-        fun startTask(id : Int): Call<ResponseBody> {
-            return ApiService.api.startTask(id)
+        suspend fun getAllEmployeesList(): ArrayList<EmployeeListData> {
+            return ApiService.api.getAllEmployeesList().awaitResponse().body()?: arrayListOf()
+        }
+
+        suspend fun startTask(id : Int): ResponseBody? {
+            return ApiService.api.startTask(id).awaitResponse().body()
+        }
+
+        suspend fun deleteTask(id : Int): ResponseBody? {
+            return ApiService.api.deleteTask(id).awaitResponse().body()
         }
 
         fun addTask(id : String, task : String): Call<ResponseBody> {
             return ApiService.api.addTask(id, task)
+        }
+
+        suspend fun deleteEmployee(id : String): ResponseBody? {
+            return ApiService.api.deleteEmployee(id).awaitResponse().body()
         }
 
         fun canAddTask(id : String, task : String): Call<ResponseBody> {
@@ -66,8 +106,8 @@ class ApiRepository {
             return ApiService.api.canAddAdmin(id, username)
         }
 
-         fun endTask(id : Int): Call<ResponseBody> {
-            return ApiService.api.endTask(id)
+        suspend fun endTask(id : Int): ResponseBody? {
+            return ApiService.api.endTask(id).awaitResponse().body()
         }
 
         suspend fun insertLog(id : String, date : String): ResponseBody? {

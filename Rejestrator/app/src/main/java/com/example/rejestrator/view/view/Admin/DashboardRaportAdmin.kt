@@ -1,30 +1,45 @@
 package com.example.rejestrator.view.view.Admin
 
-import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.rejestrator.R
-import com.example.rejestrator.view.view.Employee.DashboardTaskDoneListEmployee
-import com.example.rejestrator.view.view.Employee.DashboardTaskListEmployee
-import kotlinx.android.synthetic.main.add_admin_dialog.view.*
-import kotlinx.android.synthetic.main.add_employee_dialog.view.*
-import kotlinx.android.synthetic.main.add_employee_dialog.view.addCancelButton
-import kotlinx.android.synthetic.main.add_employee_dialog.view.addOkButton
-import kotlinx.android.synthetic.main.add_task_dialog.view.*
-import kotlinx.android.synthetic.main.confirm_with_password_dialog.view.*
-import kotlinx.android.synthetic.main.fragment_employee_list_admin.*
-import kotlinx.android.synthetic.main.fragment_employee_list_admin.DoneList
+import com.example.rejestrator.view.State
+import com.example.rejestrator.view.model.api.ApiService
+import com.example.rejestrator.view.model.entities.ChartData
+import com.example.rejestrator.view.model.entities.LoginData
+import com.example.rejestrator.view.model.entities.Task
+import com.example.rejestrator.view.model.entities.TaskInProgress
+import com.example.rejestrator.view.model.repositories.ApiRepository
+import com.example.rejestrator.view.viewmodel.Admin.AdminRaportViewModel
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.android.synthetic.main.fragment_employee_list_admin.employeeList
 import kotlinx.android.synthetic.main.fragment_employee_list_admin.logsList
 import kotlinx.android.synthetic.main.fragment_raport_list_admin.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class DashboardRaportAdmin : Fragment() {
 
@@ -34,10 +49,41 @@ class DashboardRaportAdmin : Fragment() {
     private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.to_bottom_anim) }
     private var clicked = false
 
+    var chartData : ArrayList<BarEntry> = arrayListOf()
+    var labelName : ArrayList<String> = arrayListOf()
+    var chartDataList : ArrayList<ChartData> = arrayListOf()
+
+    var i = 0
+
+    val colors: ArrayList<Int> = ArrayList()
+    var LogsCount : Int = 0
+    var TasksCount : Int = 0
+    var TasksInProgressCount : Int = 0
+    var TasksDoneCount : Int = 0
+
+    lateinit var adminRaportViewModel: AdminRaportViewModel
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        adminRaportViewModel = ViewModelProvider(requireActivity()).get(AdminRaportViewModel::class.java)
+
+        /*adminRaportViewModel.fillLogsLists(State.selectedEmployeeId)
+        adminRaportViewModel.fillTaskLists(State.selectedEmployeeId)
+        adminRaportViewModel.fillTasksInProgressLists(State.selectedEmployeeId)
+        adminRaportViewModel.fillTaskDoneLists(State.selectedEmployeeId)*/
+
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val currentDate = sdf.format(Date())
+
+        adminRaportViewModel.fillLists(State.selectedEmployeeId, currentDate)
+
+        colors.add(Color.parseColor("#554252"))
+        colors.add(Color.parseColor("#995D6C"))
+        colors.add(Color.parseColor("#D8816F"))
+        colors.add(Color.parseColor("#FCB667"))
+
         return inflater.inflate(R.layout.fragment_raport_list_admin, container, false)
     }
 
@@ -45,140 +91,69 @@ class DashboardRaportAdmin : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         logsList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardRaportAdmin_to_dashboardLogsListAdmin) }
-        employeeList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardRaportAdmin_to_dashboardEmployeeListAdmin) }
-        DoneList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardRaportAdmin_self) }
+        employeeList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardRaportAdmin_to_dashboardEmployeesAdmin) }
 
-        logout.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardRaportAdmin_to_loginAdmin) }
+        employeeLabelNameChart.setText(State.selectedEmployeeName)
+        employeeLabelSurnameChart.setText(State.selectedEmployeeSurname)
 
-        add3.setOnClickListener {
-            onAddButtonClicked()
-        }
+        /*adminRaportViewModel.fillLogsLists(State.selectedEmployeeId)
+        adminRaportViewModel.fillTaskLists(State.selectedEmployeeId)
+        adminRaportViewModel.fillTasksInProgressLists(State.selectedEmployeeId)
+        adminRaportViewModel.fillTaskDoneLists(State.selectedEmployeeId)*/
 
-        //spinner populate, chart setup based on spinner choice - function on spinner selected change or something
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val currentDate = sdf.format(Date())
 
-        addEmployee3.setOnClickListener {
-            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_employee_dialog, null)
-            val mBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
-                .setView(mDialogView)
-            val mAlertDialog = mBuilder.show()
+        adminRaportViewModel.fillLists(State.selectedEmployeeId, currentDate)
 
-            val adapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.shifts_array, R.layout.spinner_item
-            )
+        var description : Description = Description()
+        description.text = "Raport"
+        chart.description = description
 
-            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-            mDialogView.addEmployeeShift.adapter = adapter
+        fillChart()
 
-            mDialogView.addOkButton.setOnClickListener {
-                val id = mDialogView.addEmployeeId.text.toString()
-                val pin = mDialogView.addEmployeePin.text.toString()
-                val name = mDialogView.addEmployeeName.text.toString()
-                val surname = mDialogView.addEmployeeSurname.text.toString()
-                val shift = mDialogView.addEmployeeShift.selectedItem.toString()
-                if(!id.isNullOrEmpty() && !pin.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty() && !shift.isNullOrEmpty()) {
-                    if(id.length != 4 && pin.length != 4)
-                        Toast.makeText(requireContext(), "Id i pin muszą składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
-                    else if(id.length != 4 )
-                        Toast.makeText(requireContext(), "Id musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
-                    else if(pin.length != 4 )
-                        Toast.makeText(requireContext(), "Pin musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
-                    //To do: add employee in database, check if id used etc.
+        refreshAll.setOnClickListener {
+            chartDataList.clear()
+            chartData.clear()
+            chartDataList.add(ChartData("Logowania", adminRaportViewModel.employeeLogs.value?.count()) )
+            chartDataList.add(ChartData("Przydzielone", adminRaportViewModel.employeeTasks.value?.count()) )
+            chartDataList.add(ChartData("Zadania w toku", adminRaportViewModel.employeeTasksInProgress.value?.count()) )
+            chartDataList.add(ChartData("Wykonane", adminRaportViewModel.employeeTasksDone.value?.count()) )
 
+            chartDataList.forEach(){
+                var label = it.label
+                var value = it.count
+                if (value != null) {
+                    chartData.add(BarEntry(i.toFloat(), value.toFloat()))
                 }
-                else
-                    Toast.makeText(requireContext(), "Pozostawiono puste pola.", Toast.LENGTH_SHORT).show();
+                labelName.add(label)
+                i++
             }
 
-            mDialogView.addCancelButton.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
+            fillChart()
         }
 
-        addAdmin3.setOnClickListener {
-            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_admin_dialog, null)
-            val mBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
-                .setView(mDialogView)
-            val mAlertDialog = mBuilder.show()
+        calendarAll.setOnClickListener {
+            chartDataList.clear()
+            chartData.clear()
+            chartDataList.add(ChartData("Logowania", adminRaportViewModel.employeeLogsToday.value?.count()) )
+            chartDataList.add(ChartData("Przydzielone", adminRaportViewModel.employeeTasks.value?.count()) )
+            chartDataList.add(ChartData("Zadania w toku", adminRaportViewModel.employeeTasksInProgress.value?.count()) )
+            chartDataList.add(ChartData("Wykonane", adminRaportViewModel.employeeTasksDoneToday.value?.count()) )
 
-            mDialogView.addOkButton.setOnClickListener {
-                val id = mDialogView.addAdminId.text.toString()
-                val username = mDialogView.addAdminUsername.text.toString()
-                val password = mDialogView.addAdminPassword.text.toString()
-                val name = mDialogView.addAdminName.text.toString()
-                val surname = mDialogView.addAdminSurname.text.toString()
-
-                if(!id.isNullOrEmpty() && !username.isNullOrEmpty() && !password.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty()) {
-                    if(id.length != 4 )
-                        Toast.makeText(requireContext(), "Id musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
-                    else if(true){
-                        //check if id used etc. change true to condition
-
-                        val mDialogView2 = LayoutInflater.from(requireContext()).inflate(R.layout.confirm_with_password_dialog, null)
-                        val mBuilder2 = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
-                            .setView(mDialogView2)
-                        val mAlertDialog2 = mBuilder2.show()
-
-                        mDialogView2.confirmOkButton.setOnClickListener{
-                            val passwordConfirm = mDialogView2.confirmPassword.text.toString()
-
-                            if(!passwordConfirm.isNullOrEmpty()){
-                                if(true){
-                                    //check if password correct then add admin here
-                                }
-                                else
-                                    Toast.makeText(requireContext(), "Niepoprawne hasło.", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                                Toast.makeText(requireContext(), "Nie wpisano hasła.", Toast.LENGTH_SHORT).show();
-                        }
-
-                        mDialogView2.confirmCancelButton.setOnClickListener{
-                            mAlertDialog2.dismiss()
-                        }
-
-                    }
-
+            chartDataList.forEach(){
+                var label = it.label
+                var value = it.count
+                if (value != null) {
+                    chartData.add(BarEntry(i.toFloat(), value.toFloat()))
                 }
-                else
-                    Toast.makeText(requireContext(), "Pozostawiono puste pola.", Toast.LENGTH_SHORT).show();
+                labelName.add(label)
+                i++
             }
 
-            mDialogView.addCancelButton.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
+            fillChart()
         }
 
-        addTask3.setOnClickListener {
-            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_task_dialog, null)
-            val mBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
-                .setView(mDialogView)
-            val mAlertDialog = mBuilder.show()
-
-            /* SETUP OF SPINNER TO ADD TASK, FILL WITH EMPLOYEES FROM DATABASE
-            val adapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.shifts_array, R.layout.spinner_item
-            )
-
-            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-            mDialogView.addTaskSelectedEmployee.adapter = adapter*/
-
-            mDialogView.addOkButton.setOnClickListener {
-                val selectedEmployee = mDialogView.addTaskSelectedEmployee.selectedItem.toString()
-                val task = mDialogView.addTask.text.toString()
-                if(!selectedEmployee.isNullOrEmpty() && !task.isNullOrEmpty()) {
-                    //To do: add task to database, check if already added to useretc.
-
-                }
-                else
-                    Toast.makeText(requireContext(), "Pozostawiono puste pola.", Toast.LENGTH_SHORT).show();
-            }
-
-            mDialogView.addCancelButton.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
-        }
     }
 
     companion object {
@@ -188,50 +163,29 @@ class DashboardRaportAdmin : Fragment() {
         }
     }
 
-    private fun onAddButtonClicked() {
-        setVisibility(clicked)
-        setAnimation(clicked)
-        setClickable(clicked)
-        clicked = !clicked
-    }
+    private fun fillChart(){
+        var barDataSet : BarDataSet = BarDataSet(chartData, "Ilość")
+        barDataSet.colors = colors
+        barDataSet.axisDependency = YAxis.AxisDependency.LEFT
+        chart.axisLeft.granularity = 1f
+        chart.axisLeft.isGranularityEnabled = true
+        chart.axisRight.granularity = 1f
+        chart.axisRight.isGranularityEnabled = true
 
-    private fun setVisibility(clicked: Boolean) {
-        if(!clicked){
-            addEmployee3.visibility = View.VISIBLE
-            addTask3.visibility = View.VISIBLE
-            addAdmin3.visibility = View.VISIBLE
-        }else{
-            addEmployee3.visibility = View.GONE
-            addTask3.visibility = View.GONE
-            addAdmin3.visibility = View.GONE
-        }
-    }
+        var barData : BarData = BarData(barDataSet)
 
-    private fun setAnimation(clicked: Boolean) {
-        if(!clicked){
-            addEmployee3.startAnimation(fromBottom)
-            addTask3.startAnimation(fromBottom)
-            addAdmin3.startAnimation(fromBottom)
+        chart.data = barData
 
-            add3.startAnimation(rotateOpen)
-        }else{
-            addEmployee3.startAnimation(toBottom)
-            addTask3.startAnimation(toBottom)
-            addAdmin3.startAnimation(toBottom)
+        var xAxis : XAxis = chart.xAxis
+        xAxis.valueFormatter = IndexAxisValueFormatter(labelName)
 
-            add3.startAnimation(rotateClose)
-        }
-    }
-
-    private fun setClickable(clicked: Boolean) {
-        if(!clicked){
-            addEmployee3.isClickable = true
-            addTask3.isClickable = true
-            addAdmin3.isClickable = true
-        }else{
-            addEmployee3.isClickable = false
-            addTask3.isClickable = false
-            addAdmin3.isClickable = false
-        }
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+        xAxis.setDrawAxisLine(false)
+        xAxis.granularity = 1f
+        xAxis.labelCount = labelName.count()
+        xAxis.labelRotationAngle = 270f
+        chart.notifyDataSetChanged()
+        chart.invalidate()
     }
 }

@@ -8,5 +8,12 @@ class State {
         var currentEmployeeId: String = ""
         var currentEmployeeShift: String = ""
         var currentAdminUsername: String = ""
+        var selectedEmployee: String = ""
+        var selectedEmployeeWithId: String = ""
+        var selectedEmployeeId: String = ""
+        var selectedEmployeePin: String = ""
+        var selectedEmployeeName: String = ""
+        var selectedEmployeeSurname: String = ""
+        var selectedEmployeeShift: String = ""
     }
 }

@@ -19,16 +19,23 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rejestrator.R
 import com.example.rejestrator.view.State
-import com.example.rejestrator.view.adapters.Admin.AdminLogsListAdapter
+import com.example.rejestrator.view.adapters.Admin.AdminEmployeeLogsAdapter
+import com.example.rejestrator.view.adapters.Admin.AdminEmployeesAdapter
 import com.example.rejestrator.view.model.entities.AdminLoginData
 import com.example.rejestrator.view.model.repositories.ApiRepository
-import com.example.rejestrator.view.viewmodel.Admin.AdminLogsListViewModel
+import com.example.rejestrator.view.viewmodel.Admin.AdminEmployeeListViewModel
+import com.example.rejestrator.view.viewmodel.Admin.AdminEmployeesViewModel
 import kotlinx.android.synthetic.main.add_admin_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.addCancelButton
 import kotlinx.android.synthetic.main.add_employee_dialog.view.addOkButton
 import kotlinx.android.synthetic.main.add_task_dialog.view.*
 import kotlinx.android.synthetic.main.confirm_with_password_dialog.view.*
+import kotlinx.android.synthetic.main.fragment_admin_employee_list.*
+import kotlinx.android.synthetic.main.fragment_admin_employee_list.logout
+import kotlinx.android.synthetic.main.fragment_employee_list_admin.*
+import kotlinx.android.synthetic.main.fragment_employee_list_admin.employeeList
+import kotlinx.android.synthetic.main.fragment_employee_list_admin.logsList
 import kotlinx.android.synthetic.main.fragment_logs_list_admin.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -36,8 +43,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-
-class DashboardLogsListAdmin : Fragment() {
+class DashboardEmployeesAdmin : Fragment() {
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_open_anim) }
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_close_anim) }
@@ -45,61 +51,63 @@ class DashboardLogsListAdmin : Fragment() {
     private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.to_bottom_anim) }
     private var clicked = false
 
-    lateinit var logsViewModel: AdminLogsListViewModel
+    lateinit var adminEmployeeViewModel: AdminEmployeesViewModel
     lateinit var linearManager: LinearLayoutManager
-    lateinit var adapterLogs: AdminLogsListAdapter
+    lateinit var adapterEmployees: AdminEmployeesAdapter
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        logsViewModel = ViewModelProvider(requireActivity()).get(AdminLogsListViewModel::class.java)
+
+        adminEmployeeViewModel = ViewModelProvider(requireActivity()).get(AdminEmployeesViewModel::class.java)
         linearManager = LinearLayoutManager(requireContext())
 
-        logsViewModel.filteredAllLogs.observe(viewLifecycleOwner, Observer {
-            adapterLogs.notifyDataSetChanged()
+        adminEmployeeViewModel.filteredEmployeeList.observe(viewLifecycleOwner, Observer {
+            adapterEmployees.notifyDataSetChanged()
         })
 
-        logsViewModel.getAllLogs()
-        logsViewModel.getAllEmployeesForTaskAdding()
+        adminEmployeeViewModel.getAllEmployees()
+        adminEmployeeViewModel.getAllEmployeesForTaskAdding()
 
-        return inflater.inflate(R.layout.fragment_logs_list_admin, container, false)
+        return inflater.inflate(R.layout.fragment_admin_employee_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        logsList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardLogsListAdmin_self) }
-        employeeList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardLogsListAdmin_to_dashboardEmployeesAdmin) }
+        logsList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardEmployeesAdmin_to_dashboardLogsListAdmin) }
+        employeeList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardEmployeesAdmin_self) }
 
-        logout.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardLogsListAdmin_to_loginAdmin) }
+        logout.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardEmployeesAdmin_to_loginAdmin) }
 
-        adapterLogs = AdminLogsListAdapter(logsViewModel.filteredAllLogs, logsViewModel)
+        adapterEmployees = AdminEmployeesAdapter(adminEmployeeViewModel.filteredEmployeeList, adminEmployeeViewModel)
 
-        logsList_recycler_view.addItemDecoration(DividerItemDecoration(logsList_recycler_view.context, DividerItemDecoration.VERTICAL))
+        employeeList_recycler_view.addItemDecoration(DividerItemDecoration(employeeList_recycler_view.context, DividerItemDecoration.VERTICAL))
 
-        logsList_recycler_view.apply {
-            adapter = adapterLogs
+        employeeList_recycler_view.apply {
+            adapter = adapterEmployees
             layoutManager = linearManager
-            logsViewModel.getAllLogs()
+            adminEmployeeViewModel.getAllEmployees()
         }
 
-        var searchItem = search_view as SearchView
+        var searchItem = search_view_Employees as SearchView
         searching((searchItem))
 
-        add.setOnClickListener {
+        add2.setOnClickListener {
             onAddButtonClicked()
         }
 
-        addEmployee.setOnClickListener {
+        addEmployee2.setOnClickListener {
             val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_employee_dialog, null)
             val mBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
-                .setView(mDialogView)
+                    .setView(mDialogView)
             val mAlertDialog = mBuilder.show()
 
             val adapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.shifts_array, R.layout.spinner_item
+                    requireContext(),
+                    R.array.shifts_array, R.layout.spinner_item
             )
 
             adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
@@ -128,9 +136,10 @@ class DashboardLogsListAdmin : Fragment() {
 
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                 if (response.code() == 200) {
-                                    logsViewModel.insertEmployee(id, pin, name, surname, shift)
+                                    adminEmployeeViewModel.insertEmployee(id, pin, name, surname, shift)
                                     Toast.makeText(requireContext(), "Dodano pracownika.", Toast.LENGTH_SHORT).show()
                                     mAlertDialog.dismiss()
+                                    view.findNavController().navigate(R.id.action_dashboardEmployeesAdmin_self)
                                 } else if (response.code() == 404) {
                                     Toast.makeText(requireContext(), "To id jest już przypisane.", Toast.LENGTH_SHORT).show()
                                 }
@@ -149,11 +158,11 @@ class DashboardLogsListAdmin : Fragment() {
             }
         }
 
-        addAdmin.setOnClickListener {
+        addAdmin2.setOnClickListener {
             val mDialogView =
-                LayoutInflater.from(requireContext()).inflate(R.layout.add_admin_dialog, null)
+                    LayoutInflater.from(requireContext()).inflate(R.layout.add_admin_dialog, null)
             val mBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
-                .setView(mDialogView)
+                    .setView(mDialogView)
             val mAlertDialog = mBuilder.show()
 
             mDialogView.addOkButton.setOnClickListener {
@@ -166,16 +175,16 @@ class DashboardLogsListAdmin : Fragment() {
                 if (!id.isNullOrEmpty() && !username.isNullOrEmpty() && !password.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty()) {
                     if (id.length != 4)
                         Toast.makeText(
-                            requireContext(),
-                            "Id musi składać się z 4 cyfr.",
-                            Toast.LENGTH_SHORT
+                                requireContext(),
+                                "Id musi składać się z 4 cyfr.",
+                                Toast.LENGTH_SHORT
                         ).show()
                     else {
                         val mDialogView2 = LayoutInflater.from(requireContext())
-                            .inflate(R.layout.confirm_with_password_dialog, null)
+                                .inflate(R.layout.confirm_with_password_dialog, null)
                         val mBuilder2 =
-                            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
-                                .setView(mDialogView2)
+                                AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
+                                        .setView(mDialogView2)
                         val mAlertDialog2 = mBuilder2.show()
 
                         mDialogView2.confirmOkButton.setOnClickListener {
@@ -183,81 +192,81 @@ class DashboardLogsListAdmin : Fragment() {
 
                             if (!passwordConfirm.isNullOrEmpty()) {
                                 var loginCall = ApiRepository.canAdminLogin(
-                                    State.currentAdminUsername,
-                                    passwordConfirm
+                                        State.currentAdminUsername,
+                                        passwordConfirm
                                 )
 
                                 loginCall.enqueue(object : Callback<AdminLoginData> {
                                     override fun onFailure(
-                                        call: Call<AdminLoginData>,
-                                        t: Throwable
+                                            call: Call<AdminLoginData>,
+                                            t: Throwable
                                     ) {
                                         Toast.makeText(
-                                            requireContext(),
-                                            "Błąd! Nie połączono z bazą danych.",
-                                            Toast.LENGTH_SHORT
+                                                requireContext(),
+                                                "Błąd! Nie połączono z bazą danych.",
+                                                Toast.LENGTH_SHORT
                                         ).show()
                                     }
 
                                     override fun onResponse(
-                                        call: Call<AdminLoginData>,
-                                        response: Response<AdminLoginData>
+                                            call: Call<AdminLoginData>,
+                                            response: Response<AdminLoginData>
                                     ) {
                                         if (response.code() == 200) {
                                             var canAddAdmin =
-                                                ApiRepository.canAddAdmin(id, username)
+                                                    ApiRepository.canAddAdmin(id, username)
 
                                             canAddAdmin.enqueue(object : Callback<ResponseBody> {
                                                 override fun onFailure(
-                                                    call: Call<ResponseBody>,
-                                                    t: Throwable
+                                                        call: Call<ResponseBody>,
+                                                        t: Throwable
                                                 ) {
                                                     Toast.makeText(
-                                                        requireContext(),
-                                                        "Błąd! Nie połączono z bazą danych.",
-                                                        Toast.LENGTH_SHORT
+                                                            requireContext(),
+                                                            "Błąd! Nie połączono z bazą danych.",
+                                                            Toast.LENGTH_SHORT
                                                     ).show()
                                                 }
 
                                                 override fun onResponse(
-                                                    call: Call<ResponseBody>,
-                                                    response: Response<ResponseBody>
+                                                        call: Call<ResponseBody>,
+                                                        response: Response<ResponseBody>
                                                 ) {
                                                     if (response.code() == 404) {
                                                         mAlertDialog2.dismiss()
                                                         Toast.makeText(
-                                                            requireContext(),
-                                                            "Id oraz nazwa użytkownika zostały już przypisane.",
-                                                            Toast.LENGTH_SHORT
+                                                                requireContext(),
+                                                                "Id oraz nazwa użytkownika zostały już przypisane.",
+                                                                Toast.LENGTH_SHORT
                                                         ).show()
                                                     } else if (response.code() == 402) {
                                                         mAlertDialog2.dismiss()
                                                         Toast.makeText(
-                                                            requireContext(),
-                                                            "Id zostało już przypisane.",
-                                                            Toast.LENGTH_SHORT
+                                                                requireContext(),
+                                                                "Id zostało już przypisane.",
+                                                                Toast.LENGTH_SHORT
                                                         ).show()
                                                     } else if (response.code() == 401) {
                                                         mAlertDialog2.dismiss()
                                                         Toast.makeText(
-                                                            requireContext(),
-                                                            "Nazwa użytkownika została już przypisana.",
-                                                            Toast.LENGTH_SHORT
+                                                                requireContext(),
+                                                                "Nazwa użytkownika została już przypisana.",
+                                                                Toast.LENGTH_SHORT
                                                         ).show()
                                                     } else if (response.code() == 200) {
-                                                        logsViewModel.insertAdmin(
-                                                            id,
-                                                            username,
-                                                            password,
-                                                            name,
-                                                            surname
+                                                        adminEmployeeViewModel.insertAdmin(
+                                                                id,
+                                                                username,
+                                                                password,
+                                                                name,
+                                                                surname
                                                         )
                                                         mAlertDialog2.dismiss()
                                                         mAlertDialog.dismiss()
                                                         Toast.makeText(
-                                                            requireContext(),
-                                                            "Dodano administratora.",
-                                                            Toast.LENGTH_SHORT
+                                                                requireContext(),
+                                                                "Dodano administratora.",
+                                                                Toast.LENGTH_SHORT
                                                         ).show()
                                                     }
 
@@ -266,9 +275,9 @@ class DashboardLogsListAdmin : Fragment() {
                                             })
                                         } else if (response.code() == 404) {
                                             Toast.makeText(
-                                                requireContext(),
-                                                "Niepoprawne hasło.",
-                                                Toast.LENGTH_SHORT
+                                                    requireContext(),
+                                                    "Niepoprawne hasło.",
+                                                    Toast.LENGTH_SHORT
                                             ).show();
                                         }
                                     }
@@ -276,9 +285,9 @@ class DashboardLogsListAdmin : Fragment() {
                                 })
                             } else
                                 Toast.makeText(
-                                    requireContext(),
-                                    "Nie wpisano hasła.",
-                                    Toast.LENGTH_SHORT
+                                        requireContext(),
+                                        "Nie wpisano hasła.",
+                                        Toast.LENGTH_SHORT
                                 ).show();
                         }
 
@@ -290,7 +299,7 @@ class DashboardLogsListAdmin : Fragment() {
                     }
                 } else
                     Toast.makeText(requireContext(), "Pozostawiono puste pola.", Toast.LENGTH_SHORT)
-                        .show();
+                            .show();
 
             }
             mDialogView.addCancelButton.setOnClickListener {
@@ -299,112 +308,111 @@ class DashboardLogsListAdmin : Fragment() {
         }
 
 
-            addTask.setOnClickListener {
-                logsViewModel.getAllEmployeesForTaskAdding()
-                val mDialogView =
+        addTask2.setOnClickListener {
+            adminEmployeeViewModel.getAllEmployeesForTaskAdding()
+            val mDialogView =
                     LayoutInflater.from(requireContext()).inflate(R.layout.add_task_dialog, null)
-                val mBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
+            val mBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
                     .setView(mDialogView)
-                val mAlertDialog = mBuilder.show()
+            val mAlertDialog = mBuilder.show()
 
-                val adapter: ArrayAdapter<String> =
-                    ArrayAdapter(requireContext(), R.layout.spinner_item, logsViewModel.employeeList2)
+            val adapter: ArrayAdapter<String> =
+                    ArrayAdapter(requireContext(), R.layout.spinner_item, adminEmployeeViewModel.employeeList2)
 
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-                adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-                mDialogView.addTaskSelectedEmployee.adapter = adapter
+            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+            mDialogView.addTaskSelectedEmployee.adapter = adapter
 
 
-                mDialogView.addOkButton.setOnClickListener {
-                    val selectedEmployee =
+            mDialogView.addOkButton.setOnClickListener {
+                val selectedEmployee =
                         mDialogView.addTaskSelectedEmployee.selectedItem.toString()
-                    val task = mDialogView.addTask.text.toString()
-                    if (!selectedEmployee.isNullOrEmpty() && !task.isNullOrEmpty()) {
-                        var canAddTask =
+                val task = mDialogView.addTask.text.toString()
+                if (!selectedEmployee.isNullOrEmpty() && !task.isNullOrEmpty()) {
+                    var canAddTask =
                             ApiRepository.canAddTask(selectedEmployee.split(" ").first(), task)
 
-                        canAddTask.enqueue(object : Callback<ResponseBody> {
-                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                Toast.makeText(
+                    canAddTask.enqueue(object : Callback<ResponseBody> {
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            Toast.makeText(
                                     requireContext(),
                                     "Błąd! Nie połączono z bazą danych.",
                                     Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                            ).show()
+                        }
 
-                            override fun onResponse(
+                        override fun onResponse(
                                 call: Call<ResponseBody>,
                                 response: Response<ResponseBody>
-                            ) {
-                                if (response.code() == 200) {
-                                    var addTask = ApiRepository.addTask(
+                        ) {
+                            if (response.code() == 200) {
+                                var addTask = ApiRepository.addTask(
                                         selectedEmployee.split(" ").first(),
                                         task
-                                    )
+                                )
 
-                                    addTask.enqueue(object : Callback<ResponseBody> {
-                                        override fun onFailure(
+                                addTask.enqueue(object : Callback<ResponseBody> {
+                                    override fun onFailure(
                                             call: Call<ResponseBody>,
                                             t: Throwable
-                                        ) {
-                                            Toast.makeText(
+                                    ) {
+                                        Toast.makeText(
                                                 requireContext(),
                                                 "Błąd! Nie połączono z bazą danych.",
                                                 Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
+                                        ).show()
+                                    }
 
-                                        override fun onResponse(
+                                    override fun onResponse(
                                             call: Call<ResponseBody>,
                                             response: Response<ResponseBody>
-                                        ) {
-                                            if (response.code() == 200) {
-                                                Toast.makeText(
+                                    ) {
+                                        if (response.code() == 200) {
+                                            Toast.makeText(
                                                     requireContext(),
                                                     "Dodano zadanie",
                                                     Toast.LENGTH_SHORT
-                                                ).show()
-                                                mAlertDialog.dismiss()
-                                            } else if (response.code() == 404) {
-                                                Toast.makeText(
+                                            ).show()
+                                            mAlertDialog.dismiss()
+                                        } else if (response.code() == 404) {
+                                            Toast.makeText(
                                                     requireContext(),
                                                     "Nie dodano zadania",
                                                     Toast.LENGTH_SHORT
-                                                ).show()
-                                                mAlertDialog.dismiss()
-                                            }
+                                            ).show()
+                                            mAlertDialog.dismiss()
                                         }
+                                    }
 
-                                    })
-                                } else if (response.code() == 404) {
-                                    Toast.makeText(
+                                })
+                            } else if (response.code() == 404) {
+                                Toast.makeText(
                                         requireContext(),
                                         "To zadanie zostało już przydzielone temu pracownikowi.",
                                         Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+                                ).show()
                             }
+                        }
 
-                        })
-                    } else
-                        Toast.makeText(
+                    })
+                } else
+                    Toast.makeText(
                             requireContext(),
                             "Pozostawiono puste pola.",
                             Toast.LENGTH_SHORT
-                        ).show();
-                }
-                mDialogView.addCancelButton.setOnClickListener {
-                    mAlertDialog.dismiss()
-                }
+                    ).show();
             }
-
+            mDialogView.addCancelButton.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
+        }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(): DashboardLogsListAdmin {
-            return DashboardLogsListAdmin()
+        fun newInstance(): DashboardEmployeesAdmin {
+            return DashboardEmployeesAdmin()
         }
     }
 
@@ -416,20 +424,20 @@ class DashboardLogsListAdmin : Fragment() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 if(newText!!.isNotEmpty()){
-                    logsViewModel.filteredAllLogs.value?.clear()
+                    adminEmployeeViewModel.filteredEmployeeList.value?.clear()
                     val search = newText.toLowerCase(Locale.getDefault())
-                    logsViewModel.allLogs.value?.forEach({
-                        if  (it.employeeID.toLowerCase(Locale.getDefault()).contains(search) || it.name.toLowerCase(Locale.getDefault()).contains(search) || it.surname.toLowerCase(Locale.getDefault()).contains(search) || it.date.toLowerCase(Locale.getDefault()).contains(search))
-                            logsViewModel.filteredAllLogs.value?.add(it)
+                    adminEmployeeViewModel.employeeList.value?.forEach({
+                        if  (it.employeeID.toLowerCase(Locale.getDefault()).contains(search) || it.name.toLowerCase(Locale.getDefault()).contains(search) || it.surname.toLowerCase(Locale.getDefault()).contains(search))
+                            adminEmployeeViewModel.filteredEmployeeList.value?.add(it)
                     })
-                    logsList_recycler_view.adapter!!.notifyDataSetChanged()
+                    employeeList_recycler_view.adapter!!.notifyDataSetChanged()
                 }
                 else{
-                    logsViewModel.filteredAllLogs.value?.clear()
-                    logsViewModel.allLogs.value?.forEach {
-                        logsViewModel.filteredAllLogs.value?.add(it)
+                    adminEmployeeViewModel.filteredEmployeeList.value?.clear()
+                    adminEmployeeViewModel.employeeList.value?.forEach {
+                        adminEmployeeViewModel.filteredEmployeeList.value?.add(it)
                     }
-                    logsList_recycler_view.adapter!!.notifyDataSetChanged()
+                    employeeList_recycler_view.adapter!!.notifyDataSetChanged()
                 }
                 return true
             }
@@ -445,42 +453,42 @@ class DashboardLogsListAdmin : Fragment() {
 
     private fun setVisibility(clicked: Boolean) {
         if(!clicked){
-            addEmployee.visibility = View.VISIBLE
-            addTask.visibility = View.VISIBLE
-            addAdmin.visibility = View.VISIBLE
+            addEmployee2.visibility = View.VISIBLE
+            addTask2.visibility = View.VISIBLE
+            addAdmin2.visibility = View.VISIBLE
         }else{
-            addEmployee.visibility = View.GONE
-            addTask.visibility = View.GONE
-            addAdmin.visibility = View.GONE
+            addEmployee2.visibility = View.GONE
+            addTask2.visibility = View.GONE
+            addAdmin2.visibility = View.GONE
         }
     }
 
     private fun setAnimation(clicked: Boolean) {
         if(!clicked){
-            addEmployee.startAnimation(fromBottom)
-            addTask.startAnimation(fromBottom)
-            addAdmin.startAnimation(fromBottom)
+            addEmployee2.startAnimation(fromBottom)
+            addTask2.startAnimation(fromBottom)
+            addAdmin2.startAnimation(fromBottom)
 
-            add.startAnimation(rotateOpen)
+            add2.startAnimation(rotateOpen)
         }else{
-            addEmployee.startAnimation(toBottom)
-            addTask.startAnimation(toBottom)
-            addAdmin.startAnimation(toBottom)
+            addEmployee2.startAnimation(toBottom)
+            addTask2.startAnimation(toBottom)
+            addAdmin2.startAnimation(toBottom)
 
-            add.startAnimation(rotateClose)
+            add2.startAnimation(rotateClose)
         }
     }
 
     private fun setClickable(clicked: Boolean) {
         if(!clicked){
-            addEmployee.isClickable = true
-            addTask.isClickable = true
-            addAdmin.isClickable = true
+            addEmployee2.isClickable = true
+            addTask2.isClickable = true
+            addAdmin2.isClickable = true
         }else{
-            addEmployee.isClickable = false
-            addTask.isClickable = false
-            addAdmin.isClickable = false
+            addEmployee2.isClickable = false
+            addTask2.isClickable = false
+            addAdmin2.isClickable = false
         }
     }
-
 }
+

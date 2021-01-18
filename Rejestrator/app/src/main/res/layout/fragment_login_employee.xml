@@ -16,7 +16,7 @@
         android:drawableLeft="@drawable/ic_info"
         android:drawablePadding="5dp"
         android:drawableTint="#FF0000"
-        android:text="Niepoprawne dane!"
+        android:text="Niepoprawne dane logowania!"
         android:visibility="invisible"
         android:textSize="12sp"
         android:textColor="#FF0000"

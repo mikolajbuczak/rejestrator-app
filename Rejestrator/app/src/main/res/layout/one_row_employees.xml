@@ -7,7 +7,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/row_nameEmployee"
+            android:id="@+id/row_employeeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Imie"
@@ -16,32 +16,34 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/row_surnameEmployee"
+            android:id="@+id/row_employeeSurname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nazwisko"
-            android:layout_marginStart="7dp"
-            android:layout_toEndOf="@id/row_nameEmployee"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/row_employeeName"
             android:textColor="@color/aboveBack"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/row_dateEmployee"
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:id="@+id/row_chartButton"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="Data"
-            android:layout_marginStart="10dp"
-            android:layout_alignParentEnd="true"
-            android:textColor="@color/aboveBack"
-            android:textSize="18sp" />
+            android:backgroundTint="@color/white"
+            android:gravity="right"
+            android:src="@drawable/ic_chart"
+            android:tint="@color/aboveBack"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"/>
+
 
         <TextView
-            android:id="@+id/row_idEmployee"
+            android:id="@+id/row_employeeID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ID"
             android:textSize="16sp"
-            android:layout_below="@+id/row_nameEmployee" />
+            android:layout_below="@+id/row_employeeName" />
 
     </RelativeLayout>
 

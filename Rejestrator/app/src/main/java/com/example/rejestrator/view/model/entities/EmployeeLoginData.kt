@@ -9,6 +9,10 @@ class EmployeeLoginData {
     lateinit var employeeID : String
 
     @Expose
+    @SerializedName("pin")
+    lateinit var pin : String
+
+    @Expose
     @SerializedName("name")
     lateinit var name : String
 

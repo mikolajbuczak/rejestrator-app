@@ -1,63 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/taskDoneEmployeeList">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-
-    <TextView
-        android:id="@+id/taskDoneEmployee"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text=""
-        android:textColor="@color/aboveBack"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/row_taskDoneStartDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:text=""
-        android:textColor="@color/aboveBack"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskDoneEmployee" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/row_taskDoneEndDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/aboveBack"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/row_taskDoneStartDate"
-        app:layout_constraintTop_toBottomOf="@+id/taskDoneEmployee" />
+            <TextView
+                android:id="@+id/row_taskDoneEmployee"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Zadanie"
+                android:textColor="@color/aboveBack"
+                android:textSize="13.5sp" />
 
-    <TextView
-        android:id="@+id/row_taskDoneTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="5dp"
-        android:text=""
-        android:textColor="@color/aboveBack"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/row_taskDoneEndDate"
-        app:layout_constraintTop_toBottomOf="@+id/taskDoneEmployee" />
+            <TextView
+                android:id="@+id/row_taskDoneTime"
+                android:layout_width="0dp"
+                android:layout_weight="0.35"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="right"
+                android:text="Czas"
+                android:textColor="@color/aboveBack"
+                android:textSize="12sp"/>
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/row_taskDoneStartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:textSize="12sp"
+            android:layout_below="@+id/linearLayout" />
+
+        <TextView
+            android:id="@+id/row_taskDoneEndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop"
+            android:layout_marginStart="5dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_toEndOf="@id/row_space"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/row_space"
+            android:layout_width="10dp"
+            android:layout_height="16dp"
+            android:text="->"
+            android:src="@drawable/ic_date_end"
+            android:layout_marginStart="5dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_toEndOf="@id/row_taskDoneStartDate"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

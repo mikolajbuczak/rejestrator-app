@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/logowania2"
+        android:text="@string/pracownicy2"
         android:textSize="25sp"
         android:textStyle="bold"
         android:textColor="@color/aboveBack"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/logsList_recycler_view"
+        android:id="@+id/employeeList_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
@@ -102,20 +102,20 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_view"
+        android:id="@+id/search_view_Employees"
         android:layout_width="220dp"
         android:layout_height="45dp"
         android:radius="2dp"
         android:background="@drawable/bg_white_rounded"
         app:tint="@color/white"
         app:actionViewClass="android.widget.SearchView"
-        app:layout_constraintBottom_toTopOf="@+id/logsList_recycler_view"
+        app:layout_constraintBottom_toTopOf="@+id/employeeList_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textLogs" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add"
+        android:id="@+id/add2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -130,7 +130,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addEmployee"
+        android:id="@+id/addEmployee2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -141,11 +141,11 @@
         android:focusable="true"
         android:visibility="invisible"
         android:src="@drawable/ic_employee_add"
-        app:layout_constraintBottom_toTopOf="@+id/add"
-        app:layout_constraintEnd_toEndOf="@+id/add" />
+        app:layout_constraintBottom_toTopOf="@+id/add2"
+        app:layout_constraintEnd_toEndOf="@+id/add2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addTask"
+        android:id="@+id/addTask2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -156,11 +156,11 @@
         android:focusable="true"
         android:visibility="invisible"
         android:src="@drawable/ic_task_add"
-        app:layout_constraintBottom_toTopOf="@+id/addEmployee"
-        app:layout_constraintEnd_toEndOf="@+id/addEmployee" />
+        app:layout_constraintBottom_toTopOf="@+id/addEmployee2"
+        app:layout_constraintEnd_toEndOf="@+id/addEmployee2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addAdmin"
+        android:id="@+id/addAdmin2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -171,7 +171,7 @@
         android:focusable="true"
         android:visibility="invisible"
         android:src="@drawable/ic_admin_add"
-        app:layout_constraintBottom_toTopOf="@+id/addTask"
-        app:layout_constraintEnd_toEndOf="@+id/addTask" />
+        app:layout_constraintBottom_toTopOf="@+id/addTask2"
+        app:layout_constraintEnd_toEndOf="@+id/addTask2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

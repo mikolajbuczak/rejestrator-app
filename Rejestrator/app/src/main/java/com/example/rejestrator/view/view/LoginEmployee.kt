@@ -1,6 +1,7 @@
 package com.example.rejestrator.view.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,8 +64,10 @@ class LoginEmployee : Fragment() {
                     }
 
                     override fun onResponse(call: Call<EmployeeLoginData>, response: Response<EmployeeLoginData>) {
+                        Log.d("Lool", response.code().toString())
                         if(response.code() == 200)
                         {
+                            Log.d("Lool", "lol")
                             employeeLoginData = response.body()!!
                             State.currentEmployeeId = employeeLoginData.employeeID
                             State.currentEmployeeShift = employeeLoginData.shift

@@ -14,8 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class EmployeeTaskDoneListViewModel(application: Application) : AndroidViewModel(application)  {
-    private val _allTasks: MutableLiveData<List<TaskDone>> = MutableLiveData()
-    val allTasks: LiveData<List<TaskDone>>
+    private val _allTasks: MutableLiveData<ArrayList<TaskDone>> = MutableLiveData()
+    val allTasks: LiveData<ArrayList<TaskDone>>
         get()=_allTasks
 
     fun getTasksDoneForEmployee(id : String)

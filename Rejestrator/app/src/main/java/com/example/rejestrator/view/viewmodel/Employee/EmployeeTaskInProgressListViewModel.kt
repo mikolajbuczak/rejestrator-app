@@ -11,8 +11,8 @@ import com.example.rejestrator.view.model.repositories.ApiRepository
 import kotlinx.coroutines.launch
 
 class EmployeeTaskInProgressListViewModel(application: Application) : AndroidViewModel(application)  {
-    private val _allTasks: MutableLiveData<List<TaskInProgress>> = MutableLiveData()
-    val allTasks: LiveData<List<TaskInProgress>>
+    private val _allTasks: MutableLiveData<ArrayList<TaskInProgress>> = MutableLiveData()
+    val allTasks: LiveData<ArrayList<TaskInProgress>>
         get()=_allTasks
 
     fun getTasksInProgressForEmployee(id : String)

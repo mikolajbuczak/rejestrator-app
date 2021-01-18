@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.one_row_in_progress_list.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EmployeeTaskDoneListAdapter(var taskList: LiveData<List<TaskDone>>, var taskViewModel: EmployeeTaskDoneListViewModel) : RecyclerView.Adapter<EmployeeTaskDoneListAdapter.Holder>() {
+class EmployeeTaskDoneListAdapter(var taskList: LiveData<ArrayList<TaskDone>>, var taskViewModel: EmployeeTaskDoneListViewModel) : RecyclerView.Adapter<EmployeeTaskDoneListAdapter.Holder>() {
 
     class Holder(val view: View): RecyclerView.ViewHolder(view) {
         val textView1= view.findViewById<TextView>(R.id.row_doneTask)
@@ -33,8 +33,6 @@ class EmployeeTaskDoneListAdapter(var taskList: LiveData<List<TaskDone>>, var ta
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-
-        val currentItem = taskList.value?.get(position)
 
         holder.textView1.text=taskList.value?.get(position)?.task
     }

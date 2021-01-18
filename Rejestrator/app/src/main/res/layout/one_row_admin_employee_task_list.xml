@@ -1,38 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
+    android:orientation="horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/row_taskEmployeeList">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/row_taskEmployee"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginTop="7dp"
+        android:gravity="center_vertical"
         android:text=""
         android:textColor="@color/aboveBack"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        android:textSize="16.5sp" />
 
     <ImageButton
         android:id="@+id/row_deleteTaskButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="4dp"
         android:backgroundTint="@color/white"
-        android:src="@drawable/ic_delete"
-        android:tint="@color/aboveBack"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/row_taskEmployee"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:src="@drawable/ic_remove"
+        android:tint="@color/aboveBack" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class EmployeeTaskInProgressListAdapter(var taskList: LiveData<List<TaskInProgress>>, var taskViewModel: EmployeeTaskInProgressListViewModel) : RecyclerView.Adapter<EmployeeTaskInProgressListAdapter.Holder>() {
+class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInProgress>>, var taskViewModel: EmployeeTaskInProgressListViewModel) : RecyclerView.Adapter<EmployeeTaskInProgressListAdapter.Holder>() {
 
     class Holder(val view: View): RecyclerView.ViewHolder(view) {
         val textView1= view.findViewById<TextView>(R.id.row_inProgressTask)
@@ -58,7 +58,6 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<List<TaskInProgre
                 val mBuilder = AlertDialog.Builder(x.context, R.style.CustomAlertDialog)
                     .setView(mDialogView)
                 val mAlertDialog = mBuilder.show()
-                var employeeLoginData : EmployeeLoginData
 
                 mDialogView.confirmOkButton.setOnClickListener{
                     val pinConfirm = mDialogView.confirmPin.text.toString()
@@ -75,34 +74,19 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<List<TaskInProgre
                                 if (response.code() == 200) {
                                     mAlertDialog.dismiss()
 
-                                    var endTaskCall = ApiRepository.endTask(currentItem.id)
+                                    taskViewModel.endTask(currentItem.id)
+                                    taskList.value?.remove(currentItem)
+                                    notifyItemRemoved(position)
 
-                                    endTaskCall.enqueue(object : Callback<ResponseBody> {
-                                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                            Toast.makeText(
-                                                x.context,
-                                                "Błąd! Nie połączono z bazą danych.",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
+                                    val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                                    val currentDate = sdf.format(Date())
 
-                                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                                            if (response.code() == 200) {
-                                                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
-                                                val currentDate = sdf.format(Date())
+                                    //time if shift
+                                    taskViewModel.addTaskDone(currentItem.employeeID, currentItem.task, currentItem.date, currentDate, "0")
 
-                                                //time if shift
-                                                taskViewModel.addTaskDone(currentItem.employeeID, currentItem.task, currentItem.date, currentDate, "0")
+                                    taskViewModel.getTasksInProgressForEmployee(State.currentEmployeeId)
 
-                                                taskViewModel.getTasksInProgressForEmployee(State.currentEmployeeId)
-
-                                                x.findNavController().navigate(R.id.action_dashboardTaskInProgressListEmployee_self)
-
-                                            } else if (response.code() == 404) {
-                                                Toast.makeText(x.context, "Nie zakończono zadania.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    })
+                                    x.findNavController().navigate(R.id.action_dashboardTaskInProgressListEmployee_self)
                                 } else if (response.code() == 404) {
                                     Toast.makeText(x.context, "Niepoprawny pin.", Toast.LENGTH_SHORT).show();
                                 }
@@ -110,7 +94,7 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<List<TaskInProgre
                         })
                     }
                     else
-                        Toast.makeText(x.context, "Nie wpisano hasła.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(x.context, "Nie wpisano pinu.", Toast.LENGTH_SHORT).show();
                 }
 
                 mDialogView.confirmCancelButton.setOnClickListener{

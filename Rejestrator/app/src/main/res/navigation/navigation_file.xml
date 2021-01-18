@@ -91,9 +91,6 @@
             android:id="@+id/action_dashboardLogsListAdmin_to_loginEmployee"
             app:destination="@id/loginEmployee" />
         <action
-            android:id="@+id/action_dashboardLogsListAdmin_to_dashboardEmployeeListAdmin"
-            app:destination="@id/dashboardEmployeeListAdmin" />
-        <action
             android:id="@+id/action_dashboardLogsListAdmin_self"
             app:destination="@id/dashboardLogsListAdmin" />
         <action
@@ -102,39 +99,62 @@
         <action
             android:id="@+id/action_dashboardLogsListAdmin_to_loginAdmin"
             app:destination="@id/loginAdmin" />
+        <action
+            android:id="@+id/action_dashboardLogsListAdmin_to_dashboardEmployeesAdmin"
+            app:destination="@id/dashboardEmployeesAdmin" />
+        <action
+            android:id="@+id/action_dashboardLogsListAdmin_to_dashboardEmployeesAdmin2"
+            app:destination="@id/dashboardEmployeesAdmin" />
     </fragment>
     <fragment
         android:id="@+id/dashboardEmployeeListAdmin"
         android:name="com.example.rejestrator.view.view.Admin.DashboardEmployeeListAdmin"
         android:label="DashboardEmployeeListAdmin" >
         <action
-            android:id="@+id/action_dashboardEmployeeListAdmin_self"
-            app:destination="@id/dashboardEmployeeListAdmin" />
-        <action
             android:id="@+id/action_dashboardEmployeeListAdmin_to_dashboardRaportAdmin"
             app:destination="@id/dashboardRaportAdmin" />
         <action
-            android:id="@+id/action_dashboardEmployeeListAdmin_to_loginAdmin"
-            app:destination="@id/loginAdmin" />
-        <action
             android:id="@+id/action_dashboardEmployeeListAdmin_to_dashboardLogsListAdmin"
             app:destination="@id/dashboardLogsListAdmin" />
+        <action
+            android:id="@+id/action_dashboardEmployeeListAdmin_to_dashboardEmployeesAdmin"
+            app:destination="@id/dashboardEmployeesAdmin" />
     </fragment>
     <fragment
         android:id="@+id/dashboardRaportAdmin"
         android:name="com.example.rejestrator.view.view.Admin.DashboardRaportAdmin"
         android:label="DashboardRaportAdmin" >
         <action
-            android:id="@+id/action_dashboardRaportAdmin_self"
-            app:destination="@id/dashboardRaportAdmin" />
-        <action
             android:id="@+id/action_dashboardRaportAdmin_to_dashboardLogsListAdmin"
             app:destination="@id/dashboardLogsListAdmin" />
         <action
-            android:id="@+id/action_dashboardRaportAdmin_to_dashboardEmployeeListAdmin"
+            android:id="@+id/action_dashboardRaportAdmin_to_dashboardEmployeesAdmin"
+            app:destination="@id/dashboardEmployeesAdmin" />
+        <action
+            android:id="@+id/action_dashboardRaportAdmin_to_dashboardEmployeesAdmin2"
+            app:destination="@id/dashboardEmployeesAdmin" />
+        <action
+            android:id="@+id/action_dashboardRaportAdmin_self"
+            app:destination="@id/dashboardRaportAdmin" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardEmployeesAdmin"
+        android:name="com.example.rejestrator.view.view.Admin.DashboardEmployeesAdmin"
+        android:label="DashboardEmployeesAdmin" >
+        <action
+            android:id="@+id/action_dashboardEmployeesAdmin_to_dashboardEmployeeListAdmin"
             app:destination="@id/dashboardEmployeeListAdmin" />
         <action
-            android:id="@+id/action_dashboardRaportAdmin_to_loginAdmin"
+            android:id="@+id/action_dashboardEmployeesAdmin_self"
+            app:destination="@id/dashboardEmployeesAdmin" />
+        <action
+            android:id="@+id/action_dashboardEmployeesAdmin_to_dashboardRaportAdmin"
+            app:destination="@id/dashboardRaportAdmin" />
+        <action
+            android:id="@+id/action_dashboardEmployeesAdmin_to_dashboardLogsListAdmin"
+            app:destination="@id/dashboardLogsListAdmin" />
+        <action
+            android:id="@+id/action_dashboardEmployeesAdmin_to_loginAdmin"
             app:destination="@id/loginAdmin" />
     </fragment>
 

@@ -38,8 +38,6 @@ class AdminLogsListAdapter(var logsList: LiveData<ArrayList<LoginData>>, var log
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
-        val currentItem = logsList.value?.get(position)
-
         holder.textView1.text=logsList.value?.get(position)?.employeeID
         holder.textView2.text=logsList.value?.get(position)?.name
         holder.textView3.text=logsList.value?.get(position)?.surname
