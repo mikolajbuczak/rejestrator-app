@@ -56,10 +56,6 @@ class DashboardRaportAdmin : Fragment() {
     var i = 0
 
     val colors: ArrayList<Int> = ArrayList()
-    var LogsCount : Int = 0
-    var TasksCount : Int = 0
-    var TasksInProgressCount : Int = 0
-    var TasksDoneCount : Int = 0
 
     lateinit var adminRaportViewModel: AdminRaportViewModel
 
@@ -68,11 +64,6 @@ class DashboardRaportAdmin : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         adminRaportViewModel = ViewModelProvider(requireActivity()).get(AdminRaportViewModel::class.java)
-
-        /*adminRaportViewModel.fillLogsLists(State.selectedEmployeeId)
-        adminRaportViewModel.fillTaskLists(State.selectedEmployeeId)
-        adminRaportViewModel.fillTasksInProgressLists(State.selectedEmployeeId)
-        adminRaportViewModel.fillTaskDoneLists(State.selectedEmployeeId)*/
 
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val currentDate = sdf.format(Date())
@@ -95,11 +86,6 @@ class DashboardRaportAdmin : Fragment() {
 
         employeeLabelNameChart.setText(State.selectedEmployeeName)
         employeeLabelSurnameChart.setText(State.selectedEmployeeSurname)
-
-        /*adminRaportViewModel.fillLogsLists(State.selectedEmployeeId)
-        adminRaportViewModel.fillTaskLists(State.selectedEmployeeId)
-        adminRaportViewModel.fillTasksInProgressLists(State.selectedEmployeeId)
-        adminRaportViewModel.fillTaskDoneLists(State.selectedEmployeeId)*/
 
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val currentDate = sdf.format(Date())
