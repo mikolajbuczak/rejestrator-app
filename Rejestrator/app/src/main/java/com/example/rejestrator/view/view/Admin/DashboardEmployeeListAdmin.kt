@@ -40,6 +40,7 @@ import kotlinx.android.synthetic.main.fragment_employee_list_admin.employeeList
 import kotlinx.android.synthetic.main.fragment_employee_list_admin.logsList
 import kotlinx.android.synthetic.main.fragment_logs_list_admin.*
 import kotlinx.android.synthetic.main.fragment_logs_list_admin.logout
+import kotlinx.android.synthetic.main.fragment_raport_list_admin.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -209,8 +210,15 @@ class DashboardEmployeeListAdmin : Fragment() {
                                     Toast.makeText(requireContext(), "To id jest już przypisane.", Toast.LENGTH_SHORT).show()
                                 } else if (response.code() == 200) {
                                     Toast.makeText(requireContext(), "Edytowano pracownika.", Toast.LENGTH_SHORT).show()
-                                    employeeLabelName.setText(name)
-                                    employeeLabelSurname.setText(surname)
+                                    if(name.count() < surname.count())
+                                    {
+                                        employeeLabelName.setText(name)
+                                        employeeLabelSurname.setText(surname)
+                                    }
+                                    else{
+                                        employeeLabelName.setText(surname)
+                                        employeeLabelSurname.setText(name)
+                                    }
                                     mAlertDialog.dismiss()
 
                                 }

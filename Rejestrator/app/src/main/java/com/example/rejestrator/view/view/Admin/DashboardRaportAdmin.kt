@@ -87,12 +87,12 @@ class DashboardRaportAdmin : Fragment() {
 
         if(State.selectedEmployeeName.count() < State.selectedEmployeeSurname.count())
         {
-            employeeLabelName.setText(State.selectedEmployeeName)
-            employeeLabelSurname.setText(State.selectedEmployeeSurname)
+            employeeLabelNameChart.setText(State.selectedEmployeeName)
+            employeeLabelSurnameChart.setText(State.selectedEmployeeSurname)
         }
         else{
-            employeeLabelName.setText(State.selectedEmployeeSurname)
-            employeeLabelSurname.setText(State.selectedEmployeeName)
+            employeeLabelNameChart.setText(State.selectedEmployeeSurname)
+            employeeLabelSurnameChart.setText(State.selectedEmployeeName)
         }
 
         val sdf = SimpleDateFormat("dd.MM.yyyy")
