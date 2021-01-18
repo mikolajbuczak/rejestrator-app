@@ -119,6 +119,9 @@
         <action
             android:id="@+id/action_dashboardEmployeeListAdmin_to_dashboardEmployeesAdmin"
             app:destination="@id/dashboardEmployeesAdmin" />
+        <action
+            android:id="@+id/action_dashboardEmployeeListAdmin_self"
+            app:destination="@id/dashboardEmployeeListAdmin" />
     </fragment>
     <fragment
         android:id="@+id/dashboardRaportAdmin"

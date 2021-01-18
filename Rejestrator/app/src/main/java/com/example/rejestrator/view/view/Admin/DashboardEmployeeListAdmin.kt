@@ -210,6 +210,11 @@ class DashboardEmployeeListAdmin : Fragment() {
                                     Toast.makeText(requireContext(), "To id jest już przypisane.", Toast.LENGTH_SHORT).show()
                                 } else if (response.code() == 200) {
                                     Toast.makeText(requireContext(), "Edytowano pracownika.", Toast.LENGTH_SHORT).show()
+                                    State.selectedEmployeeId = id
+                                    State.selectedEmployeePin = pin
+                                    State.selectedEmployeeName = name
+                                    State.selectedEmployeeSurname = surname
+                                    State.selectedEmployeeShift = shift
                                     if(name.count() < surname.count())
                                     {
                                         employeeLabelName.setText(name)
@@ -219,6 +224,7 @@ class DashboardEmployeeListAdmin : Fragment() {
                                         employeeLabelName.setText(surname)
                                         employeeLabelSurname.setText(name)
                                     }
+                                    view.findNavController().navigate(R.id.action_dashboardEmployeeListAdmin_self)
                                     mAlertDialog.dismiss()
 
                                 }

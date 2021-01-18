@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Imie"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:textColor="@color/aboveBack"
             android:textSize="18sp" />
 
@@ -19,9 +19,9 @@
             android:id="@+id/row_employeeSurname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nazwisko"
             android:layout_marginStart="5dp"
             android:layout_toEndOf="@id/row_employeeName"
+            android:text="Nazwisko"
             android:textColor="@color/aboveBack"
             android:textSize="18sp" />
 
@@ -34,6 +34,7 @@
             android:src="@drawable/ic_chart"
             android:tint="@color/aboveBack"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:layout_centerInParent="true"/>
 
 
