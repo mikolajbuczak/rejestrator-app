@@ -74,9 +74,8 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                                 if (response.code() == 200) {
                                     mAlertDialog.dismiss()
 
+                                    removeItemAt(position)
                                     taskViewModel.endTask(currentItem.id)
-                                    taskList.value?.remove(currentItem)
-                                    notifyItemRemoved(position)
 
                                     val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
                                     val currentDate = sdf.format(Date())
@@ -84,9 +83,9 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                                     //time if shift
                                     taskViewModel.addTaskDone(currentItem.employeeID, currentItem.task, currentItem.date, currentDate, "0")
 
-                                    taskViewModel.getTasksInProgressForEmployee(State.currentEmployeeId)
-
                                     x.findNavController().navigate(R.id.action_dashboardTaskInProgressListEmployee_self)
+
+                                    taskViewModel.getTasksInProgressForEmployee(State.currentEmployeeId)
                                 } else if (response.code() == 404) {
                                     Toast.makeText(x.context, "Niepoprawny pin.", Toast.LENGTH_SHORT).show();
                                 }
@@ -101,6 +100,14 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                     mAlertDialog.dismiss()
                 }
             }
+        }
+    }
+
+    private fun removeItemAt(position: Int) {
+        if (taskList.value?.size!! > 0) {
+            taskList.value?.removeAt(position)
+            notifyItemRemoved(position)
+            notifyDataSetChanged()
         }
     }
 }

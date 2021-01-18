@@ -107,8 +107,15 @@ class DashboardEmployeeListAdmin : Fragment() {
         logsList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardEmployeeListAdmin_to_dashboardLogsListAdmin) }
         employeeList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardEmployeeListAdmin_to_dashboardEmployeesAdmin) }
 
-        employeeLabelName.setText(State.selectedEmployeeName)
-        employeeLabelSurname.setText(State.selectedEmployeeSurname)
+        if(State.selectedEmployeeName.count() < State.selectedEmployeeSurname.count())
+        {
+            employeeLabelName.setText(State.selectedEmployeeName)
+            employeeLabelSurname.setText(State.selectedEmployeeSurname)
+        }
+        else{
+            employeeLabelName.setText(State.selectedEmployeeSurname)
+            employeeLabelSurname.setText(State.selectedEmployeeName)
+        }
 
         adapterEmployeeLogs = AdminEmployeeLogsAdapter(adminEmployeeViewModel.employeeLogs, adminEmployeeViewModel)
 

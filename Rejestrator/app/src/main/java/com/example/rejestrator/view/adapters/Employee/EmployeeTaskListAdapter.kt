@@ -5,21 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.LiveData
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rejestrator.R
-import com.example.rejestrator.view.State
-import com.example.rejestrator.view.model.entities.EmployeeLoginData
 import com.example.rejestrator.view.model.entities.Task
-import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Employee.EmployeeTaskListViewModel
 import kotlinx.android.synthetic.main.one_row_available_list.view.*
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import java.lang.Boolean
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,16 +40,22 @@ class EmployeeTaskListAdapter(var taskList: LiveData<ArrayList<Task>>, var taskV
         holder.view.row_startTaskButton.setOnClickListener { x->
             if (currentItem != null) {
 
+                removeItemAt(position)
                 taskViewModel.startTask(currentItem.id)
 
                 val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
                 val currentDate = sdf.format(Date())
 
                 taskViewModel.addTaskInProgress(currentItem.employeeID, currentItem.task, currentDate)
-
-                taskList.value?.remove(currentItem)
-                notifyItemRemoved(position)
             }
+        }
+    }
+
+    private fun removeItemAt(position: Int) {
+        if (taskList.value?.size!! > 0) {
+            taskList.value?.removeAt(position)
+            notifyItemRemoved(position)
+            notifyDataSetChanged()
         }
     }
 }

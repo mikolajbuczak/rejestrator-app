@@ -30,6 +30,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import kotlinx.android.synthetic.main.fragment_employee_list_admin.*
 import kotlinx.android.synthetic.main.fragment_employee_list_admin.employeeList
 import kotlinx.android.synthetic.main.fragment_employee_list_admin.logsList
 import kotlinx.android.synthetic.main.fragment_raport_list_admin.*
@@ -84,8 +85,15 @@ class DashboardRaportAdmin : Fragment() {
         logsList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardRaportAdmin_to_dashboardLogsListAdmin) }
         employeeList.setOnClickListener { x -> x.findNavController().navigate(R.id.action_dashboardRaportAdmin_to_dashboardEmployeesAdmin) }
 
-        employeeLabelNameChart.setText(State.selectedEmployeeName)
-        employeeLabelSurnameChart.setText(State.selectedEmployeeSurname)
+        if(State.selectedEmployeeName.count() < State.selectedEmployeeSurname.count())
+        {
+            employeeLabelName.setText(State.selectedEmployeeName)
+            employeeLabelSurname.setText(State.selectedEmployeeSurname)
+        }
+        else{
+            employeeLabelName.setText(State.selectedEmployeeSurname)
+            employeeLabelSurname.setText(State.selectedEmployeeName)
+        }
 
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val currentDate = sdf.format(Date())
