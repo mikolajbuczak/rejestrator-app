@@ -43,13 +43,7 @@ import kotlin.collections.ArrayList
 
 
 class DashboardRaportAdmin : Fragment() {
-
-    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_open_anim) }
-    private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_close_anim) }
-    private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.from_bottom_anim) }
-    private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.to_bottom_anim) }
-    private var clicked = false
-
+    
     var chartData : ArrayList<BarEntry> = arrayListOf()
     var labelName : ArrayList<String> = arrayListOf()
     var chartDataList : ArrayList<ChartData> = arrayListOf()

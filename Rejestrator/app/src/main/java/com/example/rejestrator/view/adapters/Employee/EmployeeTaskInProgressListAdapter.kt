@@ -258,9 +258,6 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                         val InMilis: Duration = Duration.millis(timeInBetween.plus(firstDayTime.plus(lastDayTime.millis).millis).millis)
                         totalTime = InMilis.standardMinutes
 
-                        Log.d("InMilis", InMilis.toString())
-                        Log.d("totalTime", totalTime.toString())
-
                         hours = 0;
 
                         while (totalTime > 60) {
@@ -279,8 +276,6 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                         } else {
                             valueToReturn3 = "1min."
                         }
-
-                        Log.d("valueToReturn3", valueToReturn3)
 
                         if (!valueToReturn1.isNullOrEmpty())
                             time = valueToReturn1
@@ -542,9 +537,6 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                 else if (!valueToReturn3.isNullOrEmpty())
                     time = valueToReturn3
 
-                Log.d("lol", valueToReturn1)
-                Log.d("lol", valueToReturn2)
-                Log.d("lol", valueToReturn3)
                 if(!alreadyAdded)
                 {
                     taskViewModel.addTaskDone(employeeID, task, currentDateStart, currentDateEnd, time)
