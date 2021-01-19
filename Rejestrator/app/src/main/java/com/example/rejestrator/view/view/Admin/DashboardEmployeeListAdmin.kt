@@ -224,7 +224,6 @@ class DashboardEmployeeListAdmin : Fragment() {
                                         employeeLabelName.setText(surname)
                                         employeeLabelSurname.setText(name)
                                     }
-                                    view.findNavController().navigate(R.id.action_dashboardEmployeeListAdmin_self)
                                     mAlertDialog.dismiss()
 
                                 }

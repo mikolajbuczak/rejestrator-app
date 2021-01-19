@@ -64,7 +64,6 @@ class LoginEmployee : Fragment() {
                     }
 
                     override fun onResponse(call: Call<EmployeeLoginData>, response: Response<EmployeeLoginData>) {
-                        Log.d("Lool", response.code().toString())
                         if(response.code() == 200)
                         {
                             Log.d("Lool", "lol")
