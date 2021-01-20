@@ -43,7 +43,7 @@ import kotlin.collections.ArrayList
 
 
 class DashboardRaportAdmin : Fragment() {
-    
+
     var chartData : ArrayList<BarEntry> = arrayListOf()
     var labelName : ArrayList<String> = arrayListOf()
     var chartDataList : ArrayList<ChartData> = arrayListOf()

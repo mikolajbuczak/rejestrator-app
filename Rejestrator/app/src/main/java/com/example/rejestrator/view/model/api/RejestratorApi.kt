@@ -104,7 +104,7 @@ interface RejestratorApi {
 
     @FormUrlEncoded
     @POST("logs")
-    fun insertLog(@Field("employeeID") employeeId :String, @Field("date") date :String) : Call<ResponseBody>
+    fun insertLog(@Field("employeeID") employeeID :String, @Field("date") date :String) : Call<ResponseBody>
 
 
 

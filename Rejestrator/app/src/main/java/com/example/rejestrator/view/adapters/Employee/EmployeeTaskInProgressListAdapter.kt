@@ -146,18 +146,25 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
         var stopFloor: DateTime = DateTime(stopNow.year, stopNow.monthOfYear, stopNow.dayOfMonth, 8, 0, 0)
         var stopCeil: DateTime = DateTime(stopNow.year, stopNow.monthOfYear, stopNow.dayOfMonth, 18, 0, 0)
 
-        if (start < startFloor)
+        Log.d("startFloor", startFloor.toString())
+        Log.d("startCeil", startCeil.toString())
+        Log.d("stopNow", stopNow.toString())
+        Log.d("stopFloor", stopFloor.toString())
+        Log.d("startCeil", startCeil.toString())
+        if (startNow < startFloor)
             startNow = startFloor;
-        if (start > startCeil)
+        if (startNow > startCeil)
             startNow = startCeil;
 
-        if (stop < stopFloor)
+        if (stopNow < stopFloor)
             stopNow = stopFloor;
-        if (stop > startCeil)
+        if (stopNow > stopCeil)
             stopNow = stopCeil;
 
         var firstDayTime: Duration = Duration.millis(startCeil.minus(startNow.millis).millis)
+        Log.d("firstDayTime", firstDayTime.standardMinutes.toString())
         var lastDayTime: Duration = Duration.millis(stopNow.minus(stopFloor.millis).millis)
+        Log.d("lastDayTime", lastDayTime.standardMinutes.toString())
         var loggedIn: Boolean = true
 
         //START
@@ -185,7 +192,7 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
             }
 
             override fun onResponse(call: Call<LoggedToday>, response: Response<LoggedToday>) {
-                if (response.body()?.date == null) {
+                if (response.body() == null) {
                     loggedIn = false;
                     firstDayTime = Duration.ZERO
                 }
@@ -195,7 +202,7 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                     }
 
                     override fun onResponse(call: Call<LoggedToday>, response: Response<LoggedToday>) {
-                        if (response.body()?.date == null) {
+                        if (response.body() == null) {
                             lastDayTime = Duration.ZERO
                         }
 
@@ -232,6 +239,7 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                         var itr = startFloor.plusDays(1)
 
                         while (itr < stopFloor) {
+                            Log.d("WHILE", "WHILE")
                             var checkIfLoggedOnThisDayCall3 = ApiRepository.checkIfLoggedOnThisDay(employeeID, "${itr.dayOfMonth}.${itr.monthOfYear}.${itr.year}")
 
                             if (itr.monthOfYear in 1..9 && itr.dayOfMonth in 1..9)
@@ -246,7 +254,9 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                                 }
 
                                 override fun onResponse(call: Call<LoggedToday>, response: Response<LoggedToday>) {
-                                    if (response.body()?.date == null) {
+                                    response.body()?.toString()?.let { Log.d("WESZLO", it) }
+                                    if (response.body() != null) {
+                                        Log.d("response.body()", response.body()!!.date)
                                         timeInBetween += hoursInAWholeDay;
                                     }
                                 }
@@ -258,6 +268,11 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                         val InMilis: Duration = Duration.millis(timeInBetween.plus(firstDayTime.plus(lastDayTime.millis).millis).millis)
                         totalTime = InMilis.standardMinutes
 
+                        Log.d("firstDayTime", firstDayTime.millis.toString())
+                        Log.d("lastDayTime", lastDayTime.millis.toString())
+                        Log.d("timeInBetween", timeInBetween.millis.toString())
+                        Log.d("totalTime", totalTime.toString())
+
                         hours = 0;
 
                         while (totalTime > 60) {
@@ -266,6 +281,7 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                         }
 
                         var totalTimeInDouble = totalTime.toDouble()
+                        Log.d("totalTimeInDouble", totalTimeInDouble.toString())
 
                         if (hours != 0 && Math.floor(totalTimeInDouble) != 0.0) {
                             valueToReturn3 = "${hours}h ${Math.floor(totalTimeInDouble).toInt()}min."
