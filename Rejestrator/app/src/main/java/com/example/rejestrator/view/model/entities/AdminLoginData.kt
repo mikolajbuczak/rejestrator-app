@@ -9,6 +9,10 @@ class AdminLoginData {
     lateinit var administratorID : String
 
     @Expose
+    @SerializedName("password")
+    lateinit var password : String
+
+    @Expose
     @SerializedName("name")
     lateinit var name : String
 

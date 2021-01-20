@@ -250,25 +250,14 @@ class DashboardEmployeeListAdmin : Fragment() {
                 val passwordConfirm = mDialogView.confirmPassword.text.toString()
 
                 if(!passwordConfirm.isNullOrEmpty()){
-                    var loginCall = ApiRepository.canAdminLogin(State.currentAdminUsername, passwordConfirm)
-
-                    loginCall.enqueue(object : Callback<AdminLoginData> {
-                        override fun onFailure(call: Call<AdminLoginData>, t: Throwable) {
-                            Toast.makeText(requireContext(), "Błąd! Nie połączono z bazą danych.", Toast.LENGTH_SHORT).show()
-                        }
-
-                        override fun onResponse(call: Call<AdminLoginData>, response: Response<AdminLoginData>) {
-                            if (response.code() == 200) {
-                                mAlertDialog2.dismiss()
-
-                                adminEmployeeViewModel.deleteEmployee(State.selectedEmployeeWithId.split(" ").first())
-
-                                view.findNavController().navigate(R.id.action_dashboardEmployeeListAdmin_to_dashboardEmployeesAdmin)
-                            } else if (response.code() == 404) {
-                                Toast.makeText(requireContext(), "Niepoprawne hasło.", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    })
+                    if(passwordConfirm == State.currentAdminPassword){
+                        adminEmployeeViewModel.deleteEmployee(State.selectedEmployeeWithId.split(" ").first())
+                        mAlertDialog2.dismiss()
+                        view.findNavController().navigate(R.id.action_dashboardEmployeeListAdmin_to_dashboardEmployeesAdmin)
+                    }
+                    else {
+                        Toast.makeText(requireContext(), "Niepoprawne hasło.", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else
                     Toast.makeText(requireContext(), "Nie wpisano hasła.", Toast.LENGTH_SHORT).show();

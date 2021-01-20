@@ -182,103 +182,75 @@ class DashboardLogsListAdmin : Fragment() {
                             val passwordConfirm = mDialogView2.confirmPassword.text.toString()
 
                             if (!passwordConfirm.isNullOrEmpty()) {
-                                var loginCall = ApiRepository.canAdminLogin(
-                                    State.currentAdminUsername,
-                                    passwordConfirm
-                                )
+                                if(passwordConfirm == State.currentAdminPassword){
+                                    var canAddAdmin =
+                                            ApiRepository.canAddAdmin(id, username)
 
-                                loginCall.enqueue(object : Callback<AdminLoginData> {
-                                    override fun onFailure(
-                                        call: Call<AdminLoginData>,
-                                        t: Throwable
-                                    ) {
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "Błąd! Nie połączono z bazą danych.",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-
-                                    override fun onResponse(
-                                        call: Call<AdminLoginData>,
-                                        response: Response<AdminLoginData>
-                                    ) {
-                                        if (response.code() == 200) {
-                                            var canAddAdmin =
-                                                ApiRepository.canAddAdmin(id, username)
-
-                                            canAddAdmin.enqueue(object : Callback<ResponseBody> {
-                                                override fun onFailure(
-                                                    call: Call<ResponseBody>,
-                                                    t: Throwable
-                                                ) {
-                                                    Toast.makeText(
-                                                        requireContext(),
-                                                        "Błąd! Nie połączono z bazą danych.",
-                                                        Toast.LENGTH_SHORT
-                                                    ).show()
-                                                }
-
-                                                override fun onResponse(
-                                                    call: Call<ResponseBody>,
-                                                    response: Response<ResponseBody>
-                                                ) {
-                                                    if (response.code() == 404) {
-                                                        mAlertDialog2.dismiss()
-                                                        Toast.makeText(
-                                                            requireContext(),
-                                                            "Id oraz nazwa użytkownika zostały już przypisane.",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
-                                                    } else if (response.code() == 402) {
-                                                        mAlertDialog2.dismiss()
-                                                        Toast.makeText(
-                                                            requireContext(),
-                                                            "Id zostało już przypisane.",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
-                                                    } else if (response.code() == 401) {
-                                                        mAlertDialog2.dismiss()
-                                                        Toast.makeText(
-                                                            requireContext(),
-                                                            "Nazwa użytkownika została już przypisana.",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
-                                                    } else if (response.code() == 200) {
-                                                        logsViewModel.insertAdmin(
-                                                            id,
-                                                            username,
-                                                            password,
-                                                            name,
-                                                            surname
-                                                        )
-                                                        mAlertDialog2.dismiss()
-                                                        mAlertDialog.dismiss()
-                                                        Toast.makeText(
-                                                            requireContext(),
-                                                            "Dodano administratora.",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
-                                                    }
-
-                                                }
-
-                                            })
-                                        } else if (response.code() == 404) {
+                                    canAddAdmin.enqueue(object : Callback<ResponseBody> {
+                                        override fun onFailure(
+                                                call: Call<ResponseBody>,
+                                                t: Throwable
+                                        ) {
                                             Toast.makeText(
-                                                requireContext(),
-                                                "Niepoprawne hasło.",
-                                                Toast.LENGTH_SHORT
-                                            ).show();
+                                                    requireContext(),
+                                                    "Błąd! Nie połączono z bazą danych.",
+                                                    Toast.LENGTH_SHORT
+                                            ).show()
                                         }
-                                    }
 
-                                })
+                                        override fun onResponse(
+                                                call: Call<ResponseBody>,
+                                                response: Response<ResponseBody>
+                                        ) {
+                                            if (response.code() == 404) {
+                                                mAlertDialog2.dismiss()
+                                                Toast.makeText(
+                                                        requireContext(),
+                                                        "Id oraz nazwa użytkownika zostały już przypisane.",
+                                                        Toast.LENGTH_SHORT
+                                                ).show()
+                                            } else if (response.code() == 402) {
+                                                mAlertDialog2.dismiss()
+                                                Toast.makeText(
+                                                        requireContext(),
+                                                        "Id zostało już przypisane.",
+                                                        Toast.LENGTH_SHORT
+                                                ).show()
+                                            } else if (response.code() == 401) {
+                                                mAlertDialog2.dismiss()
+                                                Toast.makeText(
+                                                        requireContext(),
+                                                        "Nazwa użytkownika została już przypisana.",
+                                                        Toast.LENGTH_SHORT
+                                                ).show()
+                                            } else if (response.code() == 200) {
+                                                logsViewModel.insertAdmin(
+                                                        id,
+                                                        username,
+                                                        password,
+                                                        name,
+                                                        surname
+                                                )
+                                                mAlertDialog2.dismiss()
+                                                mAlertDialog.dismiss()
+                                                Toast.makeText(
+                                                        requireContext(),
+                                                        "Dodano administratora.",
+                                                        Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+
+                                        }
+
+                                    })
+                                }
+                                else
+                                    Toast.makeText(requireContext(), "Niepoprawne hasło.", Toast.LENGTH_SHORT).show();
                             } else
                                 Toast.makeText(
-                                    requireContext(),
-                                    "Nie wpisano hasła.",
-                                    Toast.LENGTH_SHORT
+                                        requireContext(),
+                                        "Nie wpisano hasła.",
+                                        Toast.LENGTH_SHORT
                                 ).show();
                         }
 

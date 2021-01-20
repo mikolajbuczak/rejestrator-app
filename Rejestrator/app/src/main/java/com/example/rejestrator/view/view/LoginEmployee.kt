@@ -1,5 +1,6 @@
 package com.example.rejestrator.view.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,6 +32,7 @@ class LoginEmployee : Fragment() {
         return inflater.inflate(R.layout.fragment_login_employee, container, false)
     }
 
+    @SuppressLint("NewApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ChangeToAdminLoginButton.setOnClickListener { x -> x.findNavController().navigate(R.id.action_loginEmployee_to_loginAdmin) }
@@ -56,7 +58,11 @@ class LoginEmployee : Fragment() {
                 Toast.makeText(requireContext(), "Nie wpisano danych do logowania.", Toast.LENGTH_SHORT).show()
             else{
 
-                var loginCall = ApiRepository.canEmployeeLogin(id, pin)
+                val cred = "${id}:${pin}"
+
+                val auth = "Basic ${Base64.getEncoder().encodeToString(cred.toByteArray())}"
+
+                var loginCall = ApiRepository.canEmployeeLogin(auth)
 
                 loginCall.enqueue(object : Callback<EmployeeLoginData>{
                     override fun onFailure(call: Call<EmployeeLoginData>, t: Throwable) {
@@ -66,9 +72,9 @@ class LoginEmployee : Fragment() {
                     override fun onResponse(call: Call<EmployeeLoginData>, response: Response<EmployeeLoginData>) {
                         if(response.code() == 200)
                         {
-                            Log.d("Lool", "lol")
                             employeeLoginData = response.body()!!
                             State.currentEmployeeId = employeeLoginData.employeeID
+                            State.currentEmployeePin = String(Base64.getDecoder().decode(employeeLoginData.pin))
                             State.currentEmployeeShift = employeeLoginData.shift
 
                             val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")

@@ -10,16 +10,16 @@ class ApiRepository {
 
     companion object {
 
-        fun canEmployeeLogin(id : String, pin : String): Call<EmployeeLoginData> {
-            return ApiService.api.canEmployeeLogin(id, pin)
+        fun canEmployeeLogin(auth : String): Call<EmployeeLoginData> {
+            return ApiService.api.canEmployeeLogin(auth)
         }
 
         fun updateEmployee(idToEdit : String, id : String, pin : String, name : String, surname : String, shift : String) : Call<ResponseBody>{
             return ApiService.api.updateEmployee(idToEdit, id, pin, name, surname, shift)
         }
 
-        fun canAdminLogin(username : String, password : String): Call<AdminLoginData> {
-            return ApiService.api.canAdminLogin(username, password)
+        fun canAdminLogin(auth : String): Call<AdminLoginData> {
+            return ApiService.api.canAdminLogin(auth)
         }
 
         suspend fun getAllLogs(): ArrayList<LoginData> {

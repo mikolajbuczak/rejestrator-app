@@ -6,8 +6,12 @@ class State {
 
     companion object{
         var currentEmployeeId: String = ""
+        var currentEmployeePin: String = ""
         var currentEmployeeShift: String = ""
+
         var currentAdminUsername: String = ""
+        var currentAdminPassword: String = ""
+
         var selectedEmployee: String = ""
         var selectedEmployeeWithId: String = ""
         var selectedEmployeeId: String = ""

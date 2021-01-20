@@ -1,5 +1,6 @@
 package com.example.rejestrator.view.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -36,6 +37,7 @@ class LoginAdministrator : Fragment() {
         return inflater.inflate(R.layout.fragment_login_administrator, container, false)
     }
 
+    @SuppressLint("NewApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         LoginButtonAdmin.setOnClickListener { x -> x.findNavController().navigate(R.id.action_loginAdmin_to_dashboardLogsListAdmin) }
@@ -64,7 +66,11 @@ class LoginAdministrator : Fragment() {
                 ).show()
             else {
 
-                var loginCall = ApiRepository.canAdminLogin(username, password)
+                val cred = "${username}:${password}"
+
+                val auth = "Basic ${Base64.getEncoder().encodeToString(cred.toByteArray())}"
+
+                var loginCall = ApiRepository.canAdminLogin(auth)
 
                 loginCall.enqueue(object : Callback<AdminLoginData> {
                     override fun onFailure(call: Call<AdminLoginData>, t: Throwable) {
@@ -82,6 +88,7 @@ class LoginAdministrator : Fragment() {
                         if (response.code() == 200) {
                             adminLoginData = response.body()!!
                             State.currentAdminUsername = username
+                            State.currentAdminPassword = String(Base64.getDecoder().decode(adminLoginData.password))
                             x.findNavController().navigate(R.id.action_loginAdmin_to_dashboardLogsListAdmin)
                         } else if (response.code() == 404) {
                             inputUsername.setText("")

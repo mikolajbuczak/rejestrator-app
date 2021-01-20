@@ -66,37 +66,28 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                     val pinConfirm = mDialogView.confirmPin.text.toString()
 
                     if (!pinConfirm.isNullOrEmpty()) {
-                        var loginCall = ApiRepository.canEmployeeLogin(State.currentEmployeeId, pinConfirm)
+                        if(pinConfirm == State.currentEmployeePin){
+                            mAlertDialog.dismiss()
 
-                        loginCall.enqueue(object : Callback<EmployeeLoginData> {
-                            override fun onFailure(call: Call<EmployeeLoginData>, t: Throwable) {
-                                Toast.makeText(x.context, "Błąd! Nie połączono z bazą danych.", Toast.LENGTH_SHORT).show()
-                            }
+                            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                            val currentDate = sdf.format(Date())
 
-                            override fun onResponse(call: Call<EmployeeLoginData>, response: Response<EmployeeLoginData>) {
-                                if (response.code() == 200) {
-                                    mAlertDialog.dismiss()
+                            removeItemAt(position)
+                            taskViewModel.endTask(currentItem.id)
 
-                                    val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
-                                    val currentDate = sdf.format(Date())
+                            if (State.currentEmployeeShift == "Dzienny")
+                                calcDay(DateTime.parse(currentItem.date, DateTimeFormat.forPattern("dd.MM.yyyy HH:mm")), DateTime.now(), State.currentEmployeeId, currentItem.task, currentItem.date, currentDate)
+                            else if(State.currentEmployeeShift == "Nocny")
+                                calcNight(DateTime.parse(currentItem.date, DateTimeFormat.forPattern("dd.MM.yyyy HH:mm")), DateTime.now(), State.currentEmployeeId, currentItem.task, currentItem.date, currentDate)
 
-                                    removeItemAt(position)
-                                    taskViewModel.endTask(currentItem.id)
+                            x.findNavController().navigate(R.id.action_dashboardTaskInProgressListEmployee_self)
 
-                                    if (State.currentEmployeeShift == "Dzienny")
-                                        calcDay(DateTime.parse(currentItem.date, DateTimeFormat.forPattern("dd.MM.yyyy HH:mm")), DateTime.now(), State.currentEmployeeId, currentItem.task, currentItem.date, currentDate)
-                                    else if(State.currentEmployeeShift == "Nocny")
-                                        calcNight(DateTime.parse(currentItem.date, DateTimeFormat.forPattern("dd.MM.yyyy HH:mm")), DateTime.now(), State.currentEmployeeId, currentItem.task, currentItem.date, currentDate)
+                            taskViewModel.getTasksInProgressForEmployee(State.currentEmployeeId)
+                        }
+                        else
+                            Toast.makeText(x.context, "Niepoprawny pin.", Toast.LENGTH_SHORT).show();
 
-                                    x.findNavController().navigate(R.id.action_dashboardTaskInProgressListEmployee_self)
-
-                                    taskViewModel.getTasksInProgressForEmployee(State.currentEmployeeId)
-                                } else if (response.code() == 404) {
-                                    Toast.makeText(x.context, "Niepoprawny pin.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        })
-                    } else
+                    }else
                         Toast.makeText(x.context, "Nie wpisano pinu.", Toast.LENGTH_SHORT).show();
                 }
 
