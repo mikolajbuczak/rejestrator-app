@@ -77,5 +77,6 @@
         <item>Nocny</item>
 
     </string-array>
+    <string name="change_lang">Zmień język</string>
 
 </resources>
