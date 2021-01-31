@@ -121,27 +121,27 @@ class DashboardEmployeesAdmin : Fragment() {
                 val shift = mDialogView.addEmployeeShift.selectedItem.toString()
                 if(!id.isNullOrEmpty() && !pin.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty() && !shift.isNullOrEmpty()) {
                     if(id.length != 4 && pin.length != 4)
-                        Toast.makeText(requireContext(), "Id i pin muszą składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.id_pin_4), Toast.LENGTH_SHORT).show()
                     else if(id.length != 4 )
-                        Toast.makeText(requireContext(), "Id musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.id_4), Toast.LENGTH_SHORT).show()
                     else if(pin.length != 4 )
-                        Toast.makeText(requireContext(), "Pin musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.pin_4), Toast.LENGTH_SHORT).show()
                     else{
                         var canAddEmployee = ApiRepository.canAddEmployee(id)
 
                         canAddEmployee.enqueue(object : Callback<ResponseBody> {
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                Toast.makeText(requireContext(), "Błąd! Nie połączono z bazą danych.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.no_conn), Toast.LENGTH_SHORT).show()
                             }
 
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                 if (response.code() == 200) {
                                     adminEmployeeViewModel.insertEmployee(id, pin, name, surname, shift)
-                                    Toast.makeText(requireContext(), "Dodano pracownika.", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(requireContext(), getString(R.string.employee_added), Toast.LENGTH_SHORT).show()
                                     mAlertDialog.dismiss()
                                     view.findNavController().navigate(R.id.action_dashboardEmployeesAdmin_self)
                                 } else if (response.code() == 404) {
-                                    Toast.makeText(requireContext(), "To id jest już przypisane.", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(requireContext(), getString(R.string.id_assigned), Toast.LENGTH_SHORT).show()
                                 }
                             }
 
@@ -150,7 +150,7 @@ class DashboardEmployeesAdmin : Fragment() {
 
                 }
                 else
-                    Toast.makeText(requireContext(), "Pozostawiono puste pola.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), getString(R.string.empty_fields), Toast.LENGTH_SHORT).show();
             }
 
             mDialogView.addCancelButton.setOnClickListener {
@@ -176,7 +176,7 @@ class DashboardEmployeesAdmin : Fragment() {
                     if (id.length != 4)
                         Toast.makeText(
                                 requireContext(),
-                                "Id musi składać się z 4 cyfr.",
+                                getString(R.string.id_4),
                                 Toast.LENGTH_SHORT
                         ).show()
                     else {
@@ -202,7 +202,7 @@ class DashboardEmployeesAdmin : Fragment() {
                                         ) {
                                             Toast.makeText(
                                                     requireContext(),
-                                                    "Błąd! Nie połączono z bazą danych.",
+                                                    getString(R.string.no_conn),
                                                     Toast.LENGTH_SHORT
                                             ).show()
                                         }
@@ -215,21 +215,21 @@ class DashboardEmployeesAdmin : Fragment() {
                                                 mAlertDialog2.dismiss()
                                                 Toast.makeText(
                                                         requireContext(),
-                                                        "Id oraz nazwa użytkownika zostały już przypisane.",
+                                                        getString(R.string.id_username_assigned),
                                                         Toast.LENGTH_SHORT
                                                 ).show()
                                             } else if (response.code() == 402) {
                                                 mAlertDialog2.dismiss()
                                                 Toast.makeText(
                                                         requireContext(),
-                                                        "Id zostało już przypisane.",
+                                                        getString(R.string.id_assigned),
                                                         Toast.LENGTH_SHORT
                                                 ).show()
                                             } else if (response.code() == 401) {
                                                 mAlertDialog2.dismiss()
                                                 Toast.makeText(
                                                         requireContext(),
-                                                        "Nazwa użytkownika została już przypisana.",
+                                                        getString(R.string.username_assigned),
                                                         Toast.LENGTH_SHORT
                                                 ).show()
                                             } else if (response.code() == 200) {
@@ -244,7 +244,7 @@ class DashboardEmployeesAdmin : Fragment() {
                                                 mAlertDialog.dismiss()
                                                 Toast.makeText(
                                                         requireContext(),
-                                                        "Dodano administratora.",
+                                                        getString(R.string.admin_added),
                                                         Toast.LENGTH_SHORT
                                                 ).show()
                                             }
@@ -254,11 +254,11 @@ class DashboardEmployeesAdmin : Fragment() {
                                     })
                                 }
                                 else
-                                    Toast.makeText(requireContext(), "Niepoprawne hasło.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(requireContext(), getString(R.string.invalid_password), Toast.LENGTH_SHORT).show();
                             } else
                                 Toast.makeText(
                                         requireContext(),
-                                        "Nie wpisano hasła.",
+                                        getString(R.string.no_password),
                                         Toast.LENGTH_SHORT
                                 ).show();
                         }
@@ -270,7 +270,7 @@ class DashboardEmployeesAdmin : Fragment() {
 
                     }
                 } else
-                    Toast.makeText(requireContext(), "Pozostawiono puste pola.", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.empty_fields), Toast.LENGTH_SHORT)
                             .show();
 
             }
@@ -309,7 +309,7 @@ class DashboardEmployeesAdmin : Fragment() {
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                             Toast.makeText(
                                     requireContext(),
-                                    "Błąd! Nie połączono z bazą danych.",
+                                    getString(R.string.no_conn),
                                     Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -331,7 +331,7 @@ class DashboardEmployeesAdmin : Fragment() {
                                     ) {
                                         Toast.makeText(
                                                 requireContext(),
-                                                "Błąd! Nie połączono z bazą danych.",
+                                                getString(R.string.no_conn),
                                                 Toast.LENGTH_SHORT
                                         ).show()
                                     }
@@ -343,14 +343,14 @@ class DashboardEmployeesAdmin : Fragment() {
                                         if (response.code() == 200) {
                                             Toast.makeText(
                                                     requireContext(),
-                                                    "Dodano zadanie",
+                                                    getString(R.string.task_added),
                                                     Toast.LENGTH_SHORT
                                             ).show()
                                             mAlertDialog.dismiss()
                                         } else if (response.code() == 404) {
                                             Toast.makeText(
                                                     requireContext(),
-                                                    "Nie dodano zadania",
+                                                    getString(R.string.task_not_added),
                                                     Toast.LENGTH_SHORT
                                             ).show()
                                             mAlertDialog.dismiss()
@@ -361,7 +361,7 @@ class DashboardEmployeesAdmin : Fragment() {
                             } else if (response.code() == 404) {
                                 Toast.makeText(
                                         requireContext(),
-                                        "To zadanie zostało już przydzielone temu pracownikowi.",
+                                        getString(R.string.task_assigned),
                                         Toast.LENGTH_SHORT
                                 ).show()
                             }
@@ -371,7 +371,7 @@ class DashboardEmployeesAdmin : Fragment() {
                 } else
                     Toast.makeText(
                             requireContext(),
-                            "Pozostawiono puste pola.",
+                            getString(R.string.empty_fields),
                             Toast.LENGTH_SHORT
                     ).show();
             }

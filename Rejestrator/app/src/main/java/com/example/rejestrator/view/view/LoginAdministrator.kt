@@ -61,7 +61,7 @@ class LoginAdministrator : Fragment() {
             if (username.isNullOrEmpty() || password.isNullOrEmpty())
                 Toast.makeText(
                     requireContext(),
-                    "Nie wpisano danych do logowania.",
+                    getString(R.string.no_data),
                     Toast.LENGTH_SHORT
                 ).show()
             else {
@@ -76,7 +76,7 @@ class LoginAdministrator : Fragment() {
                     override fun onFailure(call: Call<AdminLoginData>, t: Throwable) {
                         Toast.makeText(
                             requireContext(),
-                            "Błąd! Nie połączono z bazą danych.",
+                            getString(R.string.no_conn),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

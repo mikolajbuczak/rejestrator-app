@@ -95,7 +95,7 @@ class DashboardRaportAdmin : Fragment() {
         adminRaportViewModel.fillLists(State.selectedEmployeeId, currentDate)
 
         var description : Description = Description()
-        description.text = "Raport"
+        description.text = getString(R.string.raport)
         chart.description = description
 
         fillChart()
@@ -103,10 +103,10 @@ class DashboardRaportAdmin : Fragment() {
         refreshAll.setOnClickListener {
             chartDataList.clear()
             chartData.clear()
-            chartDataList.add(ChartData("Logowania", adminRaportViewModel.employeeLogs.value?.count()) )
-            chartDataList.add(ChartData("Przydzielone", adminRaportViewModel.employeeTasks.value?.count()) )
-            chartDataList.add(ChartData("Zadania w toku", adminRaportViewModel.employeeTasksInProgress.value?.count()) )
-            chartDataList.add(ChartData("Wykonane", adminRaportViewModel.employeeTasksDone.value?.count()) )
+            chartDataList.add(ChartData(getString(R.string.chart_label1), adminRaportViewModel.employeeLogs.value?.count()) )
+            chartDataList.add(ChartData(getString(R.string.chart_label2), adminRaportViewModel.employeeTasks.value?.count()) )
+            chartDataList.add(ChartData(getString(R.string.chart_label3), adminRaportViewModel.employeeTasksInProgress.value?.count()) )
+            chartDataList.add(ChartData(getString(R.string.chart_label4), adminRaportViewModel.employeeTasksDone.value?.count()) )
 
             chartDataList.forEach(){
                 var label = it.label
@@ -124,10 +124,10 @@ class DashboardRaportAdmin : Fragment() {
         calendarAll.setOnClickListener {
             chartDataList.clear()
             chartData.clear()
-            chartDataList.add(ChartData("Logowania", adminRaportViewModel.employeeLogsToday.value?.count()) )
-            chartDataList.add(ChartData("Przydzielone", adminRaportViewModel.employeeTasks.value?.count()) )
-            chartDataList.add(ChartData("Zadania w toku", adminRaportViewModel.employeeTasksInProgress.value?.count()) )
-            chartDataList.add(ChartData("Wykonane", adminRaportViewModel.employeeTasksDoneToday.value?.count()) )
+            chartDataList.add(ChartData(getString(R.string.chart_label1), adminRaportViewModel.employeeLogsToday.value?.count()) )
+            chartDataList.add(ChartData(getString(R.string.chart_label2), adminRaportViewModel.employeeTasks.value?.count()) )
+            chartDataList.add(ChartData(getString(R.string.chart_label3), adminRaportViewModel.employeeTasksInProgress.value?.count()) )
+            chartDataList.add(ChartData(getString(R.string.chart_label4), adminRaportViewModel.employeeTasksDoneToday.value?.count()) )
 
             chartDataList.forEach(){
                 var label = it.label
@@ -152,7 +152,7 @@ class DashboardRaportAdmin : Fragment() {
     }
 
     private fun fillChart(){
-        var barDataSet : BarDataSet = BarDataSet(chartData, "Ilość")
+        var barDataSet : BarDataSet = BarDataSet(chartData, getString(R.string.chart_label5))
         barDataSet.colors = colors
         barDataSet.axisDependency = YAxis.AxisDependency.LEFT
         chart.axisLeft.granularity = 1f

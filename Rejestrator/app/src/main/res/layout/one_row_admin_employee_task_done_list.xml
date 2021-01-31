@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
-                android:text="Zadanie"
+                android:text="@string/task"
                 android:textColor="@color/aboveBack"
                 android:textSize="13.5sp" />
 
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="right"
-                android:text="Czas"
+                android:text="@string/time"
                 android:textColor="@color/aboveBack"
                 android:textSize="12sp"/>
         </LinearLayout>
@@ -39,7 +39,7 @@
             android:id="@+id/row_taskDoneStartDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start"
+            android:text="@string/start"
             android:textSize="12sp"
             android:layout_below="@+id/linearLayout" />
 
@@ -47,7 +47,7 @@
             android:id="@+id/row_taskDoneEndDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stop"
+            android:text="@string/stop"
             android:layout_marginStart="5dp"
             android:layout_below="@+id/linearLayout"
             android:layout_toEndOf="@id/row_space"
@@ -57,7 +57,7 @@
             android:id="@+id/row_space"
             android:layout_width="10dp"
             android:layout_height="16dp"
-            android:text="->"
+            android:text="@string/change"
             android:src="@drawable/ic_date_end"
             android:layout_marginStart="5dp"
             android:layout_below="@+id/linearLayout"

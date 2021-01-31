@@ -55,7 +55,7 @@ class LoginEmployee : Fragment() {
             var employeeLoginData : EmployeeLoginData
 
             if(id.isNullOrEmpty() || pin.isNullOrEmpty())
-                Toast.makeText(requireContext(), "Nie wpisano danych do logowania.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.no_data), Toast.LENGTH_SHORT).show()
             else{
 
                 val cred = "${id}:${pin}"
@@ -66,7 +66,7 @@ class LoginEmployee : Fragment() {
 
                 loginCall.enqueue(object : Callback<EmployeeLoginData>{
                     override fun onFailure(call: Call<EmployeeLoginData>, t: Throwable) {
-                        Toast.makeText(requireContext(), "Błąd! Nie połączono z bazą danych.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.no_conn), Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onResponse(call: Call<EmployeeLoginData>, response: Response<EmployeeLoginData>) {

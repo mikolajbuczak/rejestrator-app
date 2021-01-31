@@ -192,24 +192,24 @@ class DashboardEmployeeListAdmin : Fragment() {
                 val shift = mDialogView.editEmployeeShift.selectedItem.toString()
                 if(!id.isNullOrEmpty() && !pin.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty() && !shift.isNullOrEmpty()) {
                     if(id.length != 4 || pin.length != 4)
-                        Toast.makeText(requireContext(), "Id i pin muszą składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.id_pin_4), Toast.LENGTH_SHORT).show()
                     else if(id.length != 4 )
-                        Toast.makeText(requireContext(), "Id musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.id_4), Toast.LENGTH_SHORT).show()
                     else if(pin.length != 4 )
-                        Toast.makeText(requireContext(), "Pin musi składać się z 4 cyfr.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.pin_4), Toast.LENGTH_SHORT).show()
                     else {
                         var updateCall = ApiRepository.updateEmployee(State.selectedEmployeeId, id, pin, name, surname, shift)
 
                         updateCall.enqueue(object : Callback<ResponseBody> {
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                Toast.makeText(requireContext(), "Błąd! Nie połączono z bazą danych.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.no_conn), Toast.LENGTH_SHORT).show()
                             }
 
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                 if (response.code() == 404) {
-                                    Toast.makeText(requireContext(), "To id jest już przypisane.", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(requireContext(), getString(R.string.id_assigned), Toast.LENGTH_SHORT).show()
                                 } else if (response.code() == 200) {
-                                    Toast.makeText(requireContext(), "Edytowano pracownika.", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(requireContext(), getString(R.string.employee_edited), Toast.LENGTH_SHORT).show()
                                     State.selectedEmployeeId = id
                                     State.selectedEmployeePin = pin
                                     State.selectedEmployeeName = name
@@ -232,7 +232,7 @@ class DashboardEmployeeListAdmin : Fragment() {
                     }
                 }
                 else
-                    Toast.makeText(requireContext(), "Pozostawiono puste pola.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), getString(R.string.empty_fields), Toast.LENGTH_SHORT).show();
             }
 
             mDialogView.editCancelButton.setOnClickListener {
@@ -256,11 +256,11 @@ class DashboardEmployeeListAdmin : Fragment() {
                         view.findNavController().navigate(R.id.action_dashboardEmployeeListAdmin_to_dashboardEmployeesAdmin)
                     }
                     else {
-                        Toast.makeText(requireContext(), "Niepoprawne hasło.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), getString(R.string.invalid_password), Toast.LENGTH_SHORT).show();
                     }
                 }
                 else
-                    Toast.makeText(requireContext(), "Nie wpisano hasła.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), getString(R.string.no_password), Toast.LENGTH_SHORT).show();
             }
 
             mDialogView.confirmCancelButton.setOnClickListener{
