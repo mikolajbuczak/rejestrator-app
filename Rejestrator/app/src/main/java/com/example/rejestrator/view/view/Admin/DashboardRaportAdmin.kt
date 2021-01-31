@@ -3,6 +3,7 @@ package com.example.rejestrator.view.view.Admin
 import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.rejestrator.R
 import com.example.rejestrator.view.State
 import com.example.rejestrator.view.model.api.ApiService
-import com.example.rejestrator.view.model.entities.ChartData
-import com.example.rejestrator.view.model.entities.LoginData
-import com.example.rejestrator.view.model.entities.Task
-import com.example.rejestrator.view.model.entities.TaskInProgress
+import com.example.rejestrator.view.model.entities.*
 import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Admin.AdminRaportViewModel
 import com.github.mikephil.charting.components.Description
