@@ -11,14 +11,6 @@ interface RejestratorApi {
     fun canEmployeeLogin(@Header("Authorization") auth :String) : Call<EmployeeLoginData>
 
     @FormUrlEncoded
-    @POST("employees")
-    fun insertEmployee(@Field("employeeID") employeeId :String, @Field("pin") pin :String, @Field("name") name :String, @Field("surname") surname :String, @Field("shift") shift :String) : Call<ResponseBody>
-
-    @FormUrlEncoded
-    @POST("administrators")
-    fun insertAdmin(@Field("administratorID") administratorID :String, @Field("username") username :String, @Field("password") password :String, @Field("name") name :String, @Field("surname") surname :String) : Call<ResponseBody>
-
-    @FormUrlEncoded
     @POST("canAddEmployee")
     fun canAddEmployee(@Field("employeeID") employeeId :String) : Call<ResponseBody>
 
@@ -103,6 +95,14 @@ interface RejestratorApi {
     @FormUrlEncoded
     @POST("logs")
     fun insertLog(@Field("employeeID") employeeID :String, @Field("date") date :String) : Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("employees")
+    fun insertEmployee(@Field("employeeID") employeeId :String, @Field("pin") pin :String, @Field("name") name :String, @Field("surname") surname :String, @Field("shift") shift :String) : Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("administrators")
+    fun insertAdmin(@Field("administratorID") administratorID :String, @Field("username") username :String, @Field("password") password :String, @Field("name") name :String, @Field("surname") surname :String) : Call<ResponseBody>
 
 
 
