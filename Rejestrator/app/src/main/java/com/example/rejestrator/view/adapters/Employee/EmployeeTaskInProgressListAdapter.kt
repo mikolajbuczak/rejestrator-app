@@ -13,7 +13,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rejestrator.R
 import com.example.rejestrator.view.State
-import com.example.rejestrator.view.model.entities.EmployeeLoginData
 import com.example.rejestrator.view.model.entities.LoggedToday
 import com.example.rejestrator.view.model.entities.TaskInProgress
 import com.example.rejestrator.view.model.repositories.ApiRepository

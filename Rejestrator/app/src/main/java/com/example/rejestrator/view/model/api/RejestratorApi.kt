@@ -6,10 +6,6 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface RejestratorApi {
-
-    @GET("loginEmployee")
-    fun canEmployeeLogin(@Header("Authorization") auth :String) : Call<EmployeeLoginData>
-
     @FormUrlEncoded
     @POST("canAddEmployee")
     fun canAddEmployee(@Field("employeeID") employeeId :String) : Call<ResponseBody>
@@ -103,7 +99,4 @@ interface RejestratorApi {
     @FormUrlEncoded
     @POST("administrators")
     fun insertAdmin(@Field("administratorID") administratorID :String, @Field("username") username :String, @Field("password") password :String, @Field("name") name :String, @Field("surname") surname :String) : Call<ResponseBody>
-
-
-
 }

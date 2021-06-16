@@ -7,13 +7,7 @@ import okhttp3.ResponseBody
 import retrofit2.*
 
 class ApiRepository {
-
     companion object {
-
-        fun canEmployeeLogin(auth : String): Call<EmployeeLoginData> {
-            return ApiService.api.canEmployeeLogin(auth)
-        }
-
         fun updateEmployee(idToEdit : String, id : String, pin : String, name : String, surname : String, shift : String) : Call<ResponseBody>{
             return ApiService.api.updateEmployee(idToEdit, id, pin, name, surname, shift)
         }
