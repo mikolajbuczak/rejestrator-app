@@ -12,18 +12,6 @@ class ApiRepository {
             return ApiService.api.updateEmployee(idToEdit, id, pin, name, surname, shift)
         }
 
-        suspend fun getAllLogs(): ArrayList<LoginData> {
-            return ApiService.api.getAllLogs().awaitResponse().body()?: arrayListOf()
-        }
-
-        suspend fun getTasksForEmployee(id : String): ArrayList<Task> {
-            return ApiService.api.getTasksForEmployee(id).awaitResponse().body()?: arrayListOf()
-        }
-
-        suspend fun getTasksInProgressForEmployee(id : String): ArrayList<TaskInProgress> {
-            return ApiService.api.getTasksInProgressForEmployee(id).awaitResponse().body()?: arrayListOf()
-        }
-
         suspend fun getTasksDoneForEmployee(id : String, enddate: String): ArrayList<TaskDone> {
             return ApiService.api.getTasksDoneForEmployee(id, enddate).awaitResponse().body()?: arrayListOf()
         }
@@ -60,10 +48,6 @@ class ApiRepository {
             return ApiService.api.getAllEmployeesList().awaitResponse().body()?: arrayListOf()
         }
 
-        suspend fun startTask(id : Int): ResponseBody? {
-            return ApiService.api.startTask(id).awaitResponse().body()
-        }
-
         suspend fun deleteTask(id : Int): ResponseBody? {
             return ApiService.api.deleteTask(id).awaitResponse().body()
         }
@@ -96,25 +80,8 @@ class ApiRepository {
             return ApiService.api.canAddAdmin(id, username)
         }
 
-        suspend fun endTask(id : Int): ResponseBody? {
-            return ApiService.api.endTask(id).awaitResponse().body()
-        }
-
         suspend fun insertLog(id : String, date : String): ResponseBody? {
             return ApiService.api.insertLog(id, date).awaitResponse().body()
         }
-
-        suspend fun addTaskInProgress(id : String, task : String, date : String): ResponseBody? {
-            return ApiService.api.addTaskInProgress(id, task, date).awaitResponse().body()
-        }
-
-        suspend fun addTaskDone(id : String, task : String, startdate : String, enddate : String, time : String): ResponseBody? {
-            return ApiService.api.addTaskDone(id, task, startdate, enddate, time).awaitResponse().body()
-        }
-
-        fun checkIfLoggedOnThisDay(id : String, date : String): Call<LoggedToday> {
-            return ApiService.api.checkIfLoggedOnThisDay(id, date)
-        }
-
     }
 }

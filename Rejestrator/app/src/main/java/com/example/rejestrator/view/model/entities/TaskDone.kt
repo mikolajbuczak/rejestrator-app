@@ -1,3 +1,8 @@
 package com.example.rejestrator.view.model.entities
 
-class TaskDone(val id : Int, val employeeID : String, val task: String, val startdate : String, val enddate : String, val time : String)
+data class TaskDone(val id : String? = null,
+                    val employeeID : String? = null,
+                    val task: String? = null,
+                    val startdate : String? = null,
+                    val enddate : String? = null,
+                    val time : String? = null)

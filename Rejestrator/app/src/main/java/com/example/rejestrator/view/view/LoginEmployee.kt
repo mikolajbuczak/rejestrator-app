@@ -78,7 +78,7 @@ class LoginEmployee : Fragment() {
                                 var employeeLoginData = snapshot.getValue(EmployeeLoginData::class.java)
                                 State.currentEmployeeId = employeeLoginData!!.employeeID!!
                                 State.currentEmployeePin = employeeLoginData!!.pin!!
-                                State.currentEmployeeShift = employeeLoginData!!.employeeID!!
+                                State.currentEmployeeShift = employeeLoginData!!.shift!!
 
                                 val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
                                 val currentDate = sdf.format(Date())

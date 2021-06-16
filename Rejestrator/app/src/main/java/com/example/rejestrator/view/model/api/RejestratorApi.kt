@@ -27,20 +27,11 @@ interface RejestratorApi {
     @PUT("employees/{employeeID}")
     fun updateEmployee(@Path("employeeID") employeeIDToEdit : String, @Field("employeeID") employeeID :String, @Field("pin") pin :String, @Field("name") name :String, @Field("surname") surname :String, @Field("shift") shift :String): Call<ResponseBody>
 
-    @GET("tasksAvailable/{employeeId}")
-    fun getTasksForEmployee(@Path("employeeId") employeeId :String): Call<ArrayList<Task>>
-
     @GET("employees")
     fun getAllEmployees(): Call<ArrayList<EmployeeListData>>
 
     @GET("employees")
     fun getAllEmployeesList(): Call<ArrayList<EmployeeListData>>
-
-    @GET("logsData")
-    fun getAllLogs(): Call<ArrayList<LoginData>>
-
-    @GET("tasksInProgress/{employeeId}")
-    fun getTasksInProgressForEmployee(@Path("employeeId") employeeId :String): Call<ArrayList<TaskInProgress>>
 
     @GET("tasksDone/{employeeId}/{enddate}")
     fun getTasksDoneForEmployee(@Path("employeeId") employeeId :String, @Path("enddate") enddate :String): Call<ArrayList<TaskDone>>
@@ -63,28 +54,11 @@ interface RejestratorApi {
     @GET("tasksDone/{employeeId}/{date}")
     fun getAllTasksDoneForEmployeeRaportToday(@Path("employeeId") employeeId :String, @Path("date") date :String): Call<ArrayList<TaskDone>>
 
-    @GET("logs/{employeeId}/{date}")
-    fun checkIfLoggedOnThisDay (@Path("employeeId") employeeId :String, @Path("date") date :String): Call<LoggedToday>
-
-    @DELETE("startTask/{taskId}")
-    fun startTask(@Path("taskId") taskId :Int) : Call<ResponseBody>
-
     @DELETE("startTask/{taskId}")
     fun deleteTask(@Path("taskId") taskId :Int) : Call<ResponseBody>
 
     @DELETE("employees/{employeeID}")
     fun deleteEmployee(@Path("employeeID") employeeID :String) : Call<ResponseBody>
-
-    @FormUrlEncoded
-    @POST("tasksInProgress")
-    fun addTaskInProgress(@Field("employeeID") employeeId :String, @Field("task") task :String, @Field("date") date :String) : Call<ResponseBody>
-
-    @FormUrlEncoded
-    @POST("tasksDone")
-    fun addTaskDone(@Field("employeeID") employeeId :String, @Field("task") task :String, @Field("startdate") startdate :String, @Field("enddate") enddate :String, @Field("time") time :String) : Call<ResponseBody>
-
-    @DELETE("endTask/{taskId}")
-    fun endTask(@Path("taskId") taskId :Int): Call<ResponseBody>
 
     @FormUrlEncoded
     @POST("logs")
