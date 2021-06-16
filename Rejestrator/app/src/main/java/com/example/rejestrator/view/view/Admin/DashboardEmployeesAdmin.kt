@@ -25,6 +25,8 @@ import com.example.rejestrator.view.model.entities.AdminLoginData
 import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Admin.AdminEmployeeListViewModel
 import com.example.rejestrator.view.viewmodel.Admin.AdminEmployeesViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.add_admin_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.addCancelButton
@@ -166,14 +168,13 @@ class DashboardEmployeesAdmin : Fragment() {
             val mAlertDialog = mBuilder.show()
 
             mDialogView.addOkButton.setOnClickListener {
-                val id = mDialogView.addAdminId.text.toString()
                 val username = mDialogView.addAdminUsername.text.toString()
                 val password = mDialogView.addAdminPassword.text.toString()
                 val name = mDialogView.addAdminName.text.toString()
                 val surname = mDialogView.addAdminSurname.text.toString()
 
-                if (!id.isNullOrEmpty() && !username.isNullOrEmpty() && !password.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty()) {
-                    if (id.length != 4)
+                if (!username.isNullOrEmpty() && !password.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty()) {
+                    if (false)
                         Toast.makeText(
                                 requireContext(),
                                 getString(R.string.id_4),
@@ -192,66 +193,21 @@ class DashboardEmployeesAdmin : Fragment() {
 
                             if (!passwordConfirm.isNullOrEmpty()) {
                                 if(passwordConfirm == State.currentAdminPassword){
-                                    var canAddAdmin =
-                                            ApiRepository.canAddAdmin(id, username)
-
-                                    canAddAdmin.enqueue(object : Callback<ResponseBody> {
-                                        override fun onFailure(
-                                                call: Call<ResponseBody>,
-                                                t: Throwable
-                                        ) {
-                                            Toast.makeText(
-                                                    requireContext(),
-                                                    getString(R.string.no_conn),
-                                                    Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-
-                                        override fun onResponse(
-                                                call: Call<ResponseBody>,
-                                                response: Response<ResponseBody>
-                                        ) {
-                                            if (response.code() == 404) {
-                                                mAlertDialog2.dismiss()
-                                                Toast.makeText(
-                                                        requireContext(),
-                                                        getString(R.string.id_username_assigned),
-                                                        Toast.LENGTH_SHORT
-                                                ).show()
-                                            } else if (response.code() == 402) {
-                                                mAlertDialog2.dismiss()
-                                                Toast.makeText(
-                                                        requireContext(),
-                                                        getString(R.string.id_assigned),
-                                                        Toast.LENGTH_SHORT
-                                                ).show()
-                                            } else if (response.code() == 401) {
-                                                mAlertDialog2.dismiss()
-                                                Toast.makeText(
-                                                        requireContext(),
-                                                        getString(R.string.username_assigned),
-                                                        Toast.LENGTH_SHORT
-                                                ).show()
-                                            } else if (response.code() == 200) {
-                                                adminEmployeeViewModel.insertAdmin(
-                                                        id,
-                                                        username,
-                                                        password,
-                                                        name,
-                                                        surname
-                                                )
-                                                mAlertDialog2.dismiss()
+                                    mAlertDialog2.dismiss()
+                                    val email = "${username}@rejestrator.com"
+                                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener { task ->
+                                            if(task.isSuccessful) {
+                                                val uid = task.result!!.user!!.uid
+                                                val admin = AdminLoginData(username, password, name, surname)
+                                                FirebaseDatabase.getInstance().getReference().child("admins").child(uid).setValue(admin)
+                                                Toast.makeText(requireContext(), getString(R.string.admin_added), Toast.LENGTH_SHORT).show()
                                                 mAlertDialog.dismiss()
-                                                Toast.makeText(
-                                                        requireContext(),
-                                                        getString(R.string.admin_added),
-                                                        Toast.LENGTH_SHORT
-                                                ).show()
                                             }
-
+                                            else {
+                                                Toast.makeText(requireContext(), getString(R.string.username_assigned), Toast.LENGTH_SHORT).show()
+                                            }
                                         }
-
-                                    })
                                 }
                                 else
                                     Toast.makeText(requireContext(), getString(R.string.invalid_password), Toast.LENGTH_SHORT).show();
@@ -399,7 +355,7 @@ class DashboardEmployeesAdmin : Fragment() {
                     adminEmployeeViewModel.filteredEmployeeList.value?.clear()
                     val search = newText.toLowerCase(Locale.getDefault())
                     adminEmployeeViewModel.employeeList.value?.forEach({
-                        if  (it.employeeID.toLowerCase(Locale.getDefault()).contains(search) || it.name.toLowerCase(Locale.getDefault()).contains(search) || it.surname.toLowerCase(Locale.getDefault()).contains(search))
+                        if  (it.employeeID!!.toLowerCase(Locale.getDefault()).contains(search) || it.name!!.toLowerCase(Locale.getDefault()).contains(search) || it.surname!!.toLowerCase(Locale.getDefault()).contains(search))
                             adminEmployeeViewModel.filteredEmployeeList.value?.add(it)
                     })
                     employeeList_recycler_view.adapter!!.notifyDataSetChanged()

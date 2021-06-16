@@ -9,6 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.rejestrator.view.model.entities.EmployeeListData
 import com.example.rejestrator.view.model.entities.LoginData
 import com.example.rejestrator.view.model.repositories.ApiRepository
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,10 +34,21 @@ class AdminEmployeesViewModel(application: Application): AndroidViewModel(applic
 
     fun getAllEmployees()
     {
-        viewModelScope.launch {
-            _employeeList.value = ApiRepository.getAllEmployeesList()
-            _filteredEmployeeList.value = ApiRepository.getAllEmployeesList()
-        }
+        FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(object:
+            ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("users","Error while getting users")
+            }
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var listOfUsers: ArrayList<EmployeeListData> = ArrayList()
+                for(userSnapshot in snapshot.children) {
+                    val user = userSnapshot.getValue(EmployeeListData::class.java)
+                    listOfUsers.add(user!!)
+                }
+                _employeeList.value = listOfUsers
+                _filteredEmployeeList.value = listOfUsers
+            }
+        })
     }
 
     fun getAllEmployeesForTaskAdding()

@@ -21,8 +21,15 @@ import com.example.rejestrator.R
 import com.example.rejestrator.view.State
 import com.example.rejestrator.view.adapters.Admin.AdminLogsListAdapter
 import com.example.rejestrator.view.model.entities.AdminLoginData
+import com.example.rejestrator.view.model.entities.EmployeeLoginData
+import com.example.rejestrator.view.model.entities.LoginData
 import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Admin.AdminLogsListViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.add_admin_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.addCancelButton
@@ -112,31 +119,28 @@ class DashboardLogsListAdmin : Fragment() {
                 val surname = mDialogView.addEmployeeSurname.text.toString()
                 val shift = mDialogView.addEmployeeShift.selectedItem.toString()
                 if(!id.isNullOrEmpty() && !pin.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty() && !shift.isNullOrEmpty()) {
-                    if(id.length != 4 && pin.length != 4)
+                    if(id.length != 4 && pin.length != 6)
                         Toast.makeText(requireContext(), getString(R.string.id_pin_4), Toast.LENGTH_SHORT).show()
                     else if(id.length != 4 )
                         Toast.makeText(requireContext(), getString(R.string.id_4), Toast.LENGTH_SHORT).show()
-                    else if(pin.length != 4 )
+                    else if(pin.length != 6 )
                         Toast.makeText(requireContext(), getString(R.string.pin_4), Toast.LENGTH_SHORT).show()
                     else{
-                        var canAddEmployee = ApiRepository.canAddEmployee(id)
-
-                        canAddEmployee.enqueue(object : Callback<ResponseBody> {
-                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                Toast.makeText(requireContext(), getString(R.string.no_conn), Toast.LENGTH_SHORT).show()
-                            }
-
-                            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                                if (response.code() == 200) {
-                                    logsViewModel.insertEmployee(id, pin, name, surname, shift)
+                        val email = "${id}@rejestrator.com"
+                        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, pin)
+                            .addOnCompleteListener { task ->
+                                if(task.isSuccessful) {
+                                    val uid = task.result!!.user!!.uid
+                                    val employee = EmployeeLoginData(id, pin, name, surname, shift)
+                                    FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(employee)
                                     Toast.makeText(requireContext(), getString(R.string.employee_added), Toast.LENGTH_SHORT).show()
                                     mAlertDialog.dismiss()
-                                } else if (response.code() == 404) {
+                                }
+                                else {
                                     Toast.makeText(requireContext(), getString(R.string.id_assigned), Toast.LENGTH_SHORT).show()
                                 }
                             }
 
-                        })
                     }
 
                 }
@@ -157,14 +161,13 @@ class DashboardLogsListAdmin : Fragment() {
             val mAlertDialog = mBuilder.show()
 
             mDialogView.addOkButton.setOnClickListener {
-                val id = mDialogView.addAdminId.text.toString()
                 val username = mDialogView.addAdminUsername.text.toString()
                 val password = mDialogView.addAdminPassword.text.toString()
                 val name = mDialogView.addAdminName.text.toString()
                 val surname = mDialogView.addAdminSurname.text.toString()
 
-                if (!id.isNullOrEmpty() && !username.isNullOrEmpty() && !password.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty()) {
-                    if (id.length != 4)
+                if (!username.isNullOrEmpty() && !password.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty()) {
+                    if (false)
                         Toast.makeText(
                             requireContext(),
                             getString(R.string.id_4),
@@ -183,66 +186,21 @@ class DashboardLogsListAdmin : Fragment() {
 
                             if (!passwordConfirm.isNullOrEmpty()) {
                                 if(passwordConfirm == State.currentAdminPassword){
-                                    var canAddAdmin =
-                                            ApiRepository.canAddAdmin(id, username)
-
-                                    canAddAdmin.enqueue(object : Callback<ResponseBody> {
-                                        override fun onFailure(
-                                                call: Call<ResponseBody>,
-                                                t: Throwable
-                                        ) {
-                                            Toast.makeText(
-                                                    requireContext(),
-                                                    getString(R.string.no_conn),
-                                                    Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-
-                                        override fun onResponse(
-                                                call: Call<ResponseBody>,
-                                                response: Response<ResponseBody>
-                                        ) {
-                                            if (response.code() == 404) {
-                                                mAlertDialog2.dismiss()
-                                                Toast.makeText(
-                                                        requireContext(),
-                                                        getString(R.string.id_username_assigned),
-                                                        Toast.LENGTH_SHORT
-                                                ).show()
-                                            } else if (response.code() == 402) {
-                                                mAlertDialog2.dismiss()
-                                                Toast.makeText(
-                                                        requireContext(),
-                                                        getString(R.string.id_assigned),
-                                                        Toast.LENGTH_SHORT
-                                                ).show()
-                                            } else if (response.code() == 401) {
-                                                mAlertDialog2.dismiss()
-                                                Toast.makeText(
-                                                        requireContext(),
-                                                        getString(R.string.username_assigned),
-                                                        Toast.LENGTH_SHORT
-                                                ).show()
-                                            } else if (response.code() == 200) {
-                                                logsViewModel.insertAdmin(
-                                                        id,
-                                                        username,
-                                                        password,
-                                                        name,
-                                                        surname
-                                                )
-                                                mAlertDialog2.dismiss()
+                                    mAlertDialog2.dismiss()
+                                    val email = "${username}@rejestrator.com"
+                                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener { task ->
+                                            if(task.isSuccessful) {
+                                                val uid = task.result!!.user!!.uid
+                                                val admin = AdminLoginData(username, password, name, surname)
+                                                FirebaseDatabase.getInstance().getReference().child("admins").child(uid).setValue(admin)
+                                                Toast.makeText(requireContext(), getString(R.string.admin_added), Toast.LENGTH_SHORT).show()
                                                 mAlertDialog.dismiss()
-                                                Toast.makeText(
-                                                        requireContext(),
-                                                        getString(R.string.admin_added),
-                                                        Toast.LENGTH_SHORT
-                                                ).show()
                                             }
-
+                                            else {
+                                                Toast.makeText(requireContext(), getString(R.string.username_assigned), Toast.LENGTH_SHORT).show()
+                                            }
                                         }
-
-                                    })
                                 }
                                 else
                                     Toast.makeText(requireContext(), getString(R.string.invalid_password), Toast.LENGTH_SHORT).show();

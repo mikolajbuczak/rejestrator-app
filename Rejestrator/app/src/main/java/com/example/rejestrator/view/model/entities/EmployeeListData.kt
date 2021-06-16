@@ -1,6 +1,10 @@
 package com.example.rejestrator.view.model.entities
 
-class EmployeeListData(val employeeID : String, val pin : String, val name : String, val surname : String, val shift : String){
+data class EmployeeListData(val employeeID : String?=null,
+                            val pin : String?=null,
+                            val name : String?=null,
+                            val surname : String?=null,
+                            val shift : String?=null){
     override fun toString(): String = "${employeeID} ${name} ${surname}"
 
     fun makeString() : String{

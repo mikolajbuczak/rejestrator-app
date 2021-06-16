@@ -6,24 +6,13 @@
     android:background="@android:color/white">
 
     <EditText
-        android:id="@+id/addAdminId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/ID"
-        android:textColor="@color/aboveBack"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        android:maxLength="4" />
-
-    <EditText
         android:id="@+id/addAdminUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/nazwa_uzytkownika"
-        android:textColor="@color/aboveBack"
         android:importantForAutofill="no"
         android:inputType="text"
-        android:layout_below="@+id/addAdminId"/>
+        android:textColor="@color/aboveBack" />
 
     <EditText
         android:id="@+id/addAdminPassword"

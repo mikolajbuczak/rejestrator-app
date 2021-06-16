@@ -23,7 +23,7 @@
         android:textColor="@color/aboveBack"
         android:importantForAutofill="no"
         android:inputType="number"
-        android:maxLength="4"
+        android:maxLength="6"
         android:layout_below="@+id/addEmployeeId" />
 
     <EditText

@@ -51,9 +51,9 @@
     <string name="change">-></string>
     <string name="no_data">Nie wpisano danych do logowania.</string>
     <string name="no_conn">Błąd! Nie połączono z bazą danych.</string>
-    <string name="id_pin_4">Id i pin muszą składać się z 4 cyfr.</string>
+    <string name="id_pin_4">Id i pin muszą składać się odpowiednio z 4 i 6 cyfr.</string>
     <string name="id_4">Id musi składać się z 4 cyfr.</string>
-    <string name="pin_4">Pin musi składać się z 4 cyfr.</string>
+    <string name="pin_4">Pin musi składać się z 6 cyfr.</string>
     <string name="id_assigned">To id jest już przypisane.</string>
     <string name="employee_edited">Edytowano pracownika.</string>
     <string name="empty_fields">Pozostawiono puste pola.</string>
