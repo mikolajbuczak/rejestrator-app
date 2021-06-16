@@ -52,7 +52,7 @@ class AdminEmployeeTasksAdapter(var taskList: LiveData<ArrayList<Task>>, var tas
 
         holder.view.row_deleteTaskButton.setOnClickListener{ x->
             if (currentItem != null) {
-                taskViewModel.deleteTask(currentItem.id)
+                //taskViewModel.deleteTask(currentItem.id)
                 taskList.value?.remove(currentItem)
                 notifyItemRemoved(position)
             }

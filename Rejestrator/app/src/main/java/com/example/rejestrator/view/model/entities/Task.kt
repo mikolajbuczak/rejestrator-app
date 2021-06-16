@@ -1,3 +1,6 @@
 package com.example.rejestrator.view.model.entities
 
-class Task(val id : Int, val employeeID : String, val task: String)
+data class Task(val id : String? = null,
+                val employeeID : String? = null,
+                val task: String? = null
+)

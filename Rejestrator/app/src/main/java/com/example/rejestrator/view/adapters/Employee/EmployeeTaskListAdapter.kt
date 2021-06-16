@@ -37,16 +37,15 @@ class EmployeeTaskListAdapter(var taskList: LiveData<ArrayList<Task>>, var taskV
 
         holder.textView1.text=taskList.value?.get(position)?.task
 
-        holder.view.row_startTaskButton.setOnClickListener { x->
+        holder.view.row_startTaskButton.setOnClickListener {
             if (currentItem != null) {
-
                 removeItemAt(position)
                 taskViewModel.startTask(currentItem.id)
 
                 val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
                 val currentDate = sdf.format(Date())
 
-                taskViewModel.addTaskInProgress(currentItem.employeeID, currentItem.task, currentDate)
+                taskViewModel.addTaskInProgress(currentItem.task!!, currentDate)
             }
         }
     }

@@ -42,7 +42,7 @@ class DashboardTaskListEmployee : Fragment() {
 
         adapterTask = EmployeeTaskListAdapter(taskViewModel.allTasks, taskViewModel)
 
-        //taskViewModel.getTasksForEmployee(State.currentEmployeeId)
+        taskViewModel.getTasksForEmployee(State.currentEmployeeId)
 
         return inflater.inflate(R.layout.fragment_task_list_employee, container, false)
     }
@@ -60,7 +60,7 @@ class DashboardTaskListEmployee : Fragment() {
         availableList_recycler_view.apply {
             adapter = adapterTask
             layoutManager = linearManager
-            //taskViewModel.getTasksForEmployee(State.currentEmployeeId)
+            taskViewModel.getTasksForEmployee(State.currentEmployeeId)
         }
     }
 

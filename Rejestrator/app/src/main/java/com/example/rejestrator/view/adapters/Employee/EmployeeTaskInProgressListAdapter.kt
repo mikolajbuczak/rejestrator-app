@@ -72,13 +72,13 @@ class EmployeeTaskInProgressListAdapter(var taskList: LiveData<ArrayList<TaskInP
                             val currentDate = sdf.format(Date())
 
                             removeItemAt(position)
-                            taskViewModel.endTask(currentItem.id)
+                            //taskViewModel.endTask(currentItem.id)
 
-                            if (State.currentEmployeeShift == "Dzienny")
+                            /*if (State.currentEmployeeShift == "Dzienny")
                                 calcDay(DateTime.parse(currentItem.date, DateTimeFormat.forPattern("dd.MM.yyyy HH:mm")), DateTime.now(), State.currentEmployeeId, currentItem.task, currentItem.date, currentDate)
                             else if(State.currentEmployeeShift == "Nocny")
                                 calcNight(DateTime.parse(currentItem.date, DateTimeFormat.forPattern("dd.MM.yyyy HH:mm")), DateTime.now(), State.currentEmployeeId, currentItem.task, currentItem.date, currentDate)
-
+*/
                             x.findNavController().navigate(R.id.action_dashboardTaskInProgressListEmployee_self)
 
                             taskViewModel.getTasksInProgressForEmployee(State.currentEmployeeId)
