@@ -60,8 +60,8 @@ class DashboardLogsListAdmin : Fragment() {
             adapterLogs.notifyDataSetChanged()
         })
 
-        logsViewModel.getAllLogs()
-        logsViewModel.getAllEmployeesForTaskAdding()
+        //logsViewModel.getAllLogs()
+        //logsViewModel.getAllEmployeesForTaskAdding()
 
         return inflater.inflate(R.layout.fragment_logs_list_admin, container, false)
     }
@@ -391,7 +391,7 @@ class DashboardLogsListAdmin : Fragment() {
                     logsViewModel.filteredAllLogs.value?.clear()
                     val search = newText.toLowerCase(Locale.getDefault())
                     logsViewModel.allLogs.value?.forEach({
-                        if  (it.employeeID.toLowerCase(Locale.getDefault()).contains(search) || it.name.toLowerCase(Locale.getDefault()).contains(search) || it.surname.toLowerCase(Locale.getDefault()).contains(search) || it.date.toLowerCase(Locale.getDefault()).contains(search))
+                        if  (it.employeeID!!.toLowerCase(Locale.getDefault()).contains(search) || it.name!!.toLowerCase(Locale.getDefault()).contains(search) || it.surname!!.toLowerCase(Locale.getDefault()).contains(search) || it.date!!.toLowerCase(Locale.getDefault()).contains(search))
                             logsViewModel.filteredAllLogs.value?.add(it)
                     })
                     logsList_recycler_view.adapter!!.notifyDataSetChanged()

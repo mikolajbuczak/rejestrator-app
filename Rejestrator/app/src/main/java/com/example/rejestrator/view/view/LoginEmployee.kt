@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import com.example.rejestrator.R
 import com.example.rejestrator.view.State
 import com.example.rejestrator.view.model.entities.EmployeeLoginData
+import com.example.rejestrator.view.model.entities.LoginData
 import com.example.rejestrator.view.viewmodel.LoginEmployeeViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -82,7 +83,8 @@ class LoginEmployee : Fragment() {
                                 val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
                                 val currentDate = sdf.format(Date())
 
-                                FirebaseDatabase.getInstance().getReference().child("logs").child(FirebaseAuth.getInstance().currentUser!!.uid).child(UUID.randomUUID().toString()).setValue(currentDate)
+                                val logindata = LoginData(employeeLoginData!!.employeeID!!,employeeLoginData!!.name!!,employeeLoginData!!.surname!!, currentDate)
+                                FirebaseDatabase.getInstance().getReference().child("logs").child(UUID.randomUUID().toString()).setValue(logindata)
                                 x.findNavController().navigate(R.id.action_loginEmployee_to_dashboardTaskListEmployee)
                             }
                         })

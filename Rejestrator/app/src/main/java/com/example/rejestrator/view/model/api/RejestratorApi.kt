@@ -4,6 +4,7 @@ import com.example.rejestrator.view.model.entities.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.util.*
 
 interface RejestratorApi {
     @FormUrlEncoded
@@ -13,9 +14,6 @@ interface RejestratorApi {
     @FormUrlEncoded
     @POST("canAddAdmin")
     fun canAddAdmin(@Field("adminID") adminID :String, @Field("username") username :String) : Call<ResponseBody>
-
-    @GET("loginAdmin")
-    fun canAdminLogin(@Header("Authorization") auth :String) : Call<AdminLoginData>
 
     @FormUrlEncoded
     @POST("canAddTask")

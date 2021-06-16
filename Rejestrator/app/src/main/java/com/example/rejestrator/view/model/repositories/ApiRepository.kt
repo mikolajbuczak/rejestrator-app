@@ -12,10 +12,6 @@ class ApiRepository {
             return ApiService.api.updateEmployee(idToEdit, id, pin, name, surname, shift)
         }
 
-        fun canAdminLogin(auth : String): Call<AdminLoginData> {
-            return ApiService.api.canAdminLogin(auth)
-        }
-
         suspend fun getAllLogs(): ArrayList<LoginData> {
             return ApiService.api.getAllLogs().awaitResponse().body()?: arrayListOf()
         }

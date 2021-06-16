@@ -1,22 +1,11 @@
 package com.example.rejestrator.view.model.entities
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+data class AdminLoginData (
+    val administratorID : String? = null,
 
-class AdminLoginData {
-    @Expose
-    @SerializedName("administratorID")
-    lateinit var administratorID : String
+    val password : String? = null,
 
-    @Expose
-    @SerializedName("password")
-    lateinit var password : String
+    val name : String? = null,
 
-    @Expose
-    @SerializedName("name")
-    lateinit var name : String
-
-    @Expose
-    @SerializedName("surname")
-    lateinit var surname : String
-}
+    val surname : String? = null
+)

@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import com.example.rejestrator.R
 import com.example.rejestrator.view.State
 import com.example.rejestrator.view.model.entities.AdminLoginData
+import com.example.rejestrator.view.model.entities.EmployeeLoginData
 import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.LoginAdminViewModel
 import com.example.rejestrator.view.viewmodel.LoginEmployeeViewModel
@@ -24,6 +25,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class LoginAdministrator : Fragment() {
 
@@ -53,9 +59,8 @@ class LoginAdministrator : Fragment() {
         loginAdministratorViewModel = ViewModelProvider(requireActivity()).get(LoginAdminViewModel::class.java)
 
         LoginButtonAdmin.setOnClickListener { x ->
-            var username = inputUsername.text.toString()
+            var username = "${inputUsername.text.toString()}@rejestrator.com"
             var password = inputPassword.text.toString()
-            var adminLoginData: AdminLoginData
 
             if (username.isNullOrEmpty() || password.isNullOrEmpty())
                 Toast.makeText(
@@ -65,39 +70,41 @@ class LoginAdministrator : Fragment() {
                 ).show()
             else {
 
-                val cred = "${username}:${password}"
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(username, password)
+                    .addOnCompleteListener { task ->
+                        if(task.isSuccessful) {
 
-                val auth = "Basic ${Base64.getEncoder().encodeToString(cred.toByteArray())}"
+                            FirebaseDatabase.getInstance().getReference().child("admins").child(FirebaseAuth.getInstance().currentUser!!.uid).addValueEventListener(object:
+                                ValueEventListener {
+                                override fun onCancelled(error: DatabaseError) {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        getString(R.string.invalid_login),
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    inputUsername.setText("")
+                                    inputPassword.setText("")
 
-                var loginCall = ApiRepository.canAdminLogin(auth)
+                                    infoAboutLogin2.visibility = View.VISIBLE
+                                }
 
-                loginCall.enqueue(object : Callback<AdminLoginData> {
-                    override fun onFailure(call: Call<AdminLoginData>, t: Throwable) {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.no_conn),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    var adminLoginData = snapshot.getValue(AdminLoginData::class.java)
+                                    State.currentAdminUsername = adminLoginData!!.administratorID!!
+                                    State.currentAdminPassword = adminLoginData!!.password!!
 
-                    override fun onResponse(
-                        call: Call<AdminLoginData>,
-                        response: Response<AdminLoginData>
-                    ) {
-                        if (response.code() == 200) {
-                            adminLoginData = response.body()!!
-                            State.currentAdminUsername = username
-                            State.currentAdminPassword = String(Base64.getDecoder().decode(adminLoginData.password))
-                            x.findNavController().navigate(R.id.action_loginAdmin_to_dashboardLogsListAdmin)
-                        } else if (response.code() == 404) {
+                                    x.findNavController().navigate(R.id.action_loginAdmin_to_dashboardLogsListAdmin)
+                                }
+                            })
+
+                        }
+                        else {
                             inputUsername.setText("")
                             inputPassword.setText("")
 
                             infoAboutLogin2.visibility = View.VISIBLE
                         }
                     }
-
-                })
             }
         }
 
