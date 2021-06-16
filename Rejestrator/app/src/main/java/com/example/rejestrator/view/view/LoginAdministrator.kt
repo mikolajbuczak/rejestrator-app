@@ -15,7 +15,6 @@ import com.example.rejestrator.R
 import com.example.rejestrator.view.State
 import com.example.rejestrator.view.model.entities.AdminLoginData
 import com.example.rejestrator.view.model.entities.EmployeeLoginData
-import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.LoginAdminViewModel
 import com.example.rejestrator.view.viewmodel.LoginEmployeeViewModel
 import kotlinx.android.synthetic.main.fragment_login_administrator.*

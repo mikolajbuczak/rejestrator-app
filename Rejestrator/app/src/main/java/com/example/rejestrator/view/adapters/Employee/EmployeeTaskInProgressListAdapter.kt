@@ -16,7 +16,6 @@ import com.example.rejestrator.view.State
 import com.example.rejestrator.view.model.entities.LoggedToday
 import com.example.rejestrator.view.model.entities.LoginData
 import com.example.rejestrator.view.model.entities.TaskInProgress
-import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Employee.EmployeeTaskInProgressListViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

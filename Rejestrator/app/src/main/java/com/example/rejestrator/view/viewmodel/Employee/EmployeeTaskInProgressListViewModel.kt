@@ -10,7 +10,6 @@ import com.example.rejestrator.view.State
 import com.example.rejestrator.view.model.entities.Task
 import com.example.rejestrator.view.model.entities.TaskDone
 import com.example.rejestrator.view.model.entities.TaskInProgress
-import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

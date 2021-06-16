@@ -20,10 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rejestrator.R
 import com.example.rejestrator.view.State
 import com.example.rejestrator.view.adapters.Admin.AdminLogsListAdapter
-import com.example.rejestrator.view.model.entities.AdminLoginData
-import com.example.rejestrator.view.model.entities.EmployeeLoginData
-import com.example.rejestrator.view.model.entities.LoginData
-import com.example.rejestrator.view.model.repositories.ApiRepository
+import com.example.rejestrator.view.model.entities.*
 import com.example.rejestrator.view.viewmodel.Admin.AdminLogsListViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -67,8 +64,8 @@ class DashboardLogsListAdmin : Fragment() {
             adapterLogs.notifyDataSetChanged()
         })
 
-        //logsViewModel.getAllLogs()
-        //logsViewModel.getAllEmployeesForTaskAdding()
+        logsViewModel.getAllLogs()
+        logsViewModel.getAllEmployeesForTaskAdding()
 
         return inflater.inflate(R.layout.fragment_logs_list_admin, container, false)
     }
@@ -247,76 +244,29 @@ class DashboardLogsListAdmin : Fragment() {
 
 
                 mDialogView.addOkButton.setOnClickListener {
-                    val selectedEmployee =
-                        mDialogView.addTaskSelectedEmployee.selectedItem.toString()
+                    val selectedEmployee = mDialogView.addTaskSelectedEmployee.selectedItem.toString()
                     val task = mDialogView.addTask.text.toString()
+                    val selectedEmployeeID = selectedEmployee.split(" ").first()
                     if (!selectedEmployee.isNullOrEmpty() && !task.isNullOrEmpty()) {
-                        var canAddTask =
-                            ApiRepository.canAddTask(selectedEmployee.split(" ").first(), task)
-
-                        canAddTask.enqueue(object : Callback<ResponseBody> {
-                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        val taskUUID = UUID.randomUUID()
+                        val newTask = Task(taskUUID.toString() ,selectedEmployeeID, task)
+                        FirebaseDatabase.getInstance().getReference().child("tasks").child(selectedEmployeeID).child(task).setValue(newTask).addOnCompleteListener { task ->
+                            if(task.isSuccessful) {
                                 Toast.makeText(
                                     requireContext(),
-                                    getString(R.string.no_conn),
+                                    getString(R.string.task_added),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                mAlertDialog.dismiss()
+                            }
+                            else{
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.task_not_added),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-
-                            override fun onResponse(
-                                call: Call<ResponseBody>,
-                                response: Response<ResponseBody>
-                            ) {
-                                if (response.code() == 200) {
-                                    var addTask = ApiRepository.addTask(
-                                        selectedEmployee.split(" ").first(),
-                                        task
-                                    )
-
-                                    addTask.enqueue(object : Callback<ResponseBody> {
-                                        override fun onFailure(
-                                            call: Call<ResponseBody>,
-                                            t: Throwable
-                                        ) {
-                                            Toast.makeText(
-                                                requireContext(),
-                                                getString(R.string.no_conn),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-
-                                        override fun onResponse(
-                                            call: Call<ResponseBody>,
-                                            response: Response<ResponseBody>
-                                        ) {
-                                            if (response.code() == 200) {
-                                                Toast.makeText(
-                                                    requireContext(),
-                                                    getString(R.string.task_added),
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                mAlertDialog.dismiss()
-                                            } else if (response.code() == 404) {
-                                                Toast.makeText(
-                                                    requireContext(),
-                                                    getString(R.string.task_not_added),
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                mAlertDialog.dismiss()
-                                            }
-                                        }
-
-                                    })
-                                } else if (response.code() == 404) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        getString(R.string.task_assigned),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-
-                        })
+                        }
                     } else
                         Toast.makeText(
                             requireContext(),

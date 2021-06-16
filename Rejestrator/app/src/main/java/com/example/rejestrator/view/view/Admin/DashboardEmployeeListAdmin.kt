@@ -24,9 +24,12 @@ import com.example.rejestrator.R
 import com.example.rejestrator.view.State
 import com.example.rejestrator.view.adapters.Admin.*
 import com.example.rejestrator.view.model.entities.*
-import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Admin.AdminEmployeeListViewModel
 import com.example.rejestrator.view.viewmodel.Admin.AdminLogsListViewModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.add_admin_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.*
 import kotlinx.android.synthetic.main.add_employee_dialog.view.addCancelButton
@@ -171,7 +174,6 @@ class DashboardEmployeeListAdmin : Fragment() {
             adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
             mDialogView.editEmployeeShift.adapter = adapter
 
-            mDialogView.editEmployeeId.setText(State.selectedEmployeeId)
             mDialogView.editEmployeePin.setText(State.selectedEmployeePin)
             mDialogView.editEmployeeName.setText(State.selectedEmployeeName)
             mDialogView.editEmployeeSurname.setText(State.selectedEmployeeSurname)
@@ -185,47 +187,52 @@ class DashboardEmployeeListAdmin : Fragment() {
             val mAlertDialog = mBuilder.show()
 
             mDialogView.editOkButton.setOnClickListener {
-                val id = mDialogView.editEmployeeId.text.toString()
+                val id = State.selectedEmployeeId
                 val pin = mDialogView.editEmployeePin.text.toString()
                 val name = mDialogView.editEmployeeName.text.toString()
                 val surname = mDialogView.editEmployeeSurname.text.toString()
                 val shift = mDialogView.editEmployeeShift.selectedItem.toString()
-                if(!id.isNullOrEmpty() && !pin.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty() && !shift.isNullOrEmpty()) {
-                    if(id.length != 4 || pin.length != 4)
+                if(!pin.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty() && !shift.isNullOrEmpty()) {
+                    if(id.length != 4 || pin.length != 6)
                         Toast.makeText(requireContext(), getString(R.string.id_pin_4), Toast.LENGTH_SHORT).show()
                     else if(id.length != 4 )
                         Toast.makeText(requireContext(), getString(R.string.id_4), Toast.LENGTH_SHORT).show()
-                    else if(pin.length != 4 )
+                    else if(pin.length != 6 )
                         Toast.makeText(requireContext(), getString(R.string.pin_4), Toast.LENGTH_SHORT).show()
                     else {
-                        var updateCall = ApiRepository.updateEmployee(State.selectedEmployeeId, id, pin, name, surname, shift)
-
-                        updateCall.enqueue(object : Callback<ResponseBody> {
-                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                Toast.makeText(requireContext(), getString(R.string.no_conn), Toast.LENGTH_SHORT).show()
+                        val employee = EmployeeLoginData(id, pin, name, surname, shift)
+                        var userKey = ""
+                        FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(object :
+                            ValueEventListener {
+                            override fun onCancelled(error: DatabaseError) {
+                                Log.d("users", "Error while getting users")
                             }
 
-                            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                                if (response.code() == 404) {
-                                    Toast.makeText(requireContext(), getString(R.string.id_assigned), Toast.LENGTH_SHORT).show()
-                                } else if (response.code() == 200) {
-                                    Toast.makeText(requireContext(), getString(R.string.employee_edited), Toast.LENGTH_SHORT).show()
-                                    State.selectedEmployeeId = id
-                                    State.selectedEmployeePin = pin
-                                    State.selectedEmployeeName = name
-                                    State.selectedEmployeeSurname = surname
-                                    State.selectedEmployeeShift = shift
-                                    if(name.count() < surname.count())
-                                    {
-                                        employeeLabelName.setText(name)
-                                        employeeLabelSurname.setText(surname)
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                for (userSnapshot in snapshot.children) {
+                                    val user = userSnapshot.getValue(EmployeeListData::class.java)
+                                    if (user!!.employeeID == id)
+                                        userKey = userSnapshot.getKey().toString()
+                                    Log.d("KEY", "key: $userKey")
+                                    if (userKey != "") {
+                                        FirebaseDatabase.getInstance().getReference().child("users").child(userKey).setValue(employee)
+                                        Toast.makeText(requireContext(), getString(R.string.employee_edited), Toast.LENGTH_SHORT).show()
+                                        State.selectedEmployeeId = id
+                                        State.selectedEmployeePin = pin
+                                        State.selectedEmployeeName = name
+                                        State.selectedEmployeeSurname = surname
+                                        State.selectedEmployeeShift = shift
+                                        if(name.count() < surname.count())
+                                        {
+                                            employeeLabelName.setText(name)
+                                            employeeLabelSurname.setText(surname)
+                                        }
+                                        else{
+                                            employeeLabelName.setText(surname)
+                                            employeeLabelSurname.setText(name)
+                                        }
+                                        mAlertDialog.dismiss()
                                     }
-                                    else{
-                                        employeeLabelName.setText(surname)
-                                        employeeLabelSurname.setText(name)
-                                    }
-                                    mAlertDialog.dismiss()
-
                                 }
                             }
                         })

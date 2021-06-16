@@ -17,9 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.rejestrator.R
 import com.example.rejestrator.view.State
-import com.example.rejestrator.view.model.api.ApiService
 import com.example.rejestrator.view.model.entities.*
-import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Admin.AdminRaportViewModel
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis

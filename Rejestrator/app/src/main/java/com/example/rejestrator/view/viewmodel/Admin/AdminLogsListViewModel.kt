@@ -14,7 +14,6 @@ import com.example.rejestrator.view.State
 import com.example.rejestrator.view.model.entities.AdminLoginData
 import com.example.rejestrator.view.model.entities.EmployeeListData
 import com.example.rejestrator.view.model.entities.LoginData
-import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -60,34 +59,22 @@ class AdminLogsListViewModel(application: Application): AndroidViewModel(applica
 
     fun getAllEmployeesForTaskAdding()
     {
-        ApiRepository.getAllEmployees().enqueue(object : Callback<ArrayList<EmployeeListData>>{
-            override fun onFailure(call: Call<ArrayList<EmployeeListData>>, t: Throwable) {
+        FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(object:
+            ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("users","Error while getting users")
             }
-
-            override fun onResponse(call: Call<ArrayList<EmployeeListData>>, response: Response<ArrayList<EmployeeListData>>) {
-                employeeList1 = response.body()!!
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var listOfUsers: ArrayList<EmployeeListData> = ArrayList()
                 employeeList2.clear()
-                employeeList1.forEach(){
-                    employeeList2.add(it.toString())
+                for(userSnapshot in snapshot.children) {
+                    val user = userSnapshot.getValue(EmployeeListData::class.java)
+                    listOfUsers.add(user!!)
+                    employeeList2.add(user!!.toString())
                 }
-
+                employeeList1 = listOfUsers
             }
-
         })
 
-    }
-
-    fun insertEmployee(id : String, pin : String, name : String, surname : String, shift : String)
-    {
-        viewModelScope.launch {
-            ApiRepository.insertEmployee(id, pin, name, surname, shift)
-        }
-    }
-
-    fun insertAdmin(id : String, username: String, password: String, name : String, surname : String)
-    {
-        viewModelScope.launch {
-            ApiRepository.insertAdmin(id, username, password, name, surname)
-        }
     }
 }

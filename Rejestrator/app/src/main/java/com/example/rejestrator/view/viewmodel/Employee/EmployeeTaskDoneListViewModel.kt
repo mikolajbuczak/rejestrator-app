@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.rejestrator.view.model.entities.TaskDone
 import com.example.rejestrator.view.model.entities.TaskInProgress
-import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

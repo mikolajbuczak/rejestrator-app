@@ -22,7 +22,8 @@ import com.example.rejestrator.view.State
 import com.example.rejestrator.view.adapters.Admin.AdminEmployeeLogsAdapter
 import com.example.rejestrator.view.adapters.Admin.AdminEmployeesAdapter
 import com.example.rejestrator.view.model.entities.AdminLoginData
-import com.example.rejestrator.view.model.repositories.ApiRepository
+import com.example.rejestrator.view.model.entities.EmployeeLoginData
+import com.example.rejestrator.view.model.entities.Task
 import com.example.rejestrator.view.viewmodel.Admin.AdminEmployeeListViewModel
 import com.example.rejestrator.view.viewmodel.Admin.AdminEmployeesViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -122,32 +123,27 @@ class DashboardEmployeesAdmin : Fragment() {
                 val surname = mDialogView.addEmployeeSurname.text.toString()
                 val shift = mDialogView.addEmployeeShift.selectedItem.toString()
                 if(!id.isNullOrEmpty() && !pin.isNullOrEmpty() && !name.isNullOrEmpty() && !surname.isNullOrEmpty() && !shift.isNullOrEmpty()) {
-                    if(id.length != 4 && pin.length != 4)
+                    if(id.length != 4 && pin.length != 6)
                         Toast.makeText(requireContext(), getString(R.string.id_pin_4), Toast.LENGTH_SHORT).show()
                     else if(id.length != 4 )
                         Toast.makeText(requireContext(), getString(R.string.id_4), Toast.LENGTH_SHORT).show()
-                    else if(pin.length != 4 )
+                    else if(pin.length != 6 )
                         Toast.makeText(requireContext(), getString(R.string.pin_4), Toast.LENGTH_SHORT).show()
                     else{
-                        var canAddEmployee = ApiRepository.canAddEmployee(id)
-
-                        canAddEmployee.enqueue(object : Callback<ResponseBody> {
-                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                Toast.makeText(requireContext(), getString(R.string.no_conn), Toast.LENGTH_SHORT).show()
-                            }
-
-                            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                                if (response.code() == 200) {
-                                    adminEmployeeViewModel.insertEmployee(id, pin, name, surname, shift)
+                        val email = "${id}@rejestrator.com"
+                        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, pin)
+                            .addOnCompleteListener { task ->
+                                if(task.isSuccessful) {
+                                    val uid = task.result!!.user!!.uid
+                                    val employee = EmployeeLoginData(id, pin, name, surname, shift)
+                                    FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(employee)
                                     Toast.makeText(requireContext(), getString(R.string.employee_added), Toast.LENGTH_SHORT).show()
                                     mAlertDialog.dismiss()
-                                    view.findNavController().navigate(R.id.action_dashboardEmployeesAdmin_self)
-                                } else if (response.code() == 404) {
+                                }
+                                else {
                                     Toast.makeText(requireContext(), getString(R.string.id_assigned), Toast.LENGTH_SHORT).show()
                                 }
                             }
-
-                        })
                     }
 
                 }
@@ -254,76 +250,29 @@ class DashboardEmployeesAdmin : Fragment() {
 
 
             mDialogView.addOkButton.setOnClickListener {
-                val selectedEmployee =
-                        mDialogView.addTaskSelectedEmployee.selectedItem.toString()
+                val selectedEmployee = mDialogView.addTaskSelectedEmployee.selectedItem.toString()
                 val task = mDialogView.addTask.text.toString()
+                val selectedEmployeeID = selectedEmployee.split(" ").first()
                 if (!selectedEmployee.isNullOrEmpty() && !task.isNullOrEmpty()) {
-                    var canAddTask =
-                            ApiRepository.canAddTask(selectedEmployee.split(" ").first(), task)
-
-                    canAddTask.enqueue(object : Callback<ResponseBody> {
-                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    val taskUUID = UUID.randomUUID()
+                    val newTask = Task(taskUUID.toString() ,selectedEmployeeID, task)
+                    FirebaseDatabase.getInstance().getReference().child("tasks").child(selectedEmployeeID).child(task).setValue(newTask).addOnCompleteListener { task ->
+                        if(task.isSuccessful) {
                             Toast.makeText(
-                                    requireContext(),
-                                    getString(R.string.no_conn),
-                                    Toast.LENGTH_SHORT
+                                requireContext(),
+                                getString(R.string.task_added),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            mAlertDialog.dismiss()
+                        }
+                        else{
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.task_not_added),
+                                Toast.LENGTH_SHORT
                             ).show()
                         }
-
-                        override fun onResponse(
-                                call: Call<ResponseBody>,
-                                response: Response<ResponseBody>
-                        ) {
-                            if (response.code() == 200) {
-                                var addTask = ApiRepository.addTask(
-                                        selectedEmployee.split(" ").first(),
-                                        task
-                                )
-
-                                addTask.enqueue(object : Callback<ResponseBody> {
-                                    override fun onFailure(
-                                            call: Call<ResponseBody>,
-                                            t: Throwable
-                                    ) {
-                                        Toast.makeText(
-                                                requireContext(),
-                                                getString(R.string.no_conn),
-                                                Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-
-                                    override fun onResponse(
-                                            call: Call<ResponseBody>,
-                                            response: Response<ResponseBody>
-                                    ) {
-                                        if (response.code() == 200) {
-                                            Toast.makeText(
-                                                    requireContext(),
-                                                    getString(R.string.task_added),
-                                                    Toast.LENGTH_SHORT
-                                            ).show()
-                                            mAlertDialog.dismiss()
-                                        } else if (response.code() == 404) {
-                                            Toast.makeText(
-                                                    requireContext(),
-                                                    getString(R.string.task_not_added),
-                                                    Toast.LENGTH_SHORT
-                                            ).show()
-                                            mAlertDialog.dismiss()
-                                        }
-                                    }
-
-                                })
-                            } else if (response.code() == 404) {
-                                Toast.makeText(
-                                        requireContext(),
-                                        getString(R.string.task_assigned),
-                                        Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-
-                    })
+                    }
                 } else
                     Toast.makeText(
                             requireContext(),

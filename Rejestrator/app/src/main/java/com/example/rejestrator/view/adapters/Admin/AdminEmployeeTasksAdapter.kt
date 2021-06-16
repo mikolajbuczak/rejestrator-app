@@ -13,7 +13,6 @@ import com.example.rejestrator.view.model.entities.LoginData
 import com.example.rejestrator.view.model.entities.Task
 import com.example.rejestrator.view.model.entities.TaskDone
 import com.example.rejestrator.view.model.entities.TaskInProgress
-import com.example.rejestrator.view.model.repositories.ApiRepository
 import com.example.rejestrator.view.viewmodel.Admin.AdminEmployeeListViewModel
 import com.example.rejestrator.view.viewmodel.Admin.AdminLogsListViewModel
 import kotlinx.android.synthetic.main.fragment_admin_employee_list.*
@@ -52,7 +51,7 @@ class AdminEmployeeTasksAdapter(var taskList: LiveData<ArrayList<Task>>, var tas
 
         holder.view.row_deleteTaskButton.setOnClickListener{ x->
             if (currentItem != null) {
-                //taskViewModel.deleteTask(currentItem.id)
+                taskViewModel.deleteTask(currentItem.id.toString())
                 taskList.value?.remove(currentItem)
                 notifyItemRemoved(position)
             }
