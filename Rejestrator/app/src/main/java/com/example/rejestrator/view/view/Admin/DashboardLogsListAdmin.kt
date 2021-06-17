@@ -250,7 +250,7 @@ class DashboardLogsListAdmin : Fragment() {
                     if (!selectedEmployee.isNullOrEmpty() && !task.isNullOrEmpty()) {
                         val taskUUID = UUID.randomUUID()
                         val newTask = Task(taskUUID.toString() ,selectedEmployeeID, task)
-                        FirebaseDatabase.getInstance().getReference().child("tasks").child(selectedEmployeeID).child(task).setValue(newTask).addOnCompleteListener { task ->
+                        FirebaseDatabase.getInstance().getReference().child("tasks").child(selectedEmployeeID).child(taskUUID.toString()).setValue(newTask).addOnCompleteListener { task ->
                             if(task.isSuccessful) {
                                 Toast.makeText(
                                     requireContext(),
